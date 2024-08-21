@@ -1,0 +1,38 @@
+body {
+  @apply font-press-start;
+}
+@keyframes attackAnimation {
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(600px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.attack-animation {
+  animation: attackAnimation 0.5s ease;
+}
+
+.pixelated {
+  font-family: "Press Start 2P", cursive;
+  image-rendering: pixelated;
+}
+
+@keyframespulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
