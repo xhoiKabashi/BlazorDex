@@ -1,1 +1,1 @@
-# BlazorDex
+# Kreshnik.Client
