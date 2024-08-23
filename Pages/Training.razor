@@ -6,10 +6,10 @@
 @inject NavigationManager NavigationManager
 @inject GameAnimationService AnimationService
 
-<div class="h-screen bg-bg-main flex items-center border-2 ">
+<div class="h-screen bg-bg-main flex items-center  ">
     @if (gameEnd)
     {
-        <div class="text-center">
+        <div class="flex flex-col justify-center items-center">
             <h2 class="text-5xl font-extrabold text-white mb-6">You Win!</h2>
             <button @onclick="GoHome"
                 class="bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-8 rounded-full shadow-xl transition transform hover:scale-110">
@@ -19,14 +19,13 @@
     }
     else
     {
-        <div class="w-full flex flex-col  justify-between h-full">
-            <HealthBar HeroHP="@hero?.Hp" HeroStartHP="@heroStartingHp" EnemyHP="@EnemyHp" EnemyStartHP="@enemyStartingHp"
-                HeroLevel="@hero.Level" EnemyLevel="1" />
-            <StatInAction HeroSpeed="@hero?.Speed" HeroDamage="@hero?.Dmg" HeroArmor="@hero?.Armor" EnemySpeed="@EnemySpeed"
+        <div class="w-full flex flex-col justify-between h-full">
+            <HealthBar HeroHP="@HeroHP" HeroStartHP="@heroStartingHp" EnemyHP="@EnemyHp" EnemyStartHP="@enemyStartingHp"
+                HeroLevel="@HeroStateService.Hero.Level" EnemyLevel="1" />
+            <StatInAction HeroSpeed="@HeroSpeed" HeroDamage="@HeroDmg" HeroArmor="@HeroArmor" EnemySpeed="@EnemySpeed"
                 EnemyDamage="@EnemyDmg" EnemyArmor="@EnemyArmor" />
 
             <Messages ActionMessages="@actionMessages" />
-
 
             <HerosInAction isHeroTurn="@AnimationService.IsHeroTurn" isEnemyTurn="@AnimationService.IsEnemyTurn"
                 EnemyIsHealing="@AnimationService.EnemyIsHealing" HeroIsHealing="@AnimationService.HeroIsHealing"
@@ -38,63 +37,40 @@
                 HeroDamageTaken="@HeroDamageTaken" HeroHpAdded="@HeroHpAdded" EnemyHpAdded="@EnemyHpAdded"
                 HeroIsBessing="@AnimationService.HeroIsBessing" EnemyIsBessing="@AnimationService.EnemyIsBessing" />
 
-
-
-
-
-            <div class=" flex  border-2 shadow-sm rounded-3xl m-2 border-border-main p-3 bg-bg-second">
-                <div class=" grid grid-cols-2  w-36 gap-2 p-2 relative">
-                    <button @onclick="() => PerformAction(ActionType.Attack)" class="">
-                        <img src="svg/sword-wound.svg" alt="" class=" h-14 border-2 rounded-full border-bg-main">
-                    </button>
-                    <button @onclick="() => PerformAction(ActionType.Defend)" class="relative top-4 ">
-                        <img src="svg/armor-upgrade-ingame.svg" alt=""
-                            class=" h-12  right-7 border-2 rounded-full border-bg-main">
-                    </button>
-                    <button @onclick="() => PerformAction(ActionType.Heal)" class="relative left-8">
-                        <img src="svg/cherish-ingame.svg" alt=""
-                            class=" h-12 scale-105 border-2 rounded-full border-bg-main ">
-                    </button>
-
-                </div>
-                <div class=" flex gap-3 flex-1 justify-center">
-                    <button @onclick="() => PerformAction(ActionType.Heal)">
-                        <img src="svg/ability/topuz.svg" alt="" class=" h-14  p-1 border-2 rounded-full border-bg-main">
-                    </button>
-                    <button @onclick="() => PerformAction(ActionType.Heal)">
-                        <img src="svg/ability/lotet.svg" alt="" class=" h-14 border-2 p-1 rounded-full border-bg-main">
-                    </button>
-                    <button @onclick="() => PerformAction(ActionType.Ability)">
-                        <img src="svg/ability/zana.svg" alt="" class=" h-14  border-2  rounded-full p-1 border-bg-main">
-                    </button>
-                </div>
-            </div>
-
+       @if (!HasPerformed)
+                        {
+        <ActionButton
+        Attack="() => PerformAction(ActionType.Attack)"
+        Defend="() => PerformAction(ActionType.Defend)"
+        Heal="() => PerformAction(ActionType.Heal)"
+        Ability="() => PerformAction(ActionType.Ability)" />
+                }
+            else
+                    {
+      <ActionButton />
+      }
+    
         </div>
     }
 </div>
 
-
 @code {
-
     private int HeroDmg;
     private int HeroHP;
     private int HeroSpeed;
-
-    private int HeroArmor;
-
+        private int HeroArmor;
+    private bool HasPerformed = false;
     protected override async Task OnInitializedAsync()
     {
         HeroStateService.OnChange += StateHasChanged;
-        await LoadHeroData();
 
-        if (hero != null)
+        if (HeroStateService.Hero != null)
         {
-            heroStartingHp = hero.Hp;
-            HeroDmg = hero.Dmg;
-            HeroHP = hero.Hp;
-            HeroSpeed = hero.Speed;
-            HeroArmor = hero.Armor;
+            heroStartingHp = HeroStateService.Hero.Hp;
+            HeroDmg = HeroStateService.Hero.Dmg;
+            HeroHP = HeroStateService.Hero.Hp;
+            HeroSpeed = HeroStateService.Hero.Speed;
+            HeroArmor = HeroStateService.Hero.Armor;
         }
 
         enemyStartingHp = EnemyHp;
@@ -118,32 +94,16 @@
         }
     }
 
-
-    private async Task LoadHeroData()
-    {
-        try
-        {
-            hero = HeroStateService.Hero;
-            if (hero == null)
-            {
-                hero = await client.GetHero("1");
-                HeroStateService.SetHero(hero);
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error fetching Hero: {ex.Message}");
-        }
-    }
-
     private async Task ExecuteHeroAction(ActionType action)
     {
         switch (action)
         {
             case ActionType.Attack:
+                HasPerformed = true;
                 await HeroAttack();
                 break;
             case ActionType.Defend:
+                HasPerformed = true;
                 AnimationService.SetUpgradeArmor(true, true);
                 await DisplayActionMessage("Hero defends!");
                 heroDefending = true;
@@ -152,28 +112,29 @@
                 await AnimationService.ResetStatus();
                 break;
             case ActionType.Heal:
+                HasPerformed = true;
                 AnimationService.SetHealing(true, true);
                 await DisplayActionMessage("Hero heals!");
                 HeroHpAdded = 50;
                 HeroHP = Math.Min(HeroHP + 50, heroStartingHp ?? 0);
-
                 AnimationService.SetTurn(false);
                 await AnimationService.ResetStatus();
                 break;
             case ActionType.Ability:
+                HasPerformed = true;
                 AnimationService.SetBessing(true, true);
                 await DisplayActionMessage("Hero uses special ability!");
                 HeroDmg += 10;
                 HeroArmor += 10;
                 AnimationService.SetTurn(false);
                 await AnimationService.ResetStatus();
-
                 break;
         }
     }
+
     private async Task PerformAction(ActionType action)
     {
-        if (hero == null || gameEnd)
+        if (HeroStateService.Hero == null || gameEnd)
             return;
 
         turnCounter++;
@@ -205,15 +166,12 @@
         {
             case ActionType.Attack:
                 await EnemyAttack();
+                HasPerformed = false;
 
                 break;
             case ActionType.Defend:
-                AnimationService.SetUpgradeArmor(false, true);
-                await DisplayActionMessage("Enemy defends!");
-                enemyDefending = true;
-                EnemyArmor += 10;
-                AnimationService.SetTurn(true);
-                await AnimationService.ResetStatus();
+                await Defend();
+                HasPerformed = false;
                 break;
             case ActionType.Heal:
                 AnimationService.SetHealing(false, true);
@@ -221,6 +179,7 @@
                 EnemyHp = Math.Min(EnemyHp + 50, enemyStartingHp);
                 AnimationService.SetTurn(true);
                 await AnimationService.ResetStatus();
+                HasPerformed = false;
                 break;
             case ActionType.Ability:
                 AnimationService.SetBessing(false, true);
@@ -228,15 +187,25 @@
                 EnemyDmg += 5;
                 AnimationService.SetTurn(true);
                 await AnimationService.ResetStatus();
+                HasPerformed = false;
                 break;
         }
     }
-
 
     private ActionType DetermineEnemyAction()
     {
         // Basic AI to determine the enemy's action, you can expand this logic
         return (ActionType)(new Random()).Next(0, 4); // Randomly choose an action
+    }
+
+    private async Task Defend()
+    {
+        AnimationService.SetUpgradeArmor(false, true);
+        DisplayActionMessage("Enemy defends!");
+        enemyDefending = true;
+        EnemyArmor += 10;
+        AnimationService.SetTurn(true);
+        await AnimationService.ResetStatus();
     }
 
     private async Task HeroAttack()
@@ -275,6 +244,7 @@
     {
         int damageDealt = Math.Max(EnemyDmg - HeroArmor, 0);
         HeroDamageTaken = damageDealt;
+
         if (heroDefending)
         {
             damageDealt /= 2;
@@ -306,13 +276,13 @@
 
     private async Task WinBattle()
     {
-        hero.Points += 1;
-        hero.Exp += 25;
+        HeroStateService.Hero.Points += 1;
+        HeroStateService.Hero.Exp += 25;
 
         try
         {
-            await client.UpdateHero(hero);
-            HeroStateService.SetHero(hero);
+            await client.UpdateHero(HeroStateService.Hero);
+            HeroStateService.SetHero(HeroStateService.Hero);
         }
         catch (Exception ex)
         {
@@ -320,7 +290,7 @@
         }
     }
 
-    private void GoHome() => NavigationManager.NavigateTo("/");
+    private void GoHome() => NavigationManager.NavigateTo("/game");
 
     private void RemoveMessage(string message)
     {
@@ -331,7 +301,7 @@
         }
     }
 
-    private async Task DisplayActionMessage(string message, int delay = 1000)
+    private async Task DisplayActionMessage(string message, int delay = 2000)
     {
         actionMessages.Add(message);
         StateHasChanged();
@@ -340,10 +310,9 @@
         StateHasChanged();
     }
 
-
-
     public int? heroStartingHp { get; set; }
     public int enemyStartingHp { get; set; }
+
     private enum ActionType
     {
         Attack,
@@ -353,10 +322,9 @@
     }
 
     private bool gameEnd = false;
-    private Hero hero;
-    private int EnemyHp = 100;
+    private int EnemyHp = 5;
     private int EnemySpeed = 5;
-    private int EnemyArmor = 10;
+    private int EnemyArmor = 0;
     private int EnemyDmg = 30;
     private int turnCounter = 0;
     private bool heroDefending = false;

@@ -15,9 +15,9 @@
 
         <div class="flex justify-center gap-1">
             <img src="svg/life-bar.svg" alt="" class=" h-5">
-            <p class="text-white"> @HeroStartHP</p>
+            <p class="text-white">@(@HeroHP > 0 ? HeroHP : 0)</p>
             <p class="text-white"> /</p>
-            <p class="text-white">@HeroHP</p>
+            <p class="text-white"> @HeroStartHP</p>
         </div>
     </div>
     <img src="image/vs.png" alt="" class=" h-14">
@@ -36,7 +36,7 @@
             </div>
         </div>
         <div class="flex justify-center gap-1">
-            <p class="text-white">@EnemyHP</p>
+            <p class="text-white">@(@EnemyHP > 0 ? EnemyHP : 0)</p>
             <p class="text-white"> /</p>
             <p class="text-white"> @EnemyStartHP</p>
             <img src="svg/life-bar.svg" alt="" class=" h-5">

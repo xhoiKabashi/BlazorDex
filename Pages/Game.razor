@@ -1,0 +1,18 @@
+@page "/let"
+@inject HeroStateService HeroStateService
+
+<h3>Welcome, @HeroStateService.Hero?.Name!</h3>
+
+@if (HeroStateService.Hero != null)
+{
+    <p>Level: @HeroStateService.Hero.Level</p>
+    <p>HP: @HeroStateService.Hero.Hp</p>
+    <p>Damage: @HeroStateService.Hero.Dmg</p>
+    <p>Armor: @HeroStateService.Hero.Armor</p>
+    <p>Speed: @HeroStateService.Hero.Speed</p>
+    <p>Skill: @HeroStateService.Hero.Skill</p>
+}
+else
+{
+    <p>Loading hero data...</p>
+}

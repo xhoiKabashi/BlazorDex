@@ -1,0 +1,74 @@
+@page "/"
+@using BlazorDex.Models
+@using BlazorDex.Util
+@using System.Text.Json
+@using System.Text
+@inject HeroStateService HeroStateService
+@inject HeroClient HeroClient
+@inject NavigationManager NavigationManager
+
+
+
+<div class=" flex flex-col justify-center items-center  bg-bg-second min-h-screen text-text-third">
+    <label for="playerName" class=" text-text-third">Enter your name: </label>
+    <input @bind="playerName" id="playerName" type="text" />
+
+    <label for="password">Enter your PIN: </label>
+    <input @bind="password" id="password" type="password" />
+
+    <button @onclick="FetchOrCreateHero" class="  bg-bg-main text-yellow-200">Start</button>
+</div>
+
+@if (errorMessage != null)
+{
+    <p style="color: red;">@errorMessage</p>
+}
+
+@code {
+    private string playerName;
+    private string password;
+    private string? errorMessage;
+
+    private async Task FetchOrCreateHero()
+    {
+        errorMessage = null;
+
+        try
+        {
+            // Create the login request object
+            var loginRequest = new HeroLoginRequest
+                {
+                    PlayerName = playerName,
+                    Password = password
+                };
+
+            // Serialize the login request
+            var requestContent = new StringContent(JsonSerializer.Serialize(loginRequest), Encoding.UTF8, "application/json");
+
+            // Send the request to the API
+            var response = await HeroClient.Client.PostAsync("http://localhost:5024/api/heroes/fetchorcreate", requestContent);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception("Failed to fetch or create hero.");
+            }
+
+            // Deserialize the hero from the response
+            var heroJson = await response.Content.ReadAsStringAsync();
+            var hero = JsonSerializer.Deserialize<Hero>(heroJson, new JsonSerializerOptions
+                {
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+                });
+
+            // Set the hero in the HeroStateService
+            HeroStateService.SetHero(hero);
+
+            // Navigate to the game page (or any other page)
+            NavigationManager.NavigateTo("/game");
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+    }
+}

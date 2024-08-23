@@ -4,93 +4,66 @@
 @inject HeroStateService HeroStateService
 
 
-@if (isLoading)
+@if (HeroStateService.Hero != null)
 {
-    <h1>Loading Hero stats</h1>
+       <div class=" grid grid-cols-2 gap-1 uppercase   w-full ">
+        <StatsSectionModular ImageSrc="image/attkMag.png" StatName="Attack" StatValue="@HeroStateService.Hero.Dmg" Points="@HeroStateService.Hero.Points"
+            ButtonClass="" OnStatChanged="HandleStatChanged" />
+        <StatsSectionModular ImageSrc="image/armor.png" StatName="Armor" StatValue="@HeroStateService.Hero.Armor" Points="@HeroStateService.Hero.Points"
+            ButtonClass="" OnStatChanged="HandleStatChanged" />
+        <StatsSectionModular ImageSrc="image/speed.png" StatName="Speed" StatValue="@HeroStateService.Hero.Speed" Points="@HeroStateService.Hero.Points"
+            ButtonClass="" OnStatChanged="HandleStatChanged" />
+        <StatsSectionModular ImageSrc="image/potion.png" StatName="Hp" StatValue="@HeroStateService.Hero.Hp" Points="@HeroStateService.Hero.Points"
+            ButtonClass="" OnStatChanged="HandleStatChanged" />
+    </div>
 }
 else
 {
 
-    <div class=" grid grid-cols-2 gap-1 uppercase   w-full ">
-        <StatsSectionModular ImageSrc="image/attkMag.png" StatName="Attack" StatValue="@hero.Dmg" Points="@hero.Points"
-            ButtonClass="" OnStatChanged="HandleStatChanged" />
-        <StatsSectionModular ImageSrc="image/armor.png" StatName="Armor" StatValue="@hero.Armor" Points="@hero.Points"
-            ButtonClass="" OnStatChanged="HandleStatChanged" />
-        <StatsSectionModular ImageSrc="image/speed.png" StatName="Speed" StatValue="@hero.Speed" Points="@hero.Points"
-            ButtonClass="" OnStatChanged="HandleStatChanged" />
-        <StatsSectionModular ImageSrc="image/potion.png" StatName="Hp" StatValue="@hero.Hp" Points="@hero.Points"
-            ButtonClass="" OnStatChanged="HandleStatChanged" />
-    </div>
+    <h1>Loading Hero stats</h1>
 
 }
 
 @code {
     private bool isLoading = true;
-    private Hero hero;
 
-    protected override async Task OnInitializedAsync()
+private async Task HandleStatChanged((string StatName, int Change) change)
+{
+    if (HeroStateService.Hero.Points <= 0 && change.Change > 0)
     {
-        HeroStateService.OnChange += StateHasChanged;
-        await LoadHeroData();
+        return; // Prevent changes if no points are available
     }
 
-    private async Task LoadHeroData()
+    switch (change.StatName)
     {
-        try
-        {
-            hero = HeroStateService.Hero;
-            if (hero == null)
-            {
-                hero = await client.GetHero("1");
-                HeroStateService.SetHero(hero);
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error fetching Hero: {ex.Message}");
-        }
-        finally
-        {
-            isLoading = false;
-        }
+        case "Attack":
+            HeroStateService.Hero.Dmg += change.Change;
+            break;
+        case "Armor":
+            HeroStateService.Hero.Armor += change.Change;
+            break;
+        case "Speed":
+            HeroStateService.Hero.Speed += change.Change;
+            break;
+        case "Hp":
+            HeroStateService.Hero.Hp += 25;
+            break;
     }
 
-    private async Task HandleStatChanged((string StatName, int Change) change)
+    if (change.Change > 0)
     {
-        if (hero.Points <= 0 && change.Change > 0)
-        {
-            return; // Prevent changes if no points are available
-        }
-
-        switch (change.StatName)
-        {
-            case "Attack":
-                hero.Dmg += change.Change;
-                break;
-            case "Armor":
-                hero.Armor += change.Change;
-                break;
-            case "Speed":
-                hero.Speed += change.Change;
-                break;
-            case "Hp":
-                hero.Hp += 25;
-                break;
-        }
-
-        if (change.Change > 0)
-        {
-            hero.Points -= change.Change;
-        }
-
-        try
-        {
-            await client.UpdateHero(hero);
-            HeroStateService.SetHero(hero);
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error updating Hero: {ex.Message}");
-        }
+        HeroStateService.Hero.Points -= change.Change;
     }
+
+    try
+    {
+        await client.UpdateHero(HeroStateService.Hero);
+        HeroStateService.SetHero(HeroStateService.Hero);
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Error updating Hero: {ex.Message}");
+    }
+}
+
 }

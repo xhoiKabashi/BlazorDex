@@ -1,24 +1,51 @@
 using System.Text.Json;
 using BlazorDex.Models;
 using System.Text;
+using Microsoft.JSInterop;
+
 
 
 namespace BlazorDex.Util
 {
 
-    public class HeroStateService
-    {
-        public Hero Hero { get; private set; }
-        public event Action OnChange;
+public class HeroStateService
+{
+    public Hero Hero { get; private set; }
+    public event Action OnChange;
 
-        public void SetHero(Hero hero)
+    private readonly IJSRuntime _jsRuntime;
+
+    public HeroStateService(IJSRuntime jsRuntime)
+    {
+        _jsRuntime = jsRuntime;
+        LoadHeroFromLocalStorage();
+    }
+
+    public async void SetHero(Hero hero)
+    {
+        Hero = hero;
+        NotifyStateChanged();
+        await SaveHeroToLocalStorage(hero);
+    }
+
+    private async Task SaveHeroToLocalStorage(Hero hero)
+    {
+        var heroJson = JsonSerializer.Serialize(hero);
+        await _jsRuntime.InvokeVoidAsync("localStorage.setItem", "hero", heroJson);
+    }
+
+    private async void LoadHeroFromLocalStorage()
+    {
+        var heroJson = await _jsRuntime.InvokeAsync<string>("localStorage.getItem", "hero");
+        if (!string.IsNullOrEmpty(heroJson))
         {
-            Hero = hero;
+            Hero = JsonSerializer.Deserialize<Hero>(heroJson);
             NotifyStateChanged();
         }
-
-        private void NotifyStateChanged() => OnChange?.Invoke();
     }
+
+    private void NotifyStateChanged() => OnChange?.Invoke();
+}
 
     public class HeroClient
     {
@@ -29,29 +56,19 @@ namespace BlazorDex.Util
             this.Client = client;
         }
 
-        public async Task<Hero> GetHero(string id)
-        {
-            var response = await this.Client.GetAsync($"https://kreshnik-api.onrender.com/api/heroes/{id}");
+  public async Task UpdateHero(Hero hero)
+{
+    var heroJson = JsonSerializer.Serialize(hero);
+    var content = new StringContent(heroJson, Encoding.UTF8, "application/json");
 
-            if (!response.IsSuccessStatusCode)
-            {
-                throw new Exception($"Failed to fetch hero. Status code: {response.StatusCode}");
-            }
+    var response = await this.Client.PutAsync($"http://localhost:5024/api/heroes/{hero.Id}", content);
 
-            var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<Hero>(content, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
-        }
-        public async Task UpdateHero(Hero hero)
-        {
-            var heroJson = JsonSerializer.Serialize(hero);
-            var content = new StringContent(heroJson, Encoding.UTF8, "application/json");
-            var response = await this.Client.PutAsync($"https://kreshnik-api.onrender.com/api/heroes/{hero.Id}", content);
+    if (!response.IsSuccessStatusCode)
+    {
+        throw new Exception($"Failed to update hero. Status code: {response.StatusCode}");
+    }
+}
 
-            if (!response.IsSuccessStatusCode)
-            {
-                throw new Exception($"Failed to update hero. Status code: {response.StatusCode}");
-            }
-        }
 
     }
 }

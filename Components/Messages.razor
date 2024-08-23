@@ -1,5 +1,7 @@
+@inject NavigationManager NavigationManager
+
 <div class="flex gap-2 px-4  mb-2">
-    <img src="svg/arrow_back_2.svg" alt="">
+    <img src="svg/arrow_back_2.svg" alt="" @onclick="GoHome">
     <div class="flex justify-center items-center flex-1 bg-cover bg-center  "
         style="background-image: url('svg/notification.svg');">
         @foreach (var message in ActionMessages)
@@ -12,4 +14,6 @@
 @code {
     [Parameter]
     public List<string> ActionMessages { get; set; } = new List<string>();
+    private void GoHome() => NavigationManager.NavigateTo("/game");
+
 }
