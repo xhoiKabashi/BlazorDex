@@ -61,7 +61,7 @@ public class HeroStateService
     var heroJson = JsonSerializer.Serialize(hero);
     var content = new StringContent(heroJson, Encoding.UTF8, "application/json");
 
-    var response = await this.Client.PutAsync($"http://localhost:5024/api/heroes/{hero.Id}", content);
+    var response = await this.Client.PutAsync($"https://kreshnik-api.onrender.com/api/heroes/{hero.Id}", content);
 
     if (!response.IsSuccessStatusCode)
     {
