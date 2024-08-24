@@ -3,10 +3,10 @@
 <div class="flex gap-2 px-4  mb-2">
     <img src="svg/arrow_back_2.svg" alt="" @onclick="GoHome">
     <div class="flex justify-center items-center flex-1 bg-cover bg-center  "
-        style="background-image: url('svg/notification.svg');">
+        style="background-image: url('image/papyrus.png');">
         @foreach (var message in ActionMessages)
         {
-            <div class="text-yellow-400 text-center font-medium mb-2">@message</div>
+            <div class="text-black text-center font-medium mb-2">@message</div>
         }
     </div>
 </div>
