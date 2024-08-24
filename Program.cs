@@ -17,6 +17,8 @@ builder.Services.AddScoped<GameAnimationService>();
 
 builder.Services.AddSingleton<HeroStateService>();
 builder.Services.AddScoped(sp => new HeroClient(new HttpClient { BaseAddress = new Uri("https://kreshnik-api.onrender.com") }));
+// builder.Services.AddScoped(sp => new HeroClient(new HttpClient { BaseAddress = new Uri("http://localhost:5024/") }));
+
 
 
 
