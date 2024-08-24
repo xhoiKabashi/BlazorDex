@@ -1,26 +1,43 @@
 <!-- ActionButton.razor -->
-<div class="flex border-2 shadow-sm rounded-3xl mx-1 my-2 border-border-main p-3 bg-bg-second">
-    <div class="grid grid-cols-2 w-36 gap-2 p-2 relative">
-        <button @onclick="() => Attack.InvokeAsync()" class="">
-            <img src="svg/sword-wound.svg" alt="" class="h-14 border-2 rounded-full border-bg-main">
+<div class="flex p-3  border-b-8 border-bg-second">
+ <div class="grid grid-cols-2 grid-rows-2 ">
+    <!-- First Item (Attack) in the top-left -->
+    <div class=" flex flex-col justify-center items-center text-white">
+        <button @onclick="() => Attack.InvokeAsync()" class=" p-2 rounded-full" style="background-color: rgba(255, 249, 249, 0.1);">
+            <img src="image/icons/sword.png" alt="" class="h-10">
         </button>
-        <button @onclick="() => Defend.InvokeAsync()" class="relative top-4">
-            <img src="svg/armor-upgrade-ingame.svg" alt="" class="h-12 right-7 border-2 rounded-full border-bg-main">
-        </button>
-        <button @onclick="() => Heal.InvokeAsync()" class="relative left-8">
-            <img src="svg/cherish-ingame.svg" alt="" class="h-12 scale-105 border-2 rounded-full border-bg-main ">
-        </button>
+        <p>Attack</p>
     </div>
-    <div class="flex gap-3 flex-1 justify-center">
-        <button @onclick="() => Ability.InvokeAsync()">
-            <img src="svg/ability/topuz.svg" alt="" class="h-14 p-1 border-2 rounded-full border-bg-main">
+    <div></div>
+     <div class=" flex flex-col justify-center items-center text-white  row-start-2 col-start-2">
+        <button @onclick="() => Defend.InvokeAsync()" class=" p-2 rounded-full" style="background-color: rgba(255, 249, 249, 0.1);">
+            <img src="image/icons/shield.png" alt="" class="h-10">
         </button>
-        <button @onclick="() => Ability1.InvokeAsync()">
-            <img src="svg/ability/lotet.svg" alt="" class="h-14 border-2 p-1 rounded-full border-bg-main">
-        </button>
-        <button @onclick="() => Ability2.InvokeAsync()">
-            <img src="svg/ability/zana.svg" alt="" class="h-14 border-2 rounded-full p-1 border-bg-main">
-        </button>
+               <p>Defend </p>
+    </div>
+</div>
+
+    <div class="flex gap-3 flex-1 justify-center items-center">
+           <div class=" flex flex-col justify-center items-center text-white">
+            <button @onclick="() => Ability.InvokeAsync()" class=" p-1 rounded-full" style="background-color: rgba(255, 249, 249, 0.1);">
+                <img src="image/icons/mace.png" alt="" class="h-12 p-1  scale-125">
+            </button>
+                  <p>Smash & Crash</p>
+        </div>
+        
+            <div class=" flex flex-col justify-center items-center text-white">
+            <button @onclick="() => Ability1.InvokeAsync()" class="  p-2 rounded-full" style="background-color: rgba(255, 249, 249, 0.1);">
+                <img src="image/icons/tears.png" alt="" class="h-10  ">
+            </button>
+                <p>Tears & Heal</p>
+        </div>
+              <div class=" flex flex-col justify-center items-center text-white">
+            <button @onclick="() => Ability2.InvokeAsync()" class=" p-2 rounded-full" style="background-color: rgba(255, 249, 249, 0.1);">
+                <img src="image/icons/nymph.png" alt="" class="h-10  ">
+            </button>
+
+                <p>Milk & Rage</p>
+        </div>
     </div>
 </div>
 

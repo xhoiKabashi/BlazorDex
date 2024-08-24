@@ -6,7 +6,7 @@
 @inject NavigationManager NavigationManager
 @inject GameAnimationService AnimationService
 
-<div class="h-screen bg-bg-main flex items-center  ">
+<div class="h-screen bg-bg-main flex items-center ">
     @if (gameEnd)
     {
         <div class="flex flex-col w-full min-h-screen justify-center items-center " style="background-image: url('image/login.jpg');">
@@ -21,7 +21,7 @@
     {
         <div class="w-full flex flex-col justify-between h-full">
             <HealthBar HeroHP="@HeroHP" HeroStartHP="@heroStartingHp" EnemyHP="@EnemyHp" EnemyStartHP="@enemyStartingHp"
-                HeroLevel="@HeroStateService.Hero.Level" EnemyLevel="1" />
+                HeroLevel="@HeroStateService.Hero.Level" EnemyLevel="1" EnemyIconSrc="image/icons/ulshqiniIcon.png"  HeroIconSrc="image/icons/heroIcon.png"/>
             <StatInAction HeroSpeed="@HeroSpeed" HeroDamage="@HeroDmg" HeroArmor="@HeroArmor" EnemySpeed="@EnemySpeed"
                 EnemyDamage="@EnemyDmg" EnemyArmor="@EnemyArmor" />
 
@@ -43,7 +43,8 @@
         Attack="() => PerformAction(ActionType.Attack)"
         Defend="() => PerformAction(ActionType.Defend)"
         Heal="() => PerformAction(ActionType.Heal)"
-        Ability="() => PerformAction(ActionType.Ability)" />
+        Ability="() => PerformAction(ActionType.Ability)"
+         Ability1="() => PerformAction(ActionType.Ability1)"  />
                 }
             else
                     {
@@ -112,13 +113,7 @@
                 await AnimationService.ResetStatus();
                 break;
             case ActionType.Heal:
-                HasPerformed = true;
-                AnimationService.SetHealing(true, true);
-                await DisplayActionMessage("Hero heals!");
-                HeroHpAdded = 50;
-                HeroHP = Math.Min(HeroHP + 50, heroStartingHp ?? 0);
-                AnimationService.SetTurn(false);
-                await AnimationService.ResetStatus();
+            
                 break;
             case ActionType.Ability:
                 HasPerformed = true;
@@ -126,6 +121,15 @@
                 await DisplayActionMessage("Hero uses special ability!");
                 HeroDmg += 10;
                 HeroArmor += 10;
+                AnimationService.SetTurn(false);
+                await AnimationService.ResetStatus();
+                break;
+                case ActionType.Ability1:
+                HasPerformed = true;
+                AnimationService.SetHealing(true, true);
+                await DisplayActionMessage("Hero heals!");
+                HeroHpAdded = 50;
+                HeroHP = Math.Min(HeroHP + 50, heroStartingHp ?? 0);
                 AnimationService.SetTurn(false);
                 await AnimationService.ResetStatus();
                 break;
@@ -318,11 +322,12 @@
         Attack,
         Defend,
         Heal,
-        Ability
+        Ability,
+        Ability1
     }
 
     private bool gameEnd = false;
-    private int EnemyHp = 5;
+    private int EnemyHp = 200;
     private int EnemySpeed = 5;
     private int EnemyArmor = 0;
     private int EnemyDmg = 30;

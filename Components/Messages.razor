@@ -1,12 +1,15 @@
 @inject NavigationManager NavigationManager
 
-<div class="flex gap-2 px-4  mb-2">
-    <img src="svg/arrow_back_2.svg" alt="" @onclick="GoHome">
-    <div class="flex justify-center items-center flex-1 bg-cover bg-center  "
-        style="background-image: url('image/papyrus.png');">
+<div class="flex gap-2  px-2 mb-2" >
+    <div class="flex  rounded-md  text-center  px-2 flex-1 " style="background-color: rgba(255, 249, 249, 0.1);">
+
+    <img src="image/icons/script.png" alt="" class=" h-9">
+      >
         @foreach (var message in ActionMessages)
         {
-            <div class="text-black text-center font-medium mb-2">@message</div>
+            <div class="text-white  font-semibold flex  justify-center items-center text-center font-medium mb-2 w-full">
+                @message
+                </div>
         }
     </div>
 </div>
