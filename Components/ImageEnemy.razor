@@ -1,0 +1,34 @@
+    <div class=" flex w-full ">
+            <img src="image/hero/ulqniHealth.png" alt="Hero Image" class="w-full h-48  object-cover overflow-visible scale-95"
+                style="display: @(EnemyIsHealing ? "block" : "none")">
+        </div>
+       <div class=" flex w-full ">
+
+            <img src="image/hero/ulqiniAtt.png" alt="Enemy Image" class="w-full  h-44 object-cover overflow-visible scale-95"
+                style="display: @(EnemyIsAtt ? "block" : "none")">
+        </div>
+    <div class=" flex w-full ">
+            <img src="image/hero/ulqiniDef.png" alt="Hero Image" class="w-full h-48 object-cover overflow-visible scale-95"
+                style="display: @(EnemyUpgradeArmor ? "block" : "none")">
+        </div>
+    <div class=" flex w-full ">
+            <img src="image/hero/ulqinBlessing.png" alt="Hero Image" class="w-full h-48 object-cover overflow-visible scale-95"
+                style="display: @(EnemyIsBessing ? "block" : "none")">
+        </div>
+
+     <div class=" flex w-full ">
+            <img src="image/hero/ulqiniStand.png" alt="Hero Image" class="w-full h-48 object-cover overflow-visible scale-95"
+                style="display: @(!EnemyIsHealing && !EnemyUpgradeArmor && !EnemyIsAtt &&  !EnemyIsBessing  ? "block" : "none")">
+    </div>
+
+
+    @code {
+    [Parameter] public bool EnemyIsBessing { get; set; }
+
+    [Parameter] public bool EnemyIsHealing { get; set; }
+
+    [Parameter] public bool EnemyUpgradeArmor { get; set; }
+
+    [Parameter] public bool EnemyIsAtt { get; set; }
+
+    }

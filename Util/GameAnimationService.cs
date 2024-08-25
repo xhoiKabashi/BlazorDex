@@ -3,7 +3,6 @@ public class GameAnimationService
     public bool IsHeroTurn { get; private set; }
     public bool HeroIsAtt { get; private set; }
     public bool EnemyIsAtt { get; private set; }
-
     public bool IsEnemyTurn { get; private set; }
     public bool HeroIsHealing { get; private set; }
     public bool EnemyIsHealing { get; private set; }
@@ -11,8 +10,27 @@ public class GameAnimationService
     public bool EnemyUpgradeArmor { get; private set; }
     public bool HeroIsGettingDmg { get; private set; }
     public bool EnemyIsGettingDmg { get; private set; }
-    public bool HeroIsBessing { get; private set; }
+    public bool HeavyCrash { get; private set; }
     public bool EnemyIsBessing { get; private set; }
+    public bool HeroIsMilkRaging { get; private set; }
+    public int ArmorAdded  { get; private set; }
+    public int AttackAdded  { get; private set; }
+    public int HpAdded  { get; private set; }
+    public int ArmorReduction  { get; private set; }
+    public bool HeroBoosting { get; private set; }
+
+
+  public void SetHeroBoosting(bool isHero, bool isBoosting, int armorAdded, int attckAdded)
+    {
+        if (isHero) {
+            HeroBoosting = isBoosting;
+            ArmorAdded = armorAdded;
+            AttackAdded= attckAdded;
+        }
+
+        else
+            EnemyIsBessing = isBoosting;
+    }
 
 
     public void SetTurn(bool isHeroTurn)
@@ -24,16 +42,35 @@ public class GameAnimationService
     public void SetBessing(bool isHero, bool isBlessing)
     {
         if (isHero)
-            HeroIsBessing = isBlessing;
+            HeavyCrash = isBlessing;
         else
             EnemyIsBessing = isBlessing;
     }
-    public void SetHealing(bool isHero, bool isHealing)
+
+
+    public void SetArmorReduction(bool isHero, int armorReduction)
     {
         if (isHero)
-            HeroIsHealing = isHealing;
+            ArmorReduction = armorReduction;
         else
+            ArmorReduction = armorReduction;
+    }
+
+
+
+    public void SetHealing(bool isHero, bool isHealing,int hpAdded)
+    {
+        if (isHero){
+            HeroIsHealing = isHealing;
+            HpAdded = hpAdded;
+        }
+           
+        else {
             EnemyIsHealing = isHealing;
+            HpAdded = hpAdded;
+
+        }
+            
     }
     public void SetIsAtt(bool isHero, bool isAtt)
     {
@@ -43,12 +80,18 @@ public class GameAnimationService
             EnemyIsAtt = isAtt;
     }
 
-    public void SetUpgradeArmor(bool isHero, bool isUpgrading)
+    public void SetUpgradeArmor(bool isHero, bool isUpgrading, int armorAdded)
     {
-        if (isHero)
+        if (isHero) {
             HeroUpgradeArmor = isUpgrading;
-        else
+            ArmorAdded = armorAdded;
+        }
+        else {
             EnemyUpgradeArmor = isUpgrading;
+            ArmorAdded = armorAdded;
+        }
+
+            
     }
 
     public void SetGettingDamage(bool isHero, bool isGettingDamage)
@@ -70,8 +113,13 @@ public class GameAnimationService
         EnemyIsGettingDmg = false;
         HeroIsAtt = false;
         EnemyIsAtt = false;
-        HeroIsBessing = false;
+        HeavyCrash = false;
         EnemyIsBessing = false;
+        HeroIsMilkRaging = false;
+        ArmorAdded = 0;
+        HpAdded = 0;
+        AttackAdded = 0;
+        HeroBoosting = false;
 
     }
 }

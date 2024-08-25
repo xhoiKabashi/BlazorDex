@@ -1,0 +1,39 @@
+        <div class=" flex w-full ">
+            <img src="image/motion/sister.png" alt="Hero Image" class=" h-44  object-cover overflow-visible"
+                style="display: @(HeroIsHealing ? "block" : "none")">
+        </div>
+   <div class=" flex w-full ">
+            <img src="image/motion/milk.png" alt="Hero Image" class=" h-48   object-cover  overflow-visible"
+                style="display: @(HeroBoosting ? "block" : "none")">
+        </div>
+     <div class=" flex w-full ">
+            <img src="image/motion/attacking.png" alt="Enemy Image" class=" h-44 overflow-visible object-cover"
+                style="display: @(HeroIsAtt ? "block" : "none")">
+        </div>
+
+       <div class=" flex w-full ">
+            <img src="image/motion/defending.png" alt="Hero Image" class=" h-44 object-cover  overflow-visible"
+                style="display: @(HeroUpgradeArmor ? "block" : "none")">
+        </div>
+          <div class=" flex w-full ">
+            <img src="image/motion/topuz.png" alt="Hero Image" class="h-48 object-cover  overflow-visible"
+                style="display: @(HeavyCrash ? "block" : "none")">
+        </div>
+
+        <div class=" flex w-full ">
+            <img src="image/motion/standing.png" alt="Hero Image" class=" h-48 object-cover"
+                style="display: @(!HeroIsHealing && !HeroUpgradeArmor && !HeroIsAtt && !HeavyCrash && !HeroBoosting ? "block" : "none")">
+        </div>
+
+    @code {
+    [Parameter] public bool HeroIsHealing { get; set; }
+    [Parameter] public bool HeroBoosting { get; set; }
+    [Parameter] public bool HeroIsAtt { get; set; }
+    [Parameter] public bool HeavyCrash { get; set; }
+    [Parameter] public bool HeroUpgradeArmor { get; set; }
+
+
+
+
+
+    }

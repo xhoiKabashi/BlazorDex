@@ -1,0 +1,117 @@
+<audio id="healingAudio" src="audio/blessing2.ogg"></audio>
+<audio id="attackingAudio" src="audio/slightscream-12.ogg"></audio>
+<audio id="metal" src="audio/metalboom.ogg"></audio>
+<audio id="armor" src="audio/armor.wav"></audio>
+<audio id="rage" src="audio/rage.mp3"></audio>
+
+@code{
+
+
+   // Hero Parameters
+    [Parameter] public bool HeavyCrash { get; set; }
+    [Parameter] public bool HeroBoosting { get; set; }
+    [Parameter] public bool HeroIsHealing { get; set; }
+    [Parameter] public bool HeroUpgradeArmor { get; set; }
+    [Parameter] public bool HeroIsAtt { get; set; }
+    
+    [Parameter] public bool EnemyIsHealing { get; set; }
+    [Parameter] public bool EnemyIsAtt { get; set; }
+
+    [Parameter] public bool EnemyIsBessing { get; set; }
+    [Parameter] public bool EnemyUpgradeArmor { get; set; }
+    [Inject] private IJSRuntime JSRuntime { get; set; }
+
+protected override async Task OnAfterRenderAsync(bool firstRender)
+{
+    if (shouldPlayAudio)
+    {
+        await PlayHealingAudio();
+        shouldPlayAudio = false;
+    }
+    if (AudioAtt)
+    {
+        await PlayAttAudio();
+        AudioAtt = false;
+    }
+    if (AudioDef)
+    {
+        await PlayDefAudio();
+        AudioDef = false;
+    }
+    if (AudioRage)
+    {
+        await PlayRageAudio();
+        AudioRage = false;
+    }
+}
+    // Audio control flags
+    private bool shouldPlayAudio = false;
+    private bool AudioAtt = false;
+    private bool AudioDef = false;
+    private bool AudioRage = false;
+    protected override async Task OnParametersSetAsync()
+    {
+        if (HeroIsHealing)
+        {
+            shouldPlayAudio = true;
+        }
+        else if (EnemyIsHealing)
+        {
+            shouldPlayAudio = true;
+        }
+        if (HeroIsAtt)
+        {
+            AudioAtt = true;
+        }
+        else if (EnemyIsAtt)
+        {
+            AudioAtt = true;
+        }
+        if (HeroUpgradeArmor)
+        {
+            AudioDef = true;
+        }
+        else if (EnemyUpgradeArmor)
+        {
+            AudioDef = true;
+        }
+        if (HeavyCrash || HeroBoosting)
+        {
+            AudioRage = true;
+        }
+        else if (EnemyIsBessing)
+        {
+            AudioRage = true;
+
+        }
+    }
+
+    private async Task PlayHealingAudio()
+    {
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('healingAudio').volume = 0.3;");
+
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('healingAudio').play()");
+    }
+    private async Task PlayRageAudio()
+    {
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('rage').volume = 0.3;");
+
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('rage').play()");
+    }
+    private async Task PlayAttAudio()
+    {
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('attackingAudio').volume = 0.3;");
+
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('attackingAudio').play()");
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('metal').play()");
+
+    }
+    private async Task PlayDefAudio()
+    {
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('armor').volume = 0.5;");
+
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('armor').play()");
+
+
+    }
+    }

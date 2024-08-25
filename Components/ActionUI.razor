@@ -1,0 +1,157 @@
+<div class="grid grid-cols-2 gap-4 h-1/2 w-full p-2 bg-cover bg-center"
+    style="background-image: url('image/bg01.jpg');">
+    <div class=" flex flex-col justify-end items-center translate-x-1 transition-all">
+
+        <div class="h-10  ">
+            @if (isHeroTurn)
+            {
+                <img src="svg/plain-arrow.svg" alt="arrow" class="h-6 object-cover animate-bounce">
+            }
+        </div>
+
+        <div class="flex justify-center h-10 w-full">
+            @if (HeroUpgradeArmor)
+            {
+                <div class="flex animate-bounce" >
+                     <img src="image/icons/shieldUp.png" alt="arrow" class="h-6 object-cover ">
+                    <p class="font-bold text-blue-700">+@ArmorAdded Armor</p>
+                </div>
+            }
+
+            @if (HeroIsGettingDmg)
+            {
+                <div class="flex animate-bounce">
+                <img src="image/icons/scratch.png" alt="arrow" class="h-6 object-cover ">
+                <p class="font-bold  text-red-700  tracking-widest"> -@HeroDamageTaken</p>
+                </div>
+            }
+            @if (HeroIsHealing)
+            {
+                <div class="flex animate-bounce">
+                    <img src="image/icons/regeneration.png" alt="arrow" class="h-6 object-cover">
+                    <p class="font-bold text-green-600">+ @HpAdded</p>
+                </div>
+            }
+           @if (HeroBoosting)
+            {
+                <div class="flex flex-col animate-bounce text-blue-700">
+                    <div class="flex">
+                        <img src="image/icons/sword.png" alt="arrow" class="h-6 object-cover">
+                       <p class="font-bold ">+ @AttackAdded</p>
+                    </div>
+                         <div class="flex">
+                        <img src="image/icons/shieldUp.png" alt="arrow" class="h-6 object-cover ">
+                        <p class="font-bold ">+@ArmorAdded</p>
+                    </div>
+
+                </div>
+            }
+
+
+        </div>
+
+        <!-- Hero Images -->
+        <ImagesHero HeavyCrash="@HeavyCrash" 
+        HeroIsHealing="@HeroIsHealing"
+        HeroBoosting="@HeroBoosting"
+        HeroIsAtt="@HeroIsAtt"
+        HeroUpgradeArmor="@HeroUpgradeArmor"
+/>
+    </div>
+
+    <div class="flex flex-col justify-end items-center translate-x-1 transition-all">
+        <div class="h-10">
+            @if (isEnemyTurn)
+            {
+                <img src="svg/plain-arrow.svg" alt="arrow" class="h-6 object-cover animate-bounce">
+            }
+        </div>
+
+        <div class="flex justify-center h-10 w-full">
+            @if (EnemyUpgradeArmor)
+            {
+                <div class="flex animate-bounce">
+                    <img src="image/icons/shieldUp.png" alt="arrow" class="h-6 object-cover ">
+                    <p class="font-bold text-blue-700">+ @ArmorAdded Armor</p>
+                </div>
+            }
+
+            @if (EnemyIsGettingDmg)
+            {
+                <div class="flex animate-bounce">
+                    <img src="image/icons/scratch.png" alt="arrow" class="h-6 object-cover ">
+                    <p class="font-bold  text-red-600 tracking-widest">
+                        - @EnemyDamageTaken</p>
+                </div>
+            }
+            @if (EnemyIsHealing)
+            {
+                <div class="flex animate-bounce">
+                  <img src="image/icons/regeneration.png" alt="arrow" class="h-6 object-cover">
+                    <p class="font-bold  text-green-600">+ @HpAdded</p>
+                </div>
+            }
+                  @if (HeavyCrash)
+            {
+                <div class="flex animate-bounce">
+                    <img src="image/icons/broken-shield.png" alt="arrow" class="h-6 object-cover ">
+                    <p class="font-bold   text-red-600">+ @ArmorReduction</p>
+                </div>
+            }
+
+        </div>
+
+        <!-- Enemy Images -->
+
+            <ImageEnemy EnemyIsAtt="@EnemyIsAtt"
+            EnemyIsBessing="@EnemyIsBessing" 
+            EnemyIsHealing="@EnemyIsHealing" 
+            EnemyUpgradeArmor="@EnemyUpgradeArmor"  />
+    </div>
+</div>
+<!-- Audio Elements -->
+<AudioAction HeavyCrash="@HeavyCrash"
+ HeroIsHealing="@HeroIsHealing" 
+  HeroBoosting="@HeroBoosting" 
+   HeroUpgradeArmor="@HeroUpgradeArmor" 
+    HeroIsAtt="@HeroIsAtt" 
+     EnemyIsHealing="@EnemyIsHealing" 
+      EnemyIsAtt="@EnemyIsAtt" 
+       EnemyIsBessing="@EnemyIsBessing" 
+       EnemyUpgradeArmor="@EnemyUpgradeArmor" 
+
+        />
+
+
+@code {
+   // Hero Parameters
+    [Parameter] public bool HeavyCrash { get; set; }
+    [Parameter] public bool HeroBoosting { get; set; }
+    [Parameter] public bool HeroIsHealing { get; set; }
+    [Parameter] public bool HeroUpgradeArmor { get; set; }
+    [Parameter] public bool HeroIsGettingDmg { get; set; }
+    [Parameter] public bool HeroIsAtt { get; set; }
+    [Parameter] public int HeroDamageTaken { get; set; }
+
+    // Enemy Parameters
+    [Parameter] public bool EnemyIsBessing { get; set; }
+    [Parameter] public bool EnemyIsHealing { get; set; }
+    [Parameter] public bool EnemyUpgradeArmor { get; set; }
+    [Parameter] public bool EnemyIsGettingDmg { get; set; }
+    [Parameter] public bool EnemyIsAtt { get; set; }
+    [Parameter] public int EnemyDamageTaken { get; set; }
+
+    // Both 
+    [Parameter] public int ArmorAdded { get; set; }
+    [Parameter] public int AttackAdded { get; set; }
+
+    [Parameter] public int HpAdded { get; set; }
+    [Parameter] public int ArmorReduction { get; set; }
+
+    
+
+    // Turn Indicators
+    [Parameter] public bool isHeroTurn { get; set; }
+    [Parameter] public bool isEnemyTurn { get; set; }
+    
+}
