@@ -224,50 +224,6 @@
     }
  ///  Enemy Upgraded Armor
 
-    private async Task EnemyUpgradeArmor()
-    {
-        /// Ability Logic 
-        EnemyArmor += 10;
-
-         /// Animation
-        AnimationService.SetUpgradeArmor(false, true, 10);
-        await DisplayActionMessage("Enemy defends!");
-        AnimationService.SetTurn(true);
-        await AnimationService.ResetStatus();
-        // Notify the UI of the change
-        StateHasChanged(); 
-    }
- 
- private async Task EnemyHeals(){
-    /// Ability Logic 
-        EnemyHp = Math.Min(EnemyHp + 50, enemyStartingHp);
-
-    // Animation
-
-        AnimationService.SetHealing(false, true, 50);
-        await DisplayActionMessage("Enemy heals!");
-    
-        AnimationService.SetTurn(true);
-        await AnimationService.ResetStatus();
-        // Notify the UI of the change
-        StateHasChanged(); 
-
- } private async Task EnemyBoost(){
-        /// Ability logic
-        EnemyArmor += 5;
-        EnemyDmg +=10;
-       /// Animation     
-    
-        AnimationService.SetHeroBoosting(false, true, 5, 10); /// armor , attack
-        await DisplayActionMessage("Enemy is Raging!");
-        EnemyDmg += 5;
-        AnimationService.SetTurn(true);
-        await AnimationService.ResetStatus();
-        /// Notify the UI of the change
-        StateHasChanged(); 
-
-
- }
 
 
     private async Task ExecuteHeroAction(ActionType action)
@@ -278,7 +234,23 @@
                 HasPerformed = true;
                 await HeroAttack();
                 break;
+            case ActionType.Defend:
+                HasPerformed = true;
+                await HeroUpgradeArmor();
+                break;
+            case ActionType.HeavyCrash:
+                HasPerformed = true;
+                await HeavyCrash();
+                break;
+                case ActionType.Ability1:
+                HasPerformed = true;
+                await TearsHealing();
 
+                break;
+                case ActionType.MilkRage:
+                HasPerformed = true;
+                await MilkRage();
+                break;
         }
     }
 
@@ -321,15 +293,15 @@
                 break;
             case ActionType.Defend:
 
-                await EnemyUpgradeArmor();
+                await EnemyAttack();
                 HasPerformed = false;
                 break;
             case ActionType.Heal:
-                await EnemyHeals();
+                 await EnemyAttack();
                 HasPerformed = false;
                 break;
             case ActionType.HeavyCrash:
-                await EnemyBoost();
+                 await EnemyAttack();
                 HasPerformed = false;
                 break;
         }
@@ -338,7 +310,7 @@
     private ActionType DetermineEnemyAction()
     {
         // Basic AI to determine the enemy's action, you can expand this logic
-        return (ActionType)(new Random()).Next(0, 1); // Randomly choose an action
+        return (ActionType)(new Random()).Next(0, 4); // Randomly choose an action
     }
 
  
@@ -397,7 +369,7 @@
     private int EnemyHp = 100;
     private int EnemySpeed = 10;
     private int EnemyArmor = 0;
-    private int EnemyDmg = 112;
+    private int EnemyDmg = 102;
     private int turnCounter = 0;
 
     private List<string> actionMessages = new List<string>();
