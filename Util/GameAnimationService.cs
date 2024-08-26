@@ -18,6 +18,7 @@ public class GameAnimationService
     public int HpAdded  { get; private set; }
     public int ArmorReduction  { get; private set; }
     public bool HeroBoosting { get; private set; }
+    public int GettingDamage { get; private set; }
 
 
   public void SetHeroBoosting(bool isHero, bool isBoosting, int armorAdded, int attckAdded)
@@ -28,8 +29,12 @@ public class GameAnimationService
             AttackAdded= attckAdded;
         }
 
-        else
+        else 
+        {
             EnemyIsBessing = isBoosting;
+            ArmorAdded = armorAdded;
+            AttackAdded= attckAdded;
+        }
     }
 
 
@@ -39,12 +44,12 @@ public class GameAnimationService
         IsEnemyTurn = !isHeroTurn;
     }
 
-    public void SetBessing(bool isHero, bool isBlessing)
+    public void SetHeavyCrash(bool isHero, bool isCrashing)
     {
         if (isHero)
-            HeavyCrash = isBlessing;
+            HeavyCrash = isCrashing;
         else
-            EnemyIsBessing = isBlessing;
+            EnemyIsBessing = isCrashing;
     }
 
 
@@ -94,12 +99,18 @@ public class GameAnimationService
             
     }
 
-    public void SetGettingDamage(bool isHero, bool isGettingDamage)
+    public void SetGettingDamage(bool isHero, bool isGettingDamage, int damageGetting)
     {
-        if (isHero)
-            HeroIsGettingDmg = isGettingDamage;
-        else
+        if (isHero) {
+             HeroIsGettingDmg = isGettingDamage;
+            GettingDamage =  damageGetting;
+        }
+         
+        else {
             EnemyIsGettingDmg = isGettingDamage;
+            GettingDamage =  damageGetting;
+        }
+          
     }
 
     public async Task ResetStatus(int delay = 1000)
@@ -120,6 +131,7 @@ public class GameAnimationService
         HpAdded = 0;
         AttackAdded = 0;
         HeroBoosting = false;
+        GettingDamage = 0;
 
     }
 }

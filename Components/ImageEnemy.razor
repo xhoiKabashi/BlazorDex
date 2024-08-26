@@ -1,23 +1,23 @@
     <div class=" flex w-full ">
-            <img src="image/hero/ulqniHealth.png" alt="Hero Image" class="w-full h-48  object-cover overflow-visible scale-95"
+            <img src="@HealUrl" alt="Hero Image" class="w-full h-48  object-cover overflow-visible scale-95"
                 style="display: @(EnemyIsHealing ? "block" : "none")">
         </div>
        <div class=" flex w-full ">
 
-            <img src="image/hero/ulqiniAtt.png" alt="Enemy Image" class="w-full  h-44 object-cover overflow-visible scale-95"
+            <img src="@AttackUrl" alt="Enemy Image" class="w-full  h-44 object-cover overflow-visible scale-95"
                 style="display: @(EnemyIsAtt ? "block" : "none")">
         </div>
     <div class=" flex w-full ">
-            <img src="image/hero/ulqiniDef.png" alt="Hero Image" class="w-full h-48 object-cover overflow-visible scale-95"
+            <img src="@DefendUrl" alt="Hero Image" class="w-full h-44 object-cover overflow-visible"
                 style="display: @(EnemyUpgradeArmor ? "block" : "none")">
         </div>
     <div class=" flex w-full ">
-            <img src="image/hero/ulqinBlessing.png" alt="Hero Image" class="w-full h-48 object-cover overflow-visible scale-95"
+            <img src="@BoostUrl" alt="Hero Image" class="w-full h-48 object-cover overflow-visible scale-95"
                 style="display: @(EnemyIsBessing ? "block" : "none")">
         </div>
 
      <div class=" flex w-full ">
-            <img src="image/hero/ulqiniStand.png" alt="Hero Image" class="w-full h-48 object-cover overflow-visible scale-95"
+            <img src="@StandUrl" alt="Hero Image" class="w-full h-48 object-cover overflow-visible scale-95"
                 style="display: @(!EnemyIsHealing && !EnemyUpgradeArmor && !EnemyIsAtt &&  !EnemyIsBessing  ? "block" : "none")">
     </div>
 
@@ -30,5 +30,15 @@
     [Parameter] public bool EnemyUpgradeArmor { get; set; }
 
     [Parameter] public bool EnemyIsAtt { get; set; }
+    
+    [Parameter] public string? AttackUrl { get; set; }
+
+    [Parameter] public string? StandUrl { get; set; }
+
+    [Parameter] public string? DefendUrl { get; set; }
+
+    [Parameter] public string? HealUrl { get; set; }
+
+    [Parameter] public string? BoostUrl { get; set; }
 
     }

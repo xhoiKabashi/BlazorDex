@@ -1,4 +1,4 @@
-@page "/training"
+@page "/ChapterOne"
 @using BlazorDex.Models
 @using BlazorDex.Components
 @using BlazorDex.Util
@@ -40,16 +40,12 @@
                 HeroDamageTaken="@AnimationService.GettingDamage" HpAdded="@AnimationService.HpAdded"
                 HeavyCrash="@AnimationService.HeavyCrash" EnemyIsBessing="@AnimationService.EnemyIsBessing" 
                 HeroBoosting="@AnimationService.HeroBoosting" ArmorAdded="@AnimationService.ArmorAdded" 
-                ArmorReduction="@AnimationService.ArmorReduction" AttackAdded="AnimationService.AttackAdded"
-                
-                SceneUrl="image/scenes/training.jpg"
-                AttackUrl="image/motion/ulqiniAtt.png"
-                StandUrl="image/motion/ulqiniStand.png"
-                DefendUrl="image/motion/ulqiniDef.png"
-                HealUrl="image/motion/ulqniHealth.png"
-                BoostUrl="image/motion/ulqinBlessing.png"
-                
-                 />
+                ArmorReduction="@AnimationService.ArmorReduction" AttackAdded="@AnimationService.AttackAdded"
+                SceneUrl="image/scenes/chapterOne.jpg"
+                AttackUrl="image/motion/wolfattk.png"
+                StandUrl="image/motion/wolfstand.png"
+
+                />
 
        @if (!HasPerformed)
                         {
@@ -282,23 +278,7 @@
                 HasPerformed = true;
                 await HeroAttack();
                 break;
-            case ActionType.Defend:
-                HasPerformed = true;
-                await HeroUpgradeArmor();
-                break;
-            case ActionType.HeavyCrash:
-                HasPerformed = true;
-                await HeavyCrash();
-                break;
-                case ActionType.Ability1:
-                HasPerformed = true;
-                await TearsHealing();
 
-                break;
-                case ActionType.MilkRage:
-                HasPerformed = true;
-                await MilkRage();
-                break;
         }
     }
 
@@ -358,7 +338,7 @@
     private ActionType DetermineEnemyAction()
     {
         // Basic AI to determine the enemy's action, you can expand this logic
-        return (ActionType)(new Random()).Next(0, 4); // Randomly choose an action
+        return (ActionType)(new Random()).Next(0, 1); // Randomly choose an action
     }
 
  
@@ -415,9 +395,9 @@
     private bool gameEnd = false;
     private string? EndGameMessage;
     private int EnemyHp = 100;
-    private int EnemySpeed = 5;
+    private int EnemySpeed = 10;
     private int EnemyArmor = 0;
-    private int EnemyDmg = 33;
+    private int EnemyDmg = 112;
     private int turnCounter = 0;
 
     private List<string> actionMessages = new List<string>();

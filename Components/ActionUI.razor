@@ -1,5 +1,5 @@
 <div class="grid grid-cols-2 gap-4 h-1/2 w-full p-2 bg-cover bg-center"
-    style="background-image: url('image/bg01.jpg');">
+    style="background-image: url('@SceneUrl');">
     <div class=" flex flex-col justify-end items-center translate-x-1 transition-all">
 
         <div class="h-10  ">
@@ -97,6 +97,19 @@
                     <img src="image/icons/broken-shield.png" alt="arrow" class="h-6 object-cover ">
                     <p class="font-bold   text-red-600">+ @ArmorReduction</p>
                 </div>
+            }  @if (EnemyIsBessing)
+            {
+                <div class="flex flex-col animate-bounce text-blue-700">
+                    <div class="flex">
+                        <img src="image/icons/sword.png" alt="arrow" class="h-6 object-cover">
+                       <p class="font-bold ">+ @AttackAdded</p>
+                    </div>
+                         <div class="flex">
+                        <img src="image/icons/shieldUp.png" alt="arrow" class="h-6 object-cover ">
+                        <p class="font-bold ">+@ArmorAdded</p>
+                    </div>
+
+                </div>
             }
 
         </div>
@@ -106,7 +119,9 @@
             <ImageEnemy EnemyIsAtt="@EnemyIsAtt"
             EnemyIsBessing="@EnemyIsBessing" 
             EnemyIsHealing="@EnemyIsHealing" 
-            EnemyUpgradeArmor="@EnemyUpgradeArmor"  />
+            EnemyUpgradeArmor="@EnemyUpgradeArmor" 
+            AttackUrl="@AttackUrl"  StandUrl="@StandUrl"
+              BoostUrl="@BoostUrl"  DefendUrl="@DefendUrl"  HealUrl="@DefendUrl"/>
     </div>
 </div>
 <!-- Audio Elements -->
@@ -153,5 +168,21 @@
     // Turn Indicators
     [Parameter] public bool isHeroTurn { get; set; }
     [Parameter] public bool isEnemyTurn { get; set; }
+
+
+    // image
+ [Parameter] public string? SceneUrl { get; set; }
+
+ [Parameter] public string? AttackUrl { get; set; }
+
+ [Parameter] public string? StandUrl { get; set; }
+
+ [Parameter] public string? DefendUrl { get; set; }
+
+ [Parameter] public string? HealUrl { get; set; }
+
+ [Parameter] public string? BoostUrl { get; set; }
+
+
     
 }
