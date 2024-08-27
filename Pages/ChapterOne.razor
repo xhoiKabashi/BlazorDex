@@ -224,6 +224,72 @@
     }
  ///  Enemy Upgraded Armor
 
+    private async Task EnemyUpgradeArmor()
+    {
+         int damageDealt = Math.Max(EnemyDmg - HeroArmor, 0);
+        HeroHP -= damageDealt;
+
+         /// Animation
+        AnimationService.SetIsAtt(false, true);
+        AnimationService.SetGettingDamage(true, true, damageDealt);
+        await DisplayActionMessage("Enemy attacks!");
+        AnimationService.SetTurn(true);
+        await AnimationService.ResetStatus();
+
+        // Notify the UI of the change
+        StateHasChanged(); 
+
+        /// Game over
+        if (HeroHP <= 0)
+        {
+            gameEnd = true;
+            EndGameMessage = "Hero is defeated!";
+        }
+    }
+ 
+ private async Task EnemyHeals(){
+           int damageDealt = Math.Max(EnemyDmg - HeroArmor, 0);
+        HeroHP -= damageDealt;
+
+         /// Animation
+        AnimationService.SetIsAtt(false, true);
+        AnimationService.SetGettingDamage(true, true, damageDealt);
+        await DisplayActionMessage("Enemy attacks!");
+        AnimationService.SetTurn(true);
+        await AnimationService.ResetStatus();
+
+        // Notify the UI of the change
+        StateHasChanged(); 
+
+        /// Game over
+        if (HeroHP <= 0)
+        {
+            gameEnd = true;
+            EndGameMessage = "Hero is defeated!";
+        }
+
+ } private async Task EnemyBoost(){
+        int damageDealt = Math.Max(EnemyDmg - HeroArmor, 0);
+        HeroHP -= damageDealt;
+
+         /// Animation
+        AnimationService.SetIsAtt(false, true);
+        AnimationService.SetGettingDamage(true, true, damageDealt);
+        await DisplayActionMessage("Enemy attacks!");
+        AnimationService.SetTurn(true);
+        await AnimationService.ResetStatus();
+
+        // Notify the UI of the change
+        StateHasChanged(); 
+
+        /// Game over
+        if (HeroHP <= 0)
+        {
+            gameEnd = true;
+            EndGameMessage = "Hero is defeated!";
+        }
+
+ }
 
 
     private async Task ExecuteHeroAction(ActionType action)
@@ -293,15 +359,15 @@
                 break;
             case ActionType.Defend:
 
-                await EnemyAttack();
+                await EnemyUpgradeArmor();
                 HasPerformed = false;
                 break;
             case ActionType.Heal:
-                 await EnemyAttack();
+                await EnemyHeals();
                 HasPerformed = false;
                 break;
             case ActionType.HeavyCrash:
-                 await EnemyAttack();
+                await EnemyBoost();
                 HasPerformed = false;
                 break;
         }
@@ -367,9 +433,9 @@
     private bool gameEnd = false;
     private string? EndGameMessage;
     private int EnemyHp = 100;
-    private int EnemySpeed = 10;
+    private int EnemySpeed = 5;
     private int EnemyArmor = 0;
-    private int EnemyDmg = 102;
+    private int EnemyDmg = 33;
     private int turnCounter = 0;
 
     private List<string> actionMessages = new List<string>();

@@ -2,19 +2,19 @@
 
 <div class="flex justify-around w-full gap-2 bg-red-700  ">
     <NavButtons OnClick="GoTraining">
-        <img src="image/training.png" class="h-10" alt="points" />
-        <p>Training</p>
+        <img src="image/icons/gaming.png" class="h-10" alt="points" />
+        <p>Train</p>
     </NavButtons>
     <NavButtons OnClick="GoArena">
-        <div class=" bg-red-700 rounded-md">
-            <img src="image/swords.png" class="h-10" alt="points" />
-            <p>Arena</p>
+        <div class=" bg-red-700 rounded-md relative bottom-5 px-4  pt-2">
+            <img src="image/icons/adventure-game.png" class="h-12" alt="points" />
+            <p>Quest</p>
         </div>
 
     </NavButtons>
     <NavButtons OnClick="GoShop" ButtonStyle="">
-        <img src="image/bar_chart.png" class="h-10" alt="" />
-        <p>Stats</p>
+        <img src="image/icons/buff.png" class="h-10" alt="" />
+        <p class=" text-text-third">Upgrade</p>
     </NavButtons>
 
 </div>
@@ -23,5 +23,5 @@
 
     private void GoTraining() => NavigationManager.NavigateTo("/training");
     private void GoArena() => NavigationManager.NavigateTo("/ChapterOne");
-    private void GoShop() => NavigationManager.NavigateTo("/shop");
+    private void GoShop() => NavigationManager.NavigateTo("/update");
 }

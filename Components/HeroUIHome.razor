@@ -1,0 +1,20 @@
+@inject HeroStateService HeroStateService
+
+        <div class="mb-4 flex flex-col justify-center items-center z-0">
+            <img src="image/hero/hero.png" class="h-68" alt="hero" />
+
+            <div class="flex items-baseline w-48 h-8 bg-gray-800 border-2 border-white rounded-md p-1">
+                <div class="bg-red-700 text-white px-2">HP:</div>
+                <div class="bg-red-700 text-white flex-1 rounded-r-md pl-2">@HeroStateService.Hero.Hp</div>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="relative w-48 h-5 bg-gray-700 border-2 border-white rounded-md mt-2">
+                <div class="absolute bg-yellow-500 h-full rounded-l-md"
+                    style="width: @(Math.Min((HeroStateService.Hero.Exp / (double)HeroStateService.Hero.ExpThreshold) * 100, 100))%">
+                </div>
+                <div class="absolute inset-0 flex items-center justify-center text-white text-xs px-1">
+                    <p>@HeroStateService.Hero.Exp XP</p> / <p>@HeroStateService.Hero.ExpThreshold XP</p>
+                </div>
+            </div>
+        </div>
