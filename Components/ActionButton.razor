@@ -1,16 +1,16 @@
 <!-- ActionButton.razor -->
-<div class="flex p-3  border-b-8 border-bg-second">
+<div class="flex p-3 m-1  rounded-md" style="background-color: rgba(255, 249, 249, 0.1);">
  <div class="grid grid-cols-2 grid-rows-2 ">
     <!-- First Item (Attack) in the top-left -->
     <div class=" flex flex-col justify-center items-center text-white">
-        <button @onclick="() => Attack.InvokeAsync()" class=" p-2 rounded-full" style="background-color: rgba(255, 249, 249, 0.1);">
+        <button @onclick="() => Attack.InvokeAsync()" class=" p-2 rounded-full bg-red-600" >
             <img src="image/icons/sword.png" alt="" class="h-10">
         </button>
         <p>Attack</p>
     </div>
     <div></div>
      <div class=" flex flex-col justify-center items-center text-white  row-start-2 col-start-2">
-        <button @onclick="() => Defend.InvokeAsync()" class=" p-2 rounded-full" style="background-color: rgba(255, 249, 249, 0.1);">
+        <button @onclick="() => Defend.InvokeAsync()" class=" p-2 rounded-full bg-blue-400">
             <img src="image/icons/shield.png" alt="" class="h-10">
         </button>
                <p>Defend </p>
@@ -19,20 +19,20 @@
 
     <div class="flex gap-3 flex-1 justify-center items-center">
            <div class=" flex flex-col justify-center items-center text-white">
-            <button @onclick="() => Ability.InvokeAsync()" class=" p-1 rounded-full" style="background-color: rgba(255, 249, 249, 0.1);">
+            <button @onclick="() => Ability.InvokeAsync()" class=" p-1 rounded-full bg-gray-400">
                 <img src="image/icons/mace.png" alt="" class="h-12 p-1  scale-125">
             </button>
                   <p class=" text text-xs">Heavy Crash</p>
         </div>
         
             <div class=" flex flex-col justify-center items-center text-white">
-            <button @onclick="() => Ability1.InvokeAsync()" class="  p-2 rounded-full" style="background-color: rgba(255, 249, 249, 0.1);">
+            <button @onclick="() => HerTears.InvokeAsync()" class="  p-2 rounded-full bg-green-500">
                 <img src="image/icons/tears.png" alt="" class="h-10  ">
             </button>
-                <p class=" text text-xs">Tears Heal</p>
+                <p class=" text text-xs">Her Tears</p>
         </div>
               <div class=" flex flex-col justify-center items-center text-white">
-            <button @onclick="() => Ability2.InvokeAsync()" class=" p-2 rounded-full" style="background-color: rgba(255, 249, 249, 0.1);">
+            <button @onclick="() => Ability2.InvokeAsync()" class=" p-2 rounded-full bg-yellow-500">
                 <img src="image/icons/nymph.png" alt="" class="h-10  ">
             </button>
 
@@ -48,15 +48,13 @@
     [Parameter]
 
      public EventCallback Defend { get; set; }
-    [Parameter]
 
-     public EventCallback Heal { get; set; }
     [Parameter]
 
      public EventCallback Ability { get; set; }
     [Parameter]
 
-     public EventCallback Ability1 { get; set; }
+     public EventCallback HerTears { get; set; }
     [Parameter]
 
      public EventCallback Ability2 { get; set; }

@@ -1,0 +1,101 @@
+@inject NavigationManager NavigationManager
+
+ <div class="fixed inset-0 flex items-center justify-center z-50 bg-cover bg-center"  style="background-image: url('image/login1.png');">
+        <div class=" rounded-lg shadow-lg max-w-sm w-full  mx-3 p-4" @onclick:stopPropagation   style="background-color: rgba(128, 128, 128, 0.3);">
+            <!-- Header with person name -->
+            <div class="flex items-center mb-4 ">
+         <div class="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center text-gray-600 text-2xl font-semibold overflow-hidden">
+    <!-- Placeholder for person icon or image -->
+    <img src="image/icons/her.png" class="w-full h-full object-contain scale-110" alt="Stat Image">
+          </div>
+                <h2 class="ml-1 text-xl font-bold text-text-third">Her: </h2>
+            </div>
+            <!-- Story content -->
+            <div class="text-white mb-4 ">
+                <p class=" text-pretty">@Story</p>
+            </div>
+            <!-- Monster Information Section -->
+            <div class="border-t  border-text-second pt-4">
+                <h3 class=" text-xl font-bold text-text-third w-full text-center">@Name</h3>
+                <div class="space-y-2 text-white">
+                    <div class="flex justify-between ">
+                        <div class=" flex justify-center items-center gap-2">
+                            <img src="image/icons/health.png" class="h-6" alt="Stat Image">
+                            <span class="font-medium">HP:</span>
+                        </div>
+                        <span>@Hp</span> <!-- Example HP value -->
+                    </div>
+                    <div class="flex justify-between ">
+                        <div class=" flex justify-center items-center gap-2">
+                            <img src="image/icons/sword.png" class="h-6" alt="Stat Image">
+                            <span class="font-medium">Attack:</span>
+                        </div>
+                        <span>@Dmg</span> <!-- Example Attack value -->
+                    </div>
+                    <div class="flex justify-between ">
+                        <div class=" flex justify-center items-center gap-2">
+                        <img src="image/icons/shield.png" class="h-6" alt="Stat Image">
+                        <span class="font-medium">Defense:</span>
+                            </div>
+
+                        <span>@Armor</span> <!-- Example Defense value -->
+                    </div>
+                    <div class="flex justify-between ">
+                        <div class=" flex justify-center items-center gap-2">
+                            <img src="image/icons/hermes.png" class="h-6" alt="Stat Image">
+                            <span class="font-medium">Speed:</span>
+                            </div>
+                        <span>@Speed</span> <!-- Example Speed value -->
+                    </div>
+                    <div class="flex justify-between ">
+                        <div class=" flex justify-center items-center gap-2">
+                        <img src="image/icons/achilles.png" class="h-6" alt="Stat Image">
+                         <span class="font-medium">Weakness:</span>
+                        </div>
+                        <span>@Weakness</span> <!-- Example Weakness -->
+                    </div>
+                    <!-- Add more stats as needed -->
+                </div>
+            </div>
+            <!-- Close Button -->
+            <div  class=" flex justify-evenly">
+                <button @onclick="@OnClick" class="mt-4 bg-text-third text-red-500 font-bold py-1 px-4 rounded-lg focus:outline-none">
+                    Accept
+                </button>
+                <button @onclick="@OnClickNavigate" class="mt-4 bg-bg-second font-bold text-text-third py-2 px-4 rounded-lg focus:outline-none">
+                    Refuse
+                </button>
+      
+            </div>
+        </div>
+    </div>
+
+
+    @code {
+
+
+    [Parameter]
+        public int Hp { get; set; }
+    [Parameter]
+        public int Speed { get; set; }
+    [Parameter]
+        public int Armor { get; set; }
+    [Parameter]
+        public int Dmg { get; set; }
+    [Parameter]
+        public string? Name { get; set; }
+    [Parameter]
+        public string? Weakness { get; set; }
+    [Parameter]
+        public string? Story { get; set; }
+
+    [Parameter]
+    public EventCallback<MouseEventArgs> OnClick { get; set; }
+    [Parameter]
+
+    public EventCallback<MouseEventArgs> OnClickNavigate { get; set; }
+
+
+
+
+    }

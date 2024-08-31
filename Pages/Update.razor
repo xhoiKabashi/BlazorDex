@@ -8,36 +8,148 @@
 
 <PageTitle>Home</PageTitle>
 
-<div class="w-full min-h-screen flex flex-col bg-bg-main">
-    @if (HeroStateService.Hero != null)
-    {
+<div class="w-full min-h-screen flex flex-col bg-center bg-cover " style="background-image: url('image/login1.png');">
+    <LevelPoints Level="@HeroStateService.Hero.Level" Points="@HeroStateService.Hero.Points" />
+
+    <!-- Stats and Skills Section -->
+    <div class="w-full grid grid-cols-1 gap-3 p-2 flex-1">
+        <!-- Hero Stats -->
+        <h2 class="text-text-third text-center text-base mb-2">
+            Hero Stats (<span class="text-sm text-white">1 honor to upgrade it</span>)
+        </h2>
+
         <!-- Level and Points Section -->
-        <div class="w-full p-2">
-            <LevelPoints Level="@HeroStateService.Hero.Level" Points="@HeroStateService.Hero.Points" />
+        <div class="grid grid-cols-2 gap-1 uppercase w-full">
+            <StatsSectionModular ImageSrc="image/icons/sword.png" StatName="Attack" StatValue="@HeroStateService.Hero.Dmg" Points="@HeroStateService.Hero.Points"
+                ButtonClass="" OnStatChanged="HandleStatChanged" />
+            <StatsSectionModular ImageSrc="image/icons/armor.png" StatName="Armor" StatValue="@HeroStateService.Hero.Armor" Points="@HeroStateService.Hero.Points"
+                ButtonClass="" OnStatChanged="HandleStatChanged" />
+            <StatsSectionModular ImageSrc="image/icons/hermes.png" StatName="Speed" StatValue="@HeroStateService.Hero.Speed" Points="@HeroStateService.Hero.Points"
+                ButtonClass="" OnStatChanged="HandleStatChanged" />
+            <StatsSectionModular ImageSrc="image/icons/health.png" StatName="Hp" StatValue="@HeroStateService.Hero.Hp" Points="@HeroStateService.Hero.Points"
+                ButtonClass="" OnStatChanged="HandleStatChanged" />
         </div>
 
-        <!-- Stats and Skills Section -->
-        <div class="w-full grid grid-cols-1  gap-3 p-2 flex-1">
-            <!-- Hero Stats -->
-            <div class=" ">
-                <h2 class=" text-text-third text-center text-base mb-2">Hero Stats (<span class=" text-sm   text-white">1 honor to upgade it</span>)</h2>
-                <StatsSection />
-            </div>
+        <!-- Hero Skills -->
+        <div class="p-2 rounded-md shadow-md">
+            <h2 class="text-text-third text-center text-base mb-2">
+                Hero Skills (<span class="text-sm text-white">5 honors to upgrade it</span>)
+            </h2>
 
-            <!-- Hero Skills -->
-            <div class=" p-2 rounded-md shadow-md">
-                     <h2 class=" text-text-third text-center text-base mb-2">Hero Skills (<span class=" text-sm  text-white">5 honors to upgade it</span>)</h2>
-                <Skills />
+            <div class="grid gap-2 w-full">
+                <!-- Heavy Crash Skill -->
+                <div class="flex flex-col">
+                    <StatsSectionModular ImageSrc="image/icons/mace.png" StatName="Heavy Crash" isAbility="@true" StatValue="@HeroStateService.Hero.HeavyCrashLevel" SkillLevel="1" Points="@HeroStateService.Hero.Points"
+                        ButtonClass="" OnStatChanged="HandleStatChanged" />
+                    <div class="text-white p-2 shadow-md" style="background-color: rgba(255, 255, 255, 0.1);">
+                        <div class="flex justify-between">
+                            <h1 class="text-sm font-semibold text-text-third">Reduce Enemy Armor by: @HeroStateService.Hero.HeavyCrashDmg</h1>
+                            <span class="text-sky-600 text-sm">( active )</span>
+                        </div>
+                        <p class="text-xs">
+                            Unleash a devastating mace strike that crushes enemy armor, leaving them vulnerable. Each level reduces more armor, stripping enemies of their steel defenses.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Her Tears Skill -->
+                <div class="flex flex-col">
+                    <StatsSectionModular ImageSrc="image/icons/tears.png" StatName="Her Tears" StatValue="@HeroStateService.Hero.TearHealLevel" SkillLevel="1" Points="@HeroStateService.Hero.Points"
+                        ButtonClass="" OnStatChanged="HandleStatChanged" />
+                    <div class="text-white p-2 shadow-md" style="background-color: rgba(255, 255, 255, 0.1);">
+                        <div class="flex justify-between">
+                            <h1 class="text-sm font-semibold text-text-third">Heal Kreshnik by: @HeroStateService.Hero.TearHealHp HP</h1>
+                            <span class="text-sky-600 text-sm">( active )</span>
+                        </div>
+                        <p class="text-xs">
+                            The Kreshnik’s sister washes his wounds with her tears, healing his injuries. Each level increases the healing power, restoring more health.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Rage Milk Skill -->
+                <div class="flex flex-col">
+                    <StatsSectionModular ImageSrc="image/icons/nymph.png" StatName="Rage Milk" isAbility="@true" StatValue="@HeroStateService.Hero.MilkRegeLevel" SkillLevel="1" Points="@HeroStateService.Hero.Points"
+                        ButtonClass="" OnStatChanged="HandleStatChanged" />
+                    <div class="text-white p-2 shadow-md" style="background-color: rgba(255, 255, 255, 0.1);">
+                        <div class="flex justify-between">
+                            <h1 class="text-sm font-semibold text-text-third">Each turn gain @HeroStateService.Hero.MilkRegeStats damage / armor</h1>
+                            <span class="text-green-600 text-sm">( passive )</span>
+                        </div>
+                        <p class="text-xs">
+                            Empowered by the milk of the nymphs, the Kreshnik gains immense strength each turn. Each level boosts both armor and damage, turning him into an unstoppable force.
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
+    </div>
 
-    
-        <!-- Navigation Bar -->
-        <NavigationBar />
-        <!-- Level Up Toast -->
-    }
-    else
-    {
-        <p class="text-white text-xl">Failed to load Hero data.</p>
-    }
+    <!-- Navigation Bar -->
+    <NavigationBar />
 </div>
+
+@code {
+    private bool isLoading = true;
+
+    private async Task HandleStatChanged((string StatName, int Change) change)
+    {
+        int cost = change.StatName switch
+        {
+            "Heavy Crash" => change.Change > 0 ? 5 : 0,
+            "Her Tears" => change.Change > 0 ? 5 : 0,
+            "Rage Milk" => change.Change > 0 ? 5 : 0,
+            _ => change.Change > 0 ? 1 : 0
+        };
+
+        if (HeroStateService.Hero.Points < cost && change.Change > 0)
+        {
+            return; // Prevent changes if not enough points are available
+        }
+
+        switch (change.StatName)
+        {
+            case "Attack":
+                HeroStateService.Hero.Dmg += change.Change;
+                break;
+            case "Armor":
+                HeroStateService.Hero.Armor += change.Change;
+                break;
+            case "Speed":
+                HeroStateService.Hero.Speed += change.Change;
+                break;
+            case "Hp":
+                HeroStateService.Hero.Hp += 25;
+                break;
+            case "Heavy Crash":
+                HeroStateService.Hero.HeavyCrashLevel += change.Change;
+                HeroStateService.Hero.HeavyCrashDmg += 5;
+                break;
+            case "Her Tears":
+                HeroStateService.Hero.TearHealLevel += change.Change;
+                HeroStateService.Hero.TearHealHp += 20;
+                break;
+            case "Rage Milk":
+                HeroStateService.Hero.MilkRegeLevel += change.Change;
+                HeroStateService.Hero.MilkRegeStats += 3;
+                break;
+        }
+
+        if (change.Change > 0)
+        {
+            HeroStateService.Hero.Points -= cost;
+        }
+
+        StateHasChanged();
+
+        try
+        {
+            await client.UpdateHero(HeroStateService.Hero);
+            HeroStateService.SetHero(HeroStateService.Hero);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error updating Hero: {ex.Message}");
+        }
+    }
+}

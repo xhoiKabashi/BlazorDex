@@ -1,31 +1,25 @@
-@using BlazorDex.Models
-
-<div class=" flex items-center  justify-between  w-full  gap-2 p-2  rounded-t-md"
-    style="background-color: rgba(128, 128, 128, 0.3);">
-    <div class=" flex items-center text-sm gap-2 @ButtonClass">
-        <img src=" @ImageSrc" class="h-6" alt="Stat Image">
-        <div class=" flex gap-1">
+<div class="flex items-center justify-between w-full gap-2 p-2 rounded-t-md" style="background-color: rgba(128, 128, 128, 0.3);">
+    <div class="flex items-center text-sm gap-2 @ButtonClass">
+        <img src="@ImageSrc" class="h-6" alt="Stat Image">
+        <div class="flex gap-1">
             <p class="text-yellow-300">@StatName: @StatValue </p>
-  @if (SkillLevel >= 0) 
+            @if (SkillLevel >= 0)
             {
                 <p class="text-yellow-300">Level</p>
-            
             }
         </div>
     </div>
 
-@if ((isAbility && Points >= 5) || (!isAbility && Points >= 1))
-{
-    <div class="flex items-center gap-2">
-        <button class="bg-yellow-500 hover:bg-yellow-600 text-gray-800 font-bold p-2 rounded-md"
-                @onclick="() => ChangeStat(1, isAbility)">
-            <img src="image/icons/upgrade.png" class="h-3" alt="Stat Image">
-        </button>
-    </div>
-}
-
+    @if ((isAbility && Points >= 5) || (!isAbility && Points >= 1))
+    {
+        <div class="flex items-center gap-2">
+            <button class="bg-yellow-500 hover:bg-yellow-600 text-gray-800 font-bold p-2 rounded-md"
+                    @onclick="() => ChangeStat(1, isAbility)">
+                <img src="image/icons/upgrade.png" class="h-3" alt="Stat Image">
+            </button>
+        </div>
+    }
 </div>
-
 
 @code {
     [Parameter]
@@ -35,14 +29,13 @@
 
     [Parameter]
     public string StatName { get; set; }
-    [Parameter]
-    public string Type { get; set; }
 
     [Parameter]
     public int StatValue { get; set; }
 
     [Parameter]
     public int Points { get; set; }
+
     [Parameter]
     public int SkillLevel { get; set; } = -1;
 
@@ -52,23 +45,13 @@
     [Parameter]
     public EventCallback<(string StatName, int Change)> OnStatChanged { get; set; }
 
-
-    private async Task IncreaseStat()
+    private async Task ChangeStat(int change, bool isAbility)
     {
-        if (Points > 0)
+        int requiredPoints = isAbility ? 5 : 1;
+
+        if ((Points >= requiredPoints && change > 0) || (Points >= 0 && change < 0))
         {
-            await OnStatChanged.InvokeAsync((StatName, 1)); // Increase stat by 1
+            await OnStatChanged.InvokeAsync((StatName, change));
         }
     }
-private async Task ChangeStat(int change, bool isAbility)
-{
-    int requiredPoints = isAbility ? 5 : 1;
-
-    if ((Points >= requiredPoints && change > 0) || (Points >= 0 && change < 0))
-    {
-        await OnStatChanged.InvokeAsync((StatName, change));
-    }
-}
-
-
 }

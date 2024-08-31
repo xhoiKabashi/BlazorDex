@@ -1,444 +1,54 @@
 @page "/ChapterOne"
 @using BlazorDex.Models
-@using BlazorDex.Components
-@using BlazorDex.Util
-@inject HeroClient client
-@inject HeroStateService HeroStateService
 @inject NavigationManager NavigationManager
-@inject GameAnimationService AnimationService
-@inject GameLogic gameLogic
 
 
-<div class="h-screen bg-bg-main flex items-center ">
-    @if (gameEnd)
-    {
-        <div class="flex flex-col w-full min-h-screen justify-center items-center " style="background-image: url('image/login.jpg');">
-            <h2 class="text-5xl font-extrabold  mb-6 text-text-third">@EndGameMessage</h2>
-            <button @onclick="GoHome"
-                class=" bg-text-third text-white font-extrabold tracking-widest uppercase py-4 px-8 rounded-3xl shadow-xl transition transform hover:scale-110">
-               Go Home
-            </button>
-        </div>
-    }
-    else
-    {
-        <div class="w-full flex flex-col justify-between h-full">
-            <HealthBar HeroHP="@HeroHP" HeroStartHP="@heroStartingHp" EnemyHP="@EnemyHp" EnemyStartHP="@enemyStartingHp"
-                HeroLevel="@HeroStateService.Hero.Level" EnemyLevel="1" EnemyIconSrc="image/icons/ulshqiniIcon.png"  HeroIconSrc="image/icons/heroIcon.png"/>
-            <StatInAction HeroSpeed="@HeroSpeed" HeroDamage="@HeroDmg" HeroArmor="@HeroArmor" EnemySpeed="@EnemySpeed"
-                EnemyDamage="@EnemyDmg" EnemyArmor="@EnemyArmor" />
 
-            <Messages ActionMessages="@actionMessages" />
+@if (!gameAccepted)
+{
+   <CardOfEnemy  OnClick="AcceptGame"  OnClickNavigate="GoStory"  Story="@Story" Armor="@_enemy.Armor" Hp="@_enemy.Hp"  Speed="@_enemy.Speed" Weakness="Speed"  Name="@_enemy.Name"  Dmg="@_enemy.Dmg"/>
+}
+else {
+<Action 
+    SceneUrl="@_enemy.SceneUrl" 
+    AttackUrl="@_enemy.AttackUrl" 
+    StandUrl="@_enemy.StandUrl" 
 
-            <ActionUI isHeroTurn="@AnimationService.IsHeroTurn" isEnemyTurn="@AnimationService.IsEnemyTurn"
-                EnemyIsHealing="@AnimationService.EnemyIsHealing" HeroIsHealing="@AnimationService.HeroIsHealing"
-                EnemyUpgradeArmor="@AnimationService.EnemyUpgradeArmor"
-                HeroUpgradeArmor="@AnimationService.HeroUpgradeArmor"
-                EnemyIsGettingDmg="@AnimationService.EnemyIsGettingDmg"
-                HeroIsGettingDmg="@AnimationService.HeroIsGettingDmg" HeroIsAtt="@AnimationService.HeroIsAtt"
-                EnemyIsAtt="@AnimationService.EnemyIsAtt" EnemyDamageTaken="@AnimationService.GettingDamage"
-                HeroDamageTaken="@AnimationService.GettingDamage" HpAdded="@AnimationService.HpAdded"
-                HeavyCrash="@AnimationService.HeavyCrash" EnemyIsBessing="@AnimationService.EnemyIsBessing" 
-                HeroBoosting="@AnimationService.HeroBoosting" ArmorAdded="@AnimationService.ArmorAdded" 
-                ArmorReduction="@AnimationService.ArmorReduction" AttackAdded="@AnimationService.AttackAdded"
-                SceneUrl="image/scenes/chapterOne.jpg"
-                AttackUrl="image/motion/wolfattk.png"
-                StandUrl="image/motion/wolfstand.png"
-
-                />
-
-       @if (!HasPerformed)
-                        {
-        <ActionButton
-        Attack="() => PerformAction(ActionType.Attack)"
-        Defend="() => PerformAction(ActionType.Defend)"
-        Heal="() => PerformAction(ActionType.Heal)"
-        Ability="() => PerformAction(ActionType.HeavyCrash)"
-         Ability1="() => PerformAction(ActionType.Ability1)"
-         Ability2="() => PerformAction(ActionType.MilkRage)"   />
-                }
-            else
-                    {
-      <ActionButton />
-      }
-    
-        </div>
-    }
-</div>
+    EnemyHp="@_enemy.Hp"
+    EnemySpeed="@_enemy.Speed"
+    EnemyArmor="@_enemy.Armor"
+    EnemyDmg="@_enemy.Dmg"
+    IconUrl="@_enemy.IconUrl"
+    EnemyName="@_enemy.Name"
+    PointsProvided="@_enemy.PointsProvided"
+    ExperienceProvided="@_enemy.ExperienceProvided"
+/>
+}
 
 @code {
-    /// Hero game stats
-    private int HeroDmg;
-    private int HeroHP;
-    private int HeroSpeed;
-    private int HeroArmor;
-    private bool HasPerformed = false;
+    private Enemy _enemy = new Enemy(
+        hp: 200,
+        speed: 12,
+        armor: 0,
+        dmg: 46,
+        name: "Black Wolf",
+        sceneUrl: "image/scenes/chapterOne.jpg",
+        attackUrl: "image/motion/wolfattk.png",
+        standUrl: "image/motion/wolfstand.png",
+        defendUrl: null,
+        boostUrl: null,
+        iconUrl: "image/icons/wolf.png",
+        experienceProvided: 10,
+        pointsProvided : 1
+    );
+    private bool gameAccepted { get; set; } = false;
 
-
-    /// Initialization of the stats form the game State
-    protected override async Task OnInitializedAsync()
+    private void AcceptGame()
     {
-        HeroStateService.OnChange += StateHasChanged;
-
-        if (HeroStateService.Hero != null)
-        {
-            heroStartingHp = HeroStateService.Hero.Hp;
-            HeroDmg = HeroStateService.Hero.Dmg;
-            HeroHP = HeroStateService.Hero.Hp;
-            HeroSpeed = HeroStateService.Hero.Speed;
-            HeroArmor = HeroStateService.Hero.Armor;
-        }
-
-        enemyStartingHp = EnemyHp;
-
-        await DetermineTurnOrder();
-
-        await DisplayActionMessage(turnMessage); // Show the initial turn message
+        gameAccepted = true;
     }
 
-    private async Task DetermineTurnOrder()
-    {
-        if (HeroSpeed >= EnemySpeed)
-        {
-            AnimationService.SetTurn(true);
-            turnMessage = "Hero's turn!";
-        }
-        else
-        {
-            turnMessage = "Enemy's turn!";
-            AnimationService.SetTurn(false);
-            await Task.Delay(1000);
-            await EnemyAttack();
-        }
-    }
- //// Hero Actions / Attack
-    private async Task HeroAttack()
-    {
-        /// Attack Logic
+    private void GoStory() => NavigationManager.NavigateTo("/Story");
+    private string Story = "Brother, dark news has reached our ears. A direwolf, swift as the mountain winds, has been terrorizing the villages. The elders say it moves so fast that the eye can barely track it, leaving only fear and destruction in its wake.";
 
-        int damageDealt = Math.Max(HeroDmg - EnemyArmor, 0);
-        EnemyHp -= damageDealt;
-
-      /// Animation
-
-        AnimationService.SetGettingDamage(false, true, damageDealt); // Enemy is getting damage
-        AnimationService.SetIsAtt(true, true);
-        await DisplayActionMessage("Hero attacks!");
-        AnimationService.SetTurn(false);
-        await AnimationService.ResetStatus();
-        // Notify the UI of the change
-        StateHasChanged();
-         /// Game over
-        if (EnemyHp <= 0)
-        {
-            gameEnd = true;
-            EndGameMessage = "Victory!";
-            await WinBattle();
-        }
-    }
-
- //// Hero Actions / Upgarde Armor
- private async Task HeroUpgradeArmor(){
-        /// Upgrade Logic
-         HeroArmor += 10;
-
-        /// Animation
-         AnimationService.SetUpgradeArmor(true, true, 10);
-         await DisplayActionMessage("Hero defends!");
-         AnimationService.SetTurn(false);
-         await AnimationService.ResetStatus();
-        // Notify the UI of the change
-         StateHasChanged();
-
- }
- //// Hero Actions / Heavy Crash
-
-  private async Task HeavyCrash(){
-        /// Abilty Logic
-         EnemyArmor -= 10;
-
-        /// Animation
-            AnimationService.SetHeavyCrash(true, true);
-            AnimationService.SetArmorReduction(true, 10);
-            await DisplayActionMessage("Heavy Crash!!");
-            AnimationService.SetTurn(false);
-
-            // Notify the UI of the change
-            await AnimationService.ResetStatus();
-  }
-
-  private async Task TearsHealing(){
-       /// Ability Logic
-          HeroHP = Math.Min(HeroHP + 50, heroStartingHp ?? 0);
-
-        /// Animation
-          AnimationService.SetHealing(true, true, 50);
-          await DisplayActionMessage("Hero heals!");
-          AnimationService.SetTurn(false);
-
-          // Notify the UI of the change
-          await AnimationService.ResetStatus();
-
-  }
-
-  private async Task MilkRage(){
-       /// Ability logic
-         HeroDmg  +=10;
-         HeroArmor += 10;
-       /// Animation
-            AnimationService.SetHeroBoosting(true,true, 10, 10);
-            await DisplayActionMessage("Milk Rage!!");
-            AnimationService.SetTurn(false);
-            await AnimationService.ResetStatus();       
-
-       /// Notify the UI of the change
-          await AnimationService.ResetStatus();
-
-  }
-
-
-  /// Enemy Action / Attack
-
-    private async Task EnemyAttack()
-    {
-        /// Attack Logic
-        int damageDealt = Math.Max(EnemyDmg - HeroArmor, 0);
-        HeroHP -= damageDealt;
-
-         /// Animation
-        AnimationService.SetIsAtt(false, true);
-        AnimationService.SetGettingDamage(true, true, damageDealt);
-        await DisplayActionMessage("Enemy attacks!");
-        AnimationService.SetTurn(true);
-        await AnimationService.ResetStatus();
-
-        // Notify the UI of the change
-        StateHasChanged(); 
-
-        /// Game over
-        if (HeroHP <= 0)
-        {
-            gameEnd = true;
-            EndGameMessage = "Hero is defeated!";
-        }
-    }
- ///  Enemy Upgraded Armor
-
-    private async Task EnemyUpgradeArmor()
-    {
-         int damageDealt = Math.Max(EnemyDmg - HeroArmor, 0);
-        HeroHP -= damageDealt;
-
-         /// Animation
-        AnimationService.SetIsAtt(false, true);
-        AnimationService.SetGettingDamage(true, true, damageDealt);
-        await DisplayActionMessage("Enemy attacks!");
-        AnimationService.SetTurn(true);
-        await AnimationService.ResetStatus();
-
-        // Notify the UI of the change
-        StateHasChanged(); 
-
-        /// Game over
-        if (HeroHP <= 0)
-        {
-            gameEnd = true;
-            EndGameMessage = "Hero is defeated!";
-        }
-    }
- 
- private async Task EnemyHeals(){
-           int damageDealt = Math.Max(EnemyDmg - HeroArmor, 0);
-        HeroHP -= damageDealt;
-
-         /// Animation
-        AnimationService.SetIsAtt(false, true);
-        AnimationService.SetGettingDamage(true, true, damageDealt);
-        await DisplayActionMessage("Enemy attacks!");
-        AnimationService.SetTurn(true);
-        await AnimationService.ResetStatus();
-
-        // Notify the UI of the change
-        StateHasChanged(); 
-
-        /// Game over
-        if (HeroHP <= 0)
-        {
-            gameEnd = true;
-            EndGameMessage = "Hero is defeated!";
-        }
-
- } private async Task EnemyBoost(){
-        int damageDealt = Math.Max(EnemyDmg - HeroArmor, 0);
-        HeroHP -= damageDealt;
-
-         /// Animation
-        AnimationService.SetIsAtt(false, true);
-        AnimationService.SetGettingDamage(true, true, damageDealt);
-        await DisplayActionMessage("Enemy attacks!");
-        AnimationService.SetTurn(true);
-        await AnimationService.ResetStatus();
-
-        // Notify the UI of the change
-        StateHasChanged(); 
-
-        /// Game over
-        if (HeroHP <= 0)
-        {
-            gameEnd = true;
-            EndGameMessage = "Hero is defeated!";
-        }
-
- }
-
-
-    private async Task ExecuteHeroAction(ActionType action)
-    {
-        switch (action)
-        {
-            case ActionType.Attack:
-                HasPerformed = true;
-                await HeroAttack();
-                break;
-            case ActionType.Defend:
-                HasPerformed = true;
-                await HeroUpgradeArmor();
-                break;
-            case ActionType.HeavyCrash:
-                HasPerformed = true;
-                await HeavyCrash();
-                break;
-                case ActionType.Ability1:
-                HasPerformed = true;
-                await TearsHealing();
-
-                break;
-                case ActionType.MilkRage:
-                HasPerformed = true;
-                await MilkRage();
-                break;
-        }
-    }
-
-    private async Task PerformAction(ActionType action)
-    {
-        if (HeroStateService.Hero == null || gameEnd)
-            return;
-
-        turnCounter++;
-
-        if (AnimationService.IsHeroTurn)
-        {
-            await ExecuteHeroAction(action);
-            if (!gameEnd)
-            {
-                await DisplayActionMessage("Enemy's turn!");
-                await ExecuteEnemyAction();
-            }
-        }
-        else
-        {
-            await ExecuteEnemyAction();
-            if (!gameEnd)
-            {
-                await DisplayActionMessage("Hero's turn!");
-                await ExecuteHeroAction(action);
-            }
-        }
-    }
-
-    private async Task ExecuteEnemyAction()
-    {
-        ActionType enemyAction = DetermineEnemyAction();
-        switch (enemyAction)
-        {
-            case ActionType.Attack:
-
-                await EnemyAttack();
-                HasPerformed = false;
-                break;
-            case ActionType.Defend:
-
-                await EnemyUpgradeArmor();
-                HasPerformed = false;
-                break;
-            case ActionType.Heal:
-                await EnemyHeals();
-                HasPerformed = false;
-                break;
-            case ActionType.HeavyCrash:
-                await EnemyBoost();
-                HasPerformed = false;
-                break;
-        }
-    }
-
-    private ActionType DetermineEnemyAction()
-    {
-        // Basic AI to determine the enemy's action, you can expand this logic
-        return (ActionType)(new Random()).Next(0, 4); // Randomly choose an action
-    }
-
- 
-    private async Task WinBattle()
-    {
-        HeroStateService.Hero.Points += 1;
-        HeroStateService.Hero.Exp += 25;
-
-        try
-        {
-            await client.UpdateHero(HeroStateService.Hero);
-            HeroStateService.SetHero(HeroStateService.Hero);
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error updating Hero: {ex.Message}");
-        }
-    }
-
-    private void GoHome() => NavigationManager.NavigateTo("/game");
-
-    private void RemoveMessage(string message)
-    {
-        // Check if the message exists before attempting to remove it
-        if (actionMessages.Contains(message))
-        {
-            actionMessages.Remove(message);
-        }
-    }
-
-    private async Task DisplayActionMessage(string message, int delay = 2000)
-    {
-        actionMessages.Add(message);
-        StateHasChanged();
-        await Task.Delay(delay);
-        actionMessages.Remove(message);
-        StateHasChanged();
-    }
-
-    public int? heroStartingHp { get; set; }
-    public int enemyStartingHp { get; set; }
-
-    private enum ActionType
-    {
-        Attack,
-        Defend,
-        Heal,
-        HeavyCrash,
-        Ability1,
-        MilkRage
-    }
-
-
-    private bool gameEnd = false;
-    private string? EndGameMessage;
-    private int EnemyHp = 100;
-    private int EnemySpeed = 5;
-    private int EnemyArmor = 0;
-    private int EnemyDmg = 33;
-    private int turnCounter = 0;
-
-    private List<string> actionMessages = new List<string>();
-   
-    private string? turnMessage;
 }

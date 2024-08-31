@@ -13,7 +13,7 @@
             <div class=" text-white p-2  shadow-md"  style="background-color: rgba(255, 255, 255, 0.1);"> 
             <div class=" flex justify-between">
                 <h1 class=" text-sm  font-semibold text-text-third">Reduce Enemy Armor by: @HeroStateService.Hero.HeavyCrashDmg </h1>
-                <span class=" text-sky-600 text-sm">( active  )</span>
+                <span class=" text-sky-600 text-sm">( active )</span>
             </div>
             <p class="text-xs">Unleash a devastating mace strike that crushes enemy armor, leaving them vulnerable. Each level reduces more armor, stripping enemies of their steel defenses.</p>
             </div>
@@ -80,10 +80,13 @@ private async Task HandleStatChanged((string StatName, int Change) change)
         case "Heavy Crash":
             HeroStateService.Hero.HeavyCrashLevel += change.Change;
               HeroStateService.Hero.HeavyCrashDmg += 5; 
+              ;
             break;
         case "Her Tears":
             HeroStateService.Hero.TearHealLevel += change.Change;
             HeroStateService.Hero.TearHealHp += 20; 
+            
+
             break;
         case "Rage Milk":
             HeroStateService.Hero.MilkRegeLevel += change.Change;
@@ -95,11 +98,12 @@ private async Task HandleStatChanged((string StatName, int Change) change)
     {
         HeroStateService.Hero.Points -= cost;
     }
-
+    StateHasChanged();
     try
     {
         await client.UpdateHero(HeroStateService.Hero);
         HeroStateService.SetHero(HeroStateService.Hero);
+    
     }
     catch (Exception ex)
     {

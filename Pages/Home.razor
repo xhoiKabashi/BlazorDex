@@ -1,22 +1,25 @@
 ﻿@page "/game"
 @using BlazorDex.Models
 @using BlazorDex.Util
-
 @inject HeroClient client
 @inject NavigationManager NavigationManager
 @inject HeroStateService HeroStateService
 
 <PageTitle>Home</PageTitle>
 
-<div class="w-full min-h-screen flex flex-col justify-between items-center bg-cover bg-center  bg-bg-main text-text-third">
+<div class="w-full min-h-screen flex flex-col justify-between items-center bg-cover bg-center  text-text-third" style="background-image: url('image/login1.png');">
     @if (HeroStateService.Hero != null)
     {
         <LevelPoints Level="@HeroStateService.Hero.Level" Points="@HeroStateService.Hero.Points" />
-
-        <StatsSection />
+            <div class=" grid grid-cols-2 gap-1 uppercase  w-full ">
+        <StatsSectionModular ImageSrc="image/icons/sword.png" StatName="Attack" StatValue="@HeroStateService.Hero.Dmg" />
+        <StatsSectionModular ImageSrc="image/icons/armor.png" StatName="Armor" StatValue="@HeroStateService.Hero.Armor"/>
+        <StatsSectionModular ImageSrc="image/icons/hermes.png" StatName="Speed" StatValue="@HeroStateService.Hero.Speed"/>
+        <StatsSectionModular ImageSrc="image/icons/health.png" StatName="Hp" StatValue="@HeroStateService.Hero.Hp"/>
+    </div>
 
         <div class="mb-4 flex flex-col justify-center items-center z-0">
-            <img src="image/hero/hero.png" class="h-68" alt="hero" />
+            <img src="image/homeImage.png" class=" h-96" alt="hero" />
 
             <div class="flex items-baseline w-48 h-8 bg-gray-800 border-2 border-white rounded-md p-1">
                 <div class="bg-red-700 text-white px-2">HP:</div>
@@ -33,10 +36,6 @@
                 </div>
             </div>
         </div>
-
-        <NavButtons OnClick="GoRoChapterOne">
-            <img src="image/store.png" class="h-8" alt="store" />
-        </NavButtons>
 
         <NavigationBar />
 
@@ -112,8 +111,4 @@
     {
         showLevelUpToast = false;
     }
-
-    private void GoShop() => NavigationManager.NavigateTo("/one");
-    private void GoRoChapterOne() => NavigationManager.NavigateTo("/ChapterOne");
-
 }

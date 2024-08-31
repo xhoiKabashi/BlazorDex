@@ -29,7 +29,7 @@
     <div class=" flex flex-col items-center gap-1 text-text-main py-1">
        <p
             class=" w-full text-center bg-bg-second    rounded-md uppercase font-semibold tracking-widest"  style="background-color: rgba(255, 255, 255, 0.1);">
-            Kreshnik</p>
+            @EnemyName</p>
         <div class=" flex justify-around gap-1 text-text-main py-1  rounded-md"  style="background-color: rgba(255, 255, 255, 0.1);">
             <div
                 class=" flex justify-center items-center gap-2   px-1">
@@ -57,7 +57,7 @@
 
 @code {
 
-    public bool HeroHeathing { get; set; }
+
 
     [Parameter]
 
@@ -78,6 +78,9 @@
     [Parameter]
 
     public int EnemyArmor { get; set; }
+    
+    [Parameter]
+    public string EnemyName { get; set; }
 
 
 }

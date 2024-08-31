@@ -1,0 +1,45 @@
+@inject NavigationManager NavigationManager
+
+<div class="p-2 rounded-lg shadow-lg w-full" style="background-color: rgba(128, 128, 128, 0.3);">
+    <!-- Chapter Header -->
+    <div class="flex items-center mb-2">
+        <div class="w-10 h-10 rounded-full bg-text-third  flex items-center justify-center text-white text-xl font-bold">
+            <!-- Placeholder for chapter icon or number -->
+            <span>@ChapterNumber</span> <!-- Example Chapter Number -->
+        </div>
+        <h2 class="ml-4 text-lg font-bold tracking-widest text-text-third">@ChapterTitle</h2>
+    </div>
+
+    <!-- Chapter Status -->
+    <div class="mb-2 flex justify-between">
+        @if (IsCompleted)
+        {
+        <span class=" text-green-400 font-medium ">Completed</span>
+         <img src="image/icons/check.png" alt="checked"  class="h-6"/>
+
+        }
+        else if (IsOpen)
+        {
+
+         <button  @onclick="GoArena" class="text-blue-400 font-medium">Explore</button>
+         <img src="image/icons/unlocked.png" alt="checked" class="h-6" />
+        }
+        else
+        {
+
+        <span class="  text-red-500 font-medium">Locked</span>
+        <img src="image/icons/padlock.png" alt="checked" class="h-6" />
+        }
+    </div>
+    <!-- Dialog Control Button -->
+</div>
+
+
+@code {
+    [Parameter] public bool IsCompleted { get; set; }
+    [Parameter] public bool IsOpen { get; set; }
+    [Parameter] public int ProgressPercentage { get; set; }
+    [Parameter] public int ChapterNumber { get; set; }
+    [Parameter] public string? ChapterTitle { get; set; }
+    private void GoArena() => NavigationManager.NavigateTo("/ChapterOne");
+}
