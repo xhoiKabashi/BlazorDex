@@ -83,13 +83,16 @@
   [Parameter] public int ExperienceProvided {get; set; }
   [Parameter] public int PointsProvided {get; set; }
 
-
+    /// Enemy Number of spells
+    [Parameter] public int NumberOfSpells {get; set; }
     /// Hero game stats
     private int HeroDmg;
     private int HeroHP;
     private int HeroSpeed;
     private int HeroArmor;
     private bool HasPerformed = false;
+
+
 
 
     /// Initialization of the stats form the game State
@@ -371,7 +374,7 @@
     private EnemyActionType DetermineEnemyAction()
     {
         // Basic AI to determine the enemy's action, you can expand this logic
-        return (EnemyActionType)(new Random()).Next(0, 3); // Randomly choose an action
+        return (EnemyActionType)(new Random()).Next(0, NumberOfSpells); // Randomly choose an action
     }
 
  

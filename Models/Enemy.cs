@@ -18,10 +18,12 @@ namespace BlazorDex.Models
         public string IconUrl { get; set; }
         public int ExperienceProvided { get; set; }
         public int PointsProvided { get; set; }
+        public int NumberOfSpells { get; set; }
+
 
         public Func<int, int, int, GameAnimationService, Func<string, Task>, Action<bool, string>, Task> AttackAbility { get; set; }
 
-        public Enemy(int hp, int speed, int armor, int dmg, string name, string sceneUrl, string attackUrl, string standUrl, string defendUrl, string boostUrl, string iconUrl, int pointsProvided, int experienceProvided)
+        public Enemy(int hp, int speed, int armor, int dmg, string name, string sceneUrl, string attackUrl, string standUrl, string defendUrl, string boostUrl, string iconUrl, int pointsProvided, int experienceProvided, int numberOfSpells)
         {
             Hp = hp;
             Speed = speed;
@@ -36,6 +38,7 @@ namespace BlazorDex.Models
             IconUrl = iconUrl;
             PointsProvided = pointsProvided;
             ExperienceProvided = experienceProvided;
+            NumberOfSpells = numberOfSpells;
         }
     }
 }

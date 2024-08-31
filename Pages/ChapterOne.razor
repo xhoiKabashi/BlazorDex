@@ -6,7 +6,7 @@
 
 @if (!gameAccepted)
 {
-   <CardOfEnemy  OnClick="AcceptGame"  OnClickNavigate="GoStory"  Story="@Story" Armor="@_enemy.Armor" Hp="@_enemy.Hp"  Speed="@_enemy.Speed" Weakness="Speed"  Name="@_enemy.Name"  Dmg="@_enemy.Dmg"/>
+   <CardOfEnemy  OnClick="AcceptGame"   OnClickNavigate="GoStory"  Story="@Story" Armor="@_enemy.Armor" Hp="@_enemy.Hp"  Speed="@_enemy.Speed" Weakness="Speed"  Name="@_enemy.Name"  Dmg="@_enemy.Dmg"/>
 }
 else {
 <Action 
@@ -22,6 +22,7 @@ else {
     EnemyName="@_enemy.Name"
     PointsProvided="@_enemy.PointsProvided"
     ExperienceProvided="@_enemy.ExperienceProvided"
+    NumberOfSpells="@_enemy.NumberOfSpells"
 />
 }
 
@@ -39,7 +40,8 @@ else {
         boostUrl: null,
         iconUrl: "image/icons/wolf.png",
         experienceProvided: 10,
-        pointsProvided : 1
+        pointsProvided : 1,
+        numberOfSpells: 1
     );
     private bool gameAccepted { get; set; } = false;
 

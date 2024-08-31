@@ -8,3 +8,4 @@ window.triggerAttackAnimation = () => {
     }, 500); // Duration should match the CSS animation duration
   }
 };
+  

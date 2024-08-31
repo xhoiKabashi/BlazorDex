@@ -10,11 +10,11 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
-builder.Services.AddScoped<HeroClient>(); // Correct registration of HeroClient
+builder.Services.AddScoped<HeroClient>();
 builder.Services.AddScoped<HeroStateService>();
 builder.Services.AddScoped<GameAnimationService>();
 builder.Services.AddScoped<GameLogic>();
-// builder.Services.AddScoped<IActionExecutor>();
+
 
 
 
