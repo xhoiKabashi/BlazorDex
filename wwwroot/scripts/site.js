@@ -8,16 +8,10 @@ window.triggerAttackAnimation = () => {
     }, 500); // Duration should match the CSS animation duration
   }
 };
-function requestFullScreen() {
-  var element = document.body; // or you can use a specific game container element
-
-  if (element.requestFullscreen) {
-      element.requestFullscreen();
-  } else if (element.mozRequestFullScreen) { // Firefox
-      element.mozRequestFullScreen();
-  } else if (element.webkitRequestFullscreen) { // Chrome, Safari and Opera
-      element.webkitRequestFullscreen();
-  } else if (element.msRequestFullscreen) { // IE/Edge
-      element.msRequestFullscreen();
+function toggleFullScreen() {
+  if (screenfull.isEnabled) {
+      screenfull.toggle();
+  } else {
+      alert('Full-screen mode is not supported on this device.');
   }
 }

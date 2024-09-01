@@ -38,7 +38,8 @@
     private async Task FetchOrCreateHero()
     {
         errorMessage = null;
-        await JSRuntime.InvokeVoidAsync("requestFullScreen");
+         
+        await JSRuntime.InvokeVoidAsync("toggleFullScreen");
 
         try
         {
