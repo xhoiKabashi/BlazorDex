@@ -1421,3 +1421,9 @@ video {
     width: 450px;
   }
 }
+
+@media (min-width: 1024px) {
+  .lg\:w-\[450px\] {
+    width: 450px;
+  }
+}
