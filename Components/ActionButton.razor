@@ -4,16 +4,16 @@
     <!-- First Item (Attack) in the top-left -->
     <div class=" flex flex-col justify-center items-center text-white">
         <button @onclick="() => Attack.InvokeAsync()" class=" p-2 rounded-full bg-red-600" >
-            <img src="image/icons/sword.png" alt="" class="h-10">
+            <img src="image/icons/sword.png" alt="" class="h-8">
         </button>
-        <p>Attack</p>
+        @* <p class=" text text-xs">Attack</p> *@
     </div>
     <div></div>
      <div class=" flex flex-col justify-center items-center text-white  row-start-2 col-start-2">
         <button @onclick="() => Defend.InvokeAsync()" class=" p-2 rounded-full bg-blue-400">
-            <img src="image/icons/shield.png" alt="" class="h-10">
+            <img src="image/icons/shield.png" alt="" class="h-8">
         </button>
-               <p>Defend </p>
+               @* <p class=" text text-xs">Defend </p> *@
     </div>
 </div>
 
@@ -22,21 +22,21 @@
             <button @onclick="() => Ability.InvokeAsync()" class=" p-1 rounded-full bg-gray-400">
                 <img src="image/icons/mace.png" alt="" class="h-12 p-1  scale-125">
             </button>
-                  <p class=" text text-xs">Heavy Crash</p>
+                  @* <p class=" text text-xs">Heavy Crash</p> *@
         </div>
         
             <div class=" flex flex-col justify-center items-center text-white">
             <button @onclick="() => HerTears.InvokeAsync()" class="  p-2 rounded-full bg-green-500">
                 <img src="image/icons/tears.png" alt="" class="h-10  ">
             </button>
-                <p class=" text text-xs">Her Tears</p>
+                @* <p class=" text text-xs">Her Tears</p> *@
         </div>
               <div class=" flex flex-col justify-center items-center text-white">
             <button @onclick="() => Ability2.InvokeAsync()" class=" p-2 rounded-full bg-yellow-500">
                 <img src="image/icons/nymph.png" alt="" class="h-10  ">
             </button>
 
-                <p class=" text text-xs">Milk Rage</p>
+                @* <p class=" text text-xs">Milk Rage</p> *@
         </div>
     </div>
 </div>

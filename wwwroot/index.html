@@ -3,8 +3,10 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
     <title>BlazorDex</title>
     <base href="/" />
     <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
@@ -17,7 +19,7 @@
       rel="stylesheet"
     />
   </head>
-  <body class=" flex flex-col w-full  min-h-screen bg-cover bg-center"  style="background-image: url('image/login1.png');">
+  <body class=" flex flex-col w-full items-center  min-h-screen bg-cover bg-center"  style="background-image: url('image/login1.png');">
     <div id="app">
     
         <svg class="loading-progress">
@@ -40,7 +42,7 @@
       integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
       crossorigin="anonymous"
     ></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/screenfull.js/5.2.0/screenfull.min.js"></script>
+  
     <script>
       window.localStorage = {
           setItem: function (key, value) {

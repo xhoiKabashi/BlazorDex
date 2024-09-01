@@ -7,11 +7,14 @@
       >
         @foreach (var message in ActionMessages)
         {
-            <div class="text-white  font-semibold flex  justify-center items-center text-center font-medium mb-2 w-full">
+            <div class="text-white  flex  justify-center items-center text-center font-medium mb-2 w-full">
                 @message
                 </div>
         }
     </div>
+          <div class=" h-full flex justify-center items-center rounded-lg p-1" style="background-color: rgba(255, 249, 249, 0.1);" @onclick="GoHome">
+                    <img src="image/icons/logout.png" alt="" class=" h-6">
+            </div>
 </div>
 
 @code {
