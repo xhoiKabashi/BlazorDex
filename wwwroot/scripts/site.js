@@ -9,7 +9,7 @@ window.triggerAttackAnimation = () => {
   }
 };
 function requestFullScreen() {
-  var element = document.documentElement;
+  var element = document.body; // or you can use a specific game container element
 
   if (element.requestFullscreen) {
       element.requestFullscreen();
