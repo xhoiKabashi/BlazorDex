@@ -3,7 +3,7 @@
 <div class="p-2 rounded-lg shadow-lg w-full" style="background-color: rgba(128, 128, 128, 0.3);">
     <!-- Chapter Header -->
     <div class="flex items-center mb-2">
-        <div class="w-10 h-10 rounded-full bg-text-third  flex items-center justify-center text-white text-xl font-bold">
+        <div class="w-8 h-8 rounded-full bg-text-third  flex items-center justify-center text-red-500 text-xl font-bold">
             <!-- Placeholder for chapter icon or number -->
             <span>@ChapterNumber</span> <!-- Example Chapter Number -->
         </div>
@@ -11,24 +11,24 @@
     </div>
 
     <!-- Chapter Status -->
-    <div class="mb-2 flex justify-between">
+    <div class="mb-2 flex justify-between items-end">
         @if (IsCompleted)
         {
         <span class=" text-green-400 font-medium ">Completed</span>
-         <img src="image/icons/check.png" alt="checked"  class="h-6"/>
+         <img src="image/icons/check.png" alt="checked"  class="h-8"/>
 
         }
         else if (IsOpen)
         {
 
-         <button  @onclick="GoArena" class="text-blue-400 font-medium">Explore</button>
-         <img src="image/icons/unlocked.png" alt="checked" class="h-6" />
+         <img src="image/icons/unlocked.png" alt="checked" class="h-8" />
+         <button  @onclick="GoArena" class= " bg-text-third text-red-600 font-bold rounded-lg py-1 px-2">Explore</button>
         }
         else
         {
 
+        <img src="image/icons/padlock.png" alt="checked" class="h-8" />
         <span class="  text-red-500 font-medium">Locked</span>
-        <img src="image/icons/padlock.png" alt="checked" class="h-6" />
         }
     </div>
     <!-- Dialog Control Button -->

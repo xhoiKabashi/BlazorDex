@@ -1,7 +1,7 @@
 @page "/Story"
 @inject NavigationManager NavigationManager
 
-<div class="w-full min-h-screen flex flex-col bg-center bg-cover " style="background-image: url('image/login1.png');">
+<div class="w-full min-h-screen flex flex-col bg-center bg-cover ">
        <div  class=" w-full text-center text-text-third text-2xl my-4 font-bold uppercase tracking-widest">chapters</div>
     <div class="flex flex-col w-full gap-3 px-2 mb-20">
         <ChapterComponents IsCompleted="false" IsOpen="true" ChapterNumber="1" ChapterTitle="Chapter I" />
@@ -15,8 +15,8 @@
         <ChapterComponents IsCompleted="false" IsOpen="false" ChapterNumber="9" ChapterTitle="Chapter IX" />
     </div>
     
-    <div class="fixed bottom-0 p-3 w-full bg-bg-second">
-        <img src="image/icons/back.png" class="h-8" alt="Stat Image" @onclick="GoHome">
+    <div class="fixed bottom-0 p-3 bg-bg-second  w-full md:w-[450px] lg:w-[450px] ">
+        <img src="image/icons/back.png" class="h-8 cursor-pointer" alt="Stat Image" @onclick="GoHome">
     </div>
     
 </div>

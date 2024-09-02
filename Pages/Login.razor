@@ -54,8 +54,8 @@
             var requestContent = new StringContent(JsonSerializer.Serialize(loginRequest), Encoding.UTF8, "application/json");
 
             // Send the request to the API
-            @* var response = await HeroClient.Client.PostAsync("http://localhost:5024/api/heroes/fetchorcreate", requestContent); *@
-            var response = await HeroClient.Client.PostAsync("https://kreshnik-api.onrender.com/api/heroes/fetchorcreate", requestContent);
+            var response = await HeroClient.Client.PostAsync("http://localhost:5024/api/heroes/fetchorcreate", requestContent);
+            @* var response = await HeroClient.Client.PostAsync("https://kreshnik-api.onrender.com/api/heroes/fetchorcreate", requestContent); *@
 
 
             if (!response.IsSuccessStatusCode)
