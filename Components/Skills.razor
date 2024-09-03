@@ -52,8 +52,6 @@ else
 }
 
 @code {
-    private bool isLoading = true;
-
 private async Task HandleStatChanged((string StatName, int Change) change)
 {
     int cost;
@@ -69,6 +67,8 @@ private async Task HandleStatChanged((string StatName, int Change) change)
             cost = change.Change > 0 ? 1 : 0;
             break;
     }
+    if(HeroStateService.Hero == null)
+        return;
 
     if (HeroStateService.Hero.Points < cost && change.Change > 0)
     {

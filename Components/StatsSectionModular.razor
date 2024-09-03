@@ -23,12 +23,12 @@
 
 @code {
     [Parameter]
-    public string ImageSrc { get; set; }
+    public string? ImageSrc { get; set; }
     [Parameter]
     public bool isAbility { get; set; } = false;
 
     [Parameter]
-    public string StatName { get; set; }
+    public string? StatName { get; set; }
 
     [Parameter]
     public int StatValue { get; set; }
@@ -40,10 +40,10 @@
     public int SkillLevel { get; set; } = -1;
 
     [Parameter]
-    public string ButtonClass { get; set; }
+    public string? ButtonClass { get; set; }
 
     [Parameter]
-    public EventCallback<(string StatName, int Change)> OnStatChanged { get; set; }
+    public EventCallback<(string? StatName, int Change)> OnStatChanged { get; set; }
 
     private async Task ChangeStat(int change, bool isAbility)
     {

@@ -23,15 +23,16 @@ else {
     PointsProvided="@_enemy.PointsProvided"
     ExperienceProvided="@_enemy.ExperienceProvided"
     NumberOfSpells="@_enemy.NumberOfSpells"
+    EnemyAttack="EnemyAttack"
 />
 }
 
 @code {
     private Enemy _enemy = new Enemy(
-        hp: 200,
+        hp: 100,
         speed: 12,
         armor: 0,
-        dmg: 46,
+        dmg: 30,
         name: "Black Wolf",
         sceneUrl: "image/scenes/chapterOne.jpg",
         attackUrl: "image/motion/wolfattk.png",
@@ -53,4 +54,12 @@ else {
     private void GoStory() => NavigationManager.NavigateTo("/Story");
     private string Story = "Brother, dark news has reached our ears. A direwolf, swift as the mountain winds, has been terrorizing the villages. The elders say it moves so fast that the eye can barely track it, leaving only fear and destruction in its wake.";
 
+    private async Task<(int heroHp, int damageDealt)> EnemyAttack(int heroArmor, int heroHp, int enemyDmg)
+{   
+    await Task.Delay(10);
+    int damageDealt = Math.Max(enemyDmg - heroArmor, 0);
+    heroHp -= damageDealt;
+
+    return (heroHp, damageDealt); // Return the updated hero's HP and damage dealt
+}
 }

@@ -1,5 +1,5 @@
 public class HeroLoginRequest
 {
-    public string PlayerName { get; set; }
-    public string Password { get; set; }
+    public string? PlayerName { get; set; }
+    public string? Password { get; set; }
 }

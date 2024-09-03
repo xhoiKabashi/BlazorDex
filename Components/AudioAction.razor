@@ -5,11 +5,8 @@
 <audio id="rage" src="audio/rage.mp3"></audio>
 <audio id="heavyMetal" src="audio/metal.mp3"></audio>
 
-
 @code{
-
-
-   // Hero Parameters
+    // Hero Parameters
     [Parameter] public bool HeavyCrash { get; set; }
     [Parameter] public bool HeroBoosting { get; set; }
     [Parameter] public bool HeroIsHealing { get; set; }
@@ -18,39 +15,11 @@
     
     [Parameter] public bool EnemyIsHealing { get; set; }
     [Parameter] public bool EnemyIsAtt { get; set; }
-
     [Parameter] public bool EnemyIsBessing { get; set; }
     [Parameter] public bool EnemyUpgradeArmor { get; set; }
-    [Inject] private IJSRuntime JSRuntime { get; set; }
 
-protected override async Task OnAfterRenderAsync(bool firstRender)
-{
-    if (shouldPlayAudio)
-    {
-        await PlayHealingAudio();
-        shouldPlayAudio = false;
-    }
-    if (AudioAtt)
-    {
-        await PlayAttAudio();
-        AudioAtt = false;
-    }
-    if (AudioDef)
-    {
-        await PlayDefAudio();
-        AudioDef = false;
-    }
-    if (AudioRage)
-    {
-        await PlayRageAudio();
-        AudioRage = false;
-        
-    } if(AudioHavyCrash)
-    {
-        await PlayHavyCrashAudio();
-        AudioHavyCrash= false;
-    }
-}
+    [Inject] private IJSRuntime JSRuntime { get; set; } = null!;  // Mark as non-nullable
+
     // Audio control flags
     private bool shouldPlayAudio = false;
     private bool AudioAtt = false;
@@ -58,75 +27,89 @@ protected override async Task OnAfterRenderAsync(bool firstRender)
     private bool AudioRage = false;
     private bool AudioHavyCrash = false;
 
-    protected override async Task OnParametersSetAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (HeroIsHealing)
+        if (shouldPlayAudio)
         {
-            shouldPlayAudio = true;
+            await PlayHealingAudio();
+            shouldPlayAudio = false;
         }
-        else if (EnemyIsHealing)
+        if (AudioAtt)
         {
-            shouldPlayAudio = true;
+            await PlayAttAudio();
+            AudioAtt = false;
         }
-        if (HeroIsAtt)
+        if (AudioDef)
         {
-            AudioAtt = true;
+            await PlayDefAudio();
+            AudioDef = false;
         }
-        else if (EnemyIsAtt)
+        if (AudioRage)
         {
-            AudioAtt = true;
+            await PlayRageAudio();
+            AudioRage = false;
         }
-        if (HeroUpgradeArmor)
+        if (AudioHavyCrash)
         {
-            AudioDef = true;
+            await PlayHavyCrashAudio();
+            AudioHavyCrash = false;
         }
-        else if (EnemyUpgradeArmor)
-        {
-            AudioDef = true;
-        }
-        if (HeroBoosting)
-        {
-            AudioRage = true;
-        }
-        else if (EnemyIsBessing)
-        {
-            AudioRage = true;
+    }
 
+    protected override Task OnParametersSetAsync()
+    {
+        if (HeroIsHealing || EnemyIsHealing)
+        {
+            shouldPlayAudio = true;
         }
-         if (HeavyCrash )
+        if (HeroIsAtt || EnemyIsAtt)
+        {
+            AudioAtt = true;
+        }
+        if (HeroUpgradeArmor || EnemyUpgradeArmor)
+        {
+            AudioDef = true;
+        }
+        if (HeroBoosting || EnemyIsBessing)
+        {
+            AudioRage = true;
+        }
+        if (HeavyCrash)
         {
             AudioHavyCrash = true;
-
         }
+
+        return Task.CompletedTask;
     }
 
     private async Task PlayHealingAudio()
     {
         await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('healingAudio').volume = 0.3;");
-
         await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('healingAudio').play()");
     }
+
     private async Task PlayRageAudio()
     {
         await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('rage').volume = 0.3;");
-
         await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('rage').play()");
     }
+
     private async Task PlayHavyCrashAudio()
-{
+    {
         await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('heavyMetal').volume = 0.6;");
         await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('heavyMetal').play()");
-}
+    }
+
     private async Task PlayAttAudio()
     {
         await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('attackingAudio').volume = 0.3;");
         await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('attackingAudio').play()");
         await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('metal').play()");
-
     }
+
     private async Task PlayDefAudio()
     {
         await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('armor').volume = 0.5;");
         await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('armor').play()");
     }
-    }
+}

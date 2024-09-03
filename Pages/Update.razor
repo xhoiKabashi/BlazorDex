@@ -8,8 +8,11 @@
 
 <PageTitle>Home</PageTitle>
 
+    @if(HeroStateService.Hero != null) {
 <div class="w-full min-h-screen flex flex-col bg-center bg-cover " style="background-image: url('image/login1.png');">
+
     <LevelPoints Level="@HeroStateService.Hero.Level" Points="@HeroStateService.Hero.Points" />
+
 
     <!-- Stats and Skills Section -->
     <div class="w-full flex flex-col  justify-center gap-3 p-2 flex-1">
@@ -19,16 +22,7 @@
         </div>
 
         <!-- Level and Points Section -->
-        <div class="grid grid-cols-2 gap-1 uppercase w-full">
-            <StatsSectionModular ImageSrc="image/icons/sword.png" StatName="Attack" StatValue="@HeroStateService.Hero.Dmg" Points="@HeroStateService.Hero.Points"
-                ButtonClass="" OnStatChanged="HandleStatChanged" />
-            <StatsSectionModular ImageSrc="image/icons/armor.png" StatName="Armor" StatValue="@HeroStateService.Hero.Armor" Points="@HeroStateService.Hero.Points"
-                ButtonClass="" OnStatChanged="HandleStatChanged" />
-            <StatsSectionModular ImageSrc="image/icons/hermes.png" StatName="Speed" StatValue="@HeroStateService.Hero.Speed" Points="@HeroStateService.Hero.Points"
-                ButtonClass="" OnStatChanged="HandleStatChanged" />
-            <StatsSectionModular ImageSrc="image/icons/health.png" StatName="Hp" StatValue="@HeroStateService.Hero.Hp" Points="@HeroStateService.Hero.Points"
-                ButtonClass="" OnStatChanged="HandleStatChanged" />
-        </div>
+    <LevelPoints Level="@HeroStateService.Hero.Level" Points="@HeroStateService.Hero.Points" />
 
         <!-- Hero Skills -->
         <div class="p-2 rounded-md shadow-md">
@@ -88,9 +82,9 @@
     <!-- Navigation Bar -->
     <NavigationBar />
 </div>
+    }
 
 @code {
-    private bool isLoading = true;
 
     private async Task HandleStatChanged((string StatName, int Change) change)
     {
@@ -102,6 +96,8 @@
             _ => change.Change > 0 ? 1 : 0
         };
 
+        if (HeroStateService.Hero == null)
+        return; // Early exit if Hero is null
         if (HeroStateService.Hero.Points < cost && change.Change > 0)
         {
             return; // Prevent changes if not enough points are available

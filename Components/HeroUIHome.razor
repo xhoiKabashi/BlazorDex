@@ -1,6 +1,9 @@
 @inject HeroStateService HeroStateService
 
-        <div class="mb-4 flex flex-col justify-center items-center z-0">
+
+
+ @if(HeroStateService.Hero != null) {
+  <div class="mb-4 flex flex-col justify-center items-center z-0">
             <img src="image/hero/hero.png" class="h-68" alt="hero" />
 
             <div class="flex items-baseline w-48 h-8 bg-gray-800 border-2 border-white rounded-md p-1">
@@ -17,4 +20,6 @@
                     <p>@HeroStateService.Hero.Exp XP</p> / <p>@HeroStateService.Hero.ExpThreshold XP</p>
                 </div>
             </div>
-        </div>
+     </div>
+ }
+      

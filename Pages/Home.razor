@@ -56,8 +56,6 @@
 </div>
 
 @code {
-    private bool isLoading = true;
-    private Hero hero;
     private bool showLevelUpToast = false;
     private int hpIncrease;
     private int dmgIncrease;
@@ -70,10 +68,12 @@
         {
             CheckForLevelUp();
         }
+        await Task.Delay(10);
     }
 
     private void CheckForLevelUp()
-    {
+    {   if (HeroStateService.Hero == null)
+           return;
         if (HeroStateService.Hero.Exp >= HeroStateService.Hero.ExpThreshold)
         {
             LevelUpHero();
@@ -81,7 +81,8 @@
     }
 
     private void LevelUpHero()
-    {
+    {    if (HeroStateService.Hero == null)
+             return;
         // Increase the level
         HeroStateService.Hero.Level++;
         

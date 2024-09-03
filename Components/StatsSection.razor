@@ -25,10 +25,9 @@ else
 }
 
 @code {
-    private bool isLoading = true;
-
 private async Task HandleStatChanged((string StatName, int Change) change)
-{
+{   if(HeroStateService.Hero == null)
+       return;
     if (HeroStateService.Hero.Points <= 0 && change.Change > 0)
     {
         return; // Prevent changes if no points are available

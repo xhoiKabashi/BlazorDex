@@ -3,7 +3,7 @@ namespace BlazorDex.Models
     public class Hero
     {
         public int Id { get; set; }
-        public string Name { get; set; }
+        public string? Name { get; set; }
         public int Hp { get; set; }
         public int Dmg { get; set; }
         public int Armor { get; set; }
@@ -23,8 +23,8 @@ namespace BlazorDex.Models
 
 
         // New Property to link Hero to a user
-        public string UserId { get; set; }
-        public string UserPin { get; set; }
+        public string? UserId { get; set; }
+        public string? UserPin { get; set; }
     }
 
 }
