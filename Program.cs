@@ -6,6 +6,7 @@ using BlazorDex.Util;
  
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 // builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+builder.Services.AddScoped(sp => new HeroClient(new HttpClient { BaseAddress = new Uri("https://kreshnik-api.onrender.com") }));
 
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
@@ -14,16 +15,8 @@ builder.Services.AddScoped<HeroClient>();
 builder.Services.AddScoped<HeroStateService>();
 builder.Services.AddScoped<GameAnimationService>();
 builder.Services.AddScoped<GameLogic>();
-
-
-
-
 builder.Services.AddSingleton<HeroStateService>();
-// builder.Services.AddScoped(sp => new HeroClient(new HttpClient { BaseAddress = new Uri("https://kreshnik-api.onrender.com") }));
-builder.Services.AddScoped(sp => new HeroClient(new HttpClient { BaseAddress = new Uri("http://localhost:5024/") }));
-
-
-
+// builder.Services.AddScoped(sp => new HeroClient(new HttpClient { BaseAddress = new Uri("http://localhost:5024/") }));
 
 
 await builder.Build().RunAsync();
