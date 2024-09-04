@@ -9,7 +9,7 @@
 <PageTitle>Home</PageTitle>
 
     @if(HeroStateService.Hero != null) {
-<div class="w-full min-h-screen flex flex-col bg-center bg-cover " style="background-image: url('image/login1.png');">
+<div class="w-full h-[calc(100dvh)] flex flex-col bg-center bg-cover " style="background-image: url('image/login1.png');">
 
     <LevelPoints Level="@HeroStateService.Hero.Level" Points="@HeroStateService.Hero.Points" />
 

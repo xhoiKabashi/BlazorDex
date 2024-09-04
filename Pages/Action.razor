@@ -7,10 +7,10 @@
 @inject GameLogic gameLogic
 
 
-<div class="h-screen  flex flex-col w-full items-center bg-center bg-cover" style="background-image: url('image/login1.png');">
+<div class="h-[calc(100dvh)]  flex flex-col w-full items-center bg-center bg-cover" style="background-image: url('image/login1.png');">
     @if (gameEnd)
     {
-        <div class="flex flex-col w-full min-h-screen justify-center items-center " style="background-image: url('image/login1.png');">
+        <div class="flex flex-col w-full min-h-[calc(100dvh)] justify-center items-center " style="background-image: url('image/login1.png');">
             <h2 class="text-5xl font-extrabold  mb-6 text-text-third">@EndGameMessage</h2>
             <button @onclick="GoHome"
                 class=" bg-text-third text-white font-extrabold tracking-widest uppercase py-4 px-8 rounded-3xl shadow-xl transition transform hover:scale-110">
