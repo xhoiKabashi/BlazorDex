@@ -7,10 +7,10 @@
 @inject GameLogic gameLogic
 
 
-<div class="h-[calc(100dvh)]  flex flex-col w-full items-center bg-center bg-cover" style="background-image: url('image/login1.png');">
+<div class=" h-full flex flex-col w-full items-center bg-center bg-cover" style="background-image: url('image/login1.png');">
     @if (gameEnd)
     {
-        <div class="flex flex-col w-full min-h-[calc(100dvh)] justify-center items-center " style="background-image: url('image/login1.png');">
+        <div class="flex flex-col w-full h-full justify-center items-center " style="background-image: url('image/login1.png');">
             <h2 class="text-5xl font-extrabold  mb-6 text-text-third">@EndGameMessage</h2>
             <button @onclick="GoHome"
                 class=" bg-text-third text-white font-extrabold tracking-widest uppercase py-4 px-8 rounded-3xl shadow-xl transition transform hover:scale-110">
@@ -21,13 +21,15 @@
     else
     {
         <div class="w-full flex flex-col justify-between h-full">
-            <StatInAction HeroSpeed="@HeroSpeed" HeroDamage="@HeroDmg" HeroArmor="@HeroArmor" EnemySpeed="@EnemySpeed"
-                EnemyDamage="@EnemyDmg" EnemyArmor="@EnemyArmor" EnemyName="@EnemyName" />
-             @if(HeroStateService.Hero != null){
+
+            @if(HeroStateService.Hero != null){
                         <HealthBar HeroHP="@HeroHP" HeroStartHP="@heroStartingHp" EnemyHP="@EnemyHp" EnemyStartHP="@enemyStartingHp"
                 HeroLevel="@HeroStateService.Hero.Level" EnemyLevel="1" EnemyIconSrc="@IconUrl"  HeroIconSrc="image/icons/heroIcon.png"/>
 
              }   
+            <StatInAction HeroSpeed="@HeroSpeed" HeroDamage="@HeroDmg" HeroArmor="@HeroArmor" EnemySpeed="@EnemySpeed"
+                EnemyDamage="@EnemyDmg" EnemyArmor="@EnemyArmor" EnemyName="@EnemyName" />
+
     
             <Messages ActionMessages="@actionMessages" />
    

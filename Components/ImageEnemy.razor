@@ -1,24 +1,24 @@
     <div class=" flex w-full ">
-            <img src="@HealUrl" alt="Hero Image" class="w-full h-48  object-cover overflow-visible scale-95"
-                style="display: @(EnemyIsHealing ? "block" : "none")">
+            <img src="@HealUrl" alt="Hero Image" class=" h-full  object-cover overflow-visible "
+                style="display: @(EnemyIsHealing ? "block" : "none") ; overflow: visible;">
         </div>
        <div class=" flex w-full ">
 
-            <img src="@AttackUrl" alt="Enemy Image" class="w-full  h-44 object-cover overflow-visible scale-95"
-                style="display: @(EnemyIsAtt ? "block" : "none")">
+            <img src="@AttackUrl" alt="Enemy Image" class="h-full object-cover overflow-visible "
+                style="display: @(EnemyIsAtt ? "block" : "none") ; overflow: visible;">
         </div>
     <div class=" flex w-full ">
-            <img src="@DefendUrl" alt="Hero Image" class="w-full h-44 object-cover overflow-visible"
-                style="display: @(EnemyUpgradeArmor ? "block" : "none")">
+            <img src="@DefendUrl" alt="Hero Image" class="h-full object-cover overflow-visible"
+                style="display: @(EnemyUpgradeArmor ? "block" : "none") ; overflow: visible;">
         </div>
     <div class=" flex w-full ">
-            <img src="@BoostUrl" alt="Hero Image" class="w-full h-48 object-cover overflow-visible scale-95"
-                style="display: @(EnemyIsBessing ? "block" : "none")">
+            <img src="@BoostUrl" alt="Hero Image" class="h-full object-cover overflow-visible"
+                style="display: @(EnemyIsBessing ? "block" : "none") ; overflow: visible;">
         </div>
 
      <div class=" flex w-full ">
-            <img src="@StandUrl" alt="Hero Image" class="w-full h-48 object-cover overflow-visible scale-95"
-                style="display: @(!EnemyIsHealing && !EnemyUpgradeArmor && !EnemyIsAtt &&  !EnemyIsBessing  ? "block" : "none")">
+            <img src="@StandUrl" alt="Hero Image" class="h-full object-cover overflow-visible" 
+                style="display: @(!EnemyIsHealing && !EnemyUpgradeArmor && !EnemyIsAtt &&  !EnemyIsBessing  ? "block" : "none") ; overflow: visible;">
     </div>
 
 

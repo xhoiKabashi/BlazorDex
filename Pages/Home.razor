@@ -7,7 +7,7 @@
 
 <PageTitle>Home</PageTitle>
 
-<div class="w-full h-[calc(100dvh)] flex flex-col justify-between items-center bg-cover bg-center  text-text-third" style="background-image: url('image/login1.png');">
+<div class="w-full min-h-[calc(100dvh)] flex flex-col justify-between items-center bg-cover bg-center  text-text-third" style="background-image: url('image/login1.png');">
     @if (HeroStateService.Hero != null)
     {
         <LevelPoints Level="@HeroStateService.Hero.Level" Points="@HeroStateService.Hero.Points" />
@@ -19,7 +19,7 @@
     </div>
 
         <div class="mb-4 flex flex-col justify-center items-center w-full">
-            <img src="image/homeImage.png" class=" h-96" alt="hero" />
+            <img src="image/homeImage.png" class="h-80" alt="hero" />
 
             <div class="flex items-baseline w-48 h-8 bg-gray-800 border-2 border-white rounded-md p-1">
                 <div class="bg-red-700 text-white px-2">HP:</div>

@@ -1,28 +1,28 @@
-        <div class=" flex w-full ">
-            <img src="image/motion/sister.png" alt="Hero Image" class=" h-44  object-cover overflow-visible"
-                style="display: @(HeroIsHealing ? "block" : "none")">
+        <div class=" flex w-full">
+            <img src="image/motion/sister.png" alt="Hero Image" class="h-full object-cover overflow-visible"
+                style="display: @(HeroIsHealing ? "block" : "none"); overflow: visible;">
         </div>
    <div class=" flex w-full ">
-            <img src="image/motion/milk.png" alt="Hero Image" class=" h-48   object-cover  overflow-visible"
-                style="display: @(HeroBoosting ? "block" : "none")">
+            <img src="image/motion/milk.png" alt="Hero Image" class=" h-full   object-cover  overflow-visible"
+                style="display: @(HeroBoosting ? "block" : "none"); overflow: visible;">
         </div>
      <div class=" flex w-full ">
-            <img src="image/motion/attacking.png" alt="Enemy Image" class=" h-44 overflow-visible object-cover"
-                style="display: @(HeroIsAtt ? "block" : "none")">
+            <img src="image/motion/attacking.png" alt="Enemy Image" class="h-full overflow-visible object-cover"
+                style="display: @(HeroIsAtt ? "block" : "none"); overflow: visible;">
         </div>
 
        <div class=" flex w-full ">
-            <img src="image/motion/defending.png" alt="Hero Image" class=" h-44 object-cover  overflow-visible"
-                style="display: @(HeroUpgradeArmor ? "block" : "none")">
+            <img src="image/motion/defending.png" alt="Hero Image" class=" h-full object-cover  overflow-visible"
+                style="display: @(HeroUpgradeArmor ? "block" : "none"); overflow: visible;">
         </div>
           <div class=" flex w-full ">
-            <img src="image/motion/topuz.png" alt="Hero Image" class="h-48 object-cover  overflow-visible"
-                style="display: @(HeavyCrash ? "block" : "none")">
+            <img src="image/motion/topuz.png" alt="Hero Image" class="h-full object-cover  overflow-visible"
+                style="display: @(HeavyCrash ? "block" : "none") ; overflow: visible;">
         </div>
 
-        <div class=" flex w-full ">
-            <img src="image/motion/standing.png" alt="Hero Image" class=" h-48 object-cover"
-                style="display: @(!HeroIsHealing && !HeroUpgradeArmor && !HeroIsAtt && !HeavyCrash && !HeroBoosting ? "block" : "none")">
+        <div class=" flex w-full bg-cover bg-center">
+            <img src="image/motion/standing.png" alt="Hero Image" class=" h-full object-cover"
+                style="display: @(!HeroIsHealing && !HeroUpgradeArmor && !HeroIsAtt && !HeavyCrash && !HeroBoosting ? "block" : "none"); overflow: visible;">
         </div>
 
     @code {
