@@ -1,90 +1,88 @@
-@page "/training"
-@using BlazorDex.Models
-@using BlazorDex.Components
-@inject NavigationManager NavigationManager
-@inject GameAnimationService AnimationService
-@inject GameLogic gameLogic
+        @page "/training"
+        @using BlazorDex.Models
+        @using BlazorDex.Components
+        @inject NavigationManager NavigationManager
+        @inject GameAnimationService AnimationService
+        @inject GameLogic gameLogic
 
 
-@if (!gameAccepted){
- <CardOfEnemy  OnClick="AcceptGame"   OnClickNavigate="GoHome"  Story="@Story" Armor="@_enemy.Armor" Hp="@_enemy.Hp"  Speed="@_enemy.Speed" Weakness="None"  Name="Ymer Agë Ulqini"  Dmg="@_enemy.Dmg"/>
-
-} else {
-    <Action 
-    SceneUrl="@_enemy.SceneUrl" 
-    AttackUrl="@_enemy.AttackUrl" 
-    StandUrl="@_enemy.StandUrl" 
-    DefendUrl="@_enemy.DefendUrl"  
-    BoostUrl="@_enemy.BoostUrl"
-
-    EnemyHp="@_enemy.Hp"
-    EnemySpeed="@_enemy.Speed"
-    EnemyArmor="@_enemy.Armor"
-    EnemyDmg="@_enemy.Dmg"
-    IconUrl="@_enemy.IconUrl"
-    ExperienceProvided="@_enemy.ExperienceProvided"
-    PointsProvided="@_enemy.PointsProvided"
-    EnemyName="@_enemy.Name"
-    NumberOfSpells="@_enemy.NumberOfSpells"
-    EnemyAttack="EnemyAttack"
-    EnemyUpgradeArmor="@EnemyUpgradeArmor"
-    EnemyHeal="@EnemyHeal"
-/>
-}
-
-@code {
-    private Enemy _enemy = new Enemy(
-        hp: 100,
-        speed: 4,
-        armor: 0,
-        dmg: 22,
-        name: "Ulqin",
-        sceneUrl: "image/scenes/training.jpg",
-        attackUrl: "image/motion/ulqiniAtt.png",
-        standUrl: "image/motion/ulqiniStand.png",
-        defendUrl: "image/motion/ulqiniDef.png",
-        boostUrl: "image/motion/ulqinBlessing.png",
-        iconUrl: "image/icons/ulshqiniIcon.png",
-        experienceProvided: 25,
-        pointsProvided : 2,
-        numberOfSpells: 3
-    );
 
 
-        private bool gameAccepted { get; set; } = false;
-        private void AcceptGame()
-    {
-        gameAccepted = true;
-    }
+        @if (!gameAccepted){
+        <CardOfEnemy  OnClick="AcceptGame"   AbilityDesc=" Boost Armor "  OnClickNavigate="GoHome"  Story="@Story" Armor="@_enemy.Armor" Hp="@_enemy.Hp"  Speed="@_enemy.Speed" Weakness="None"  Name="Ymer Agë Ulqini"  Dmg="@_enemy.Dmg"/>
 
-    private void GoHome() => NavigationManager.NavigateTo("/game");
+        } else {
+            <Action 
+            SceneUrl="@_enemy.SceneUrl" 
+            AttackUrl="@_enemy.AttackUrl" 
+            StandUrl="@_enemy.StandUrl" 
+            DefendUrl="@_enemy.DefendUrl"  
+            BoostUrl="@_enemy.BoostUrl"
+            HealUrl="@_enemy.HealUrl"
 
-    private string Story = " Do not take this opportunity lightly, brother. Train with Ymer Aga as though your life depends on it, for in truth, it may. The enemies you face will not be like the ones you have encountered before. They are cunning, relentless, and deadly. You must become stronger, faster, and wiser if you are to overcome them.";
+            EnemyHp="@_enemy.Hp"
+            EnemySpeed="@_enemy.Speed"
+            EnemyArmor="@_enemy.Armor"
+            EnemyDmg="@_enemy.Dmg"
+            IconUrl="@_enemy.IconUrl"
+            ExperienceProvided="@_enemy.ExperienceProvided"
+            PointsProvided="@_enemy.PointsProvided"
+            EnemyName="@_enemy.Name"
+            NumberOfSpells="@_enemy.NumberOfSpells"
+            EnemyAttack="EnemyAttack"
+            EnemyUpgradeArmor="@EnemyUpgradeArmor"
+            enemyAbilities="enemyAbilities" 
+  
+        />
+        }
+
+        @code {
+            private Enemy _enemy = new Enemy(
+                hp: 100,
+                speed: 4,
+                armor: 0,
+                dmg: 22,
+                name: "Ulqin",
+                sceneUrl: "image/scenes/training.jpg",
+                attackUrl: "image/motion/ulqiniAtt.png",
+                standUrl: "image/motion/ulqiniStand.png",
+                defendUrl: "image/motion/ulqiniDef.png",
+                boostUrl: "image/motion/ulqinBlessing.png",
+                iconUrl: "image/icons/ulshqiniIcon.png",
+                experienceProvided: 25,
+                pointsProvided : 2,
+                numberOfSpells: 3,
+                healUrl: "image/motion/ulqniHealth.png"
+            );
 
 
-private async Task<(int heroHp, int damageDealt)> EnemyAttack(int heroArmor, int heroHp, int enemyDmg)
-{
-    await Task.Delay(100);
-    int damageDealt = Math.Max(enemyDmg - heroArmor, 0);
-    heroHp -= damageDealt;
+                private bool gameAccepted { get; set; } = false;
+                private void AcceptGame()
+            {
+                gameAccepted = true;
+            }
 
-    return (heroHp, damageDealt); // Return the updated hero's HP and damage dealt
-}
-private async Task<(int enemyArmor, int armorAdded)> EnemyUpgradeArmor(int enemyArmor)
-{   
-    await Task.Delay(100);
-    int armorAdded = 3;
-    enemyArmor += armorAdded;
+            private void GoHome() => NavigationManager.NavigateTo("/game");
 
-    return (enemyArmor, armorAdded); // Return the updated hero's HP and damage dealt
-}
-private async Task<(int enemyHp, int hpAdded)> EnemyHeal(int enemyHp, int enemyStartingHp)
-{
-    await Task.Delay(100);
-    int hpAdded = 15;
-    enemyHp = Math.Min(enemyHp + hpAdded, enemyStartingHp);
+            private string Story = " Do not take this opportunity lightly, brother. Train with Ymer Aga as though your life depends on it, for in truth, it may. The enemies you face will not be like the ones you have encountered before. They are cunning, relentless, and deadly. You must become stronger, faster, and wiser if you are to overcome them.";
 
-    return (enemyHp, hpAdded); // Return the updated hero's HP and damage dealt
-}
+        private List<string> enemyAbilities = new List<string> { "Attack","Defend" };
+        private async Task<(int heroHp, int damageDealt, bool isMonster)> EnemyAttack(int heroArmor, int heroHp, int enemyDmg)
+        {
+            await Task.Delay(100);
+            bool isMonster = false;
+            int damageDealt = Math.Max(enemyDmg - heroArmor, 0);
+            heroHp -= damageDealt;
 
-}
+            return (heroHp, damageDealt, isMonster); // Return the updated hero's HP and damage dealt
+        }
+        private async Task<(int enemyArmor, int armorAdded)> EnemyUpgradeArmor(int enemyArmor)
+        {   
+            await Task.Delay(100);
+            int armorAdded = 3;
+            enemyArmor += armorAdded;
+
+            return (enemyArmor, armorAdded); // Return the updated hero's HP and damage dealt
+        }
+
+        }

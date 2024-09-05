@@ -1,6 +1,6 @@
 @inject NavigationManager NavigationManager
 
-<div class="p-2 rounded-lg shadow-lg w-full" style="background-color: rgba(128, 128, 128, 0.3);">
+<div class="p-2 rounded-lg shadow-lg w-full bg-center bg-cover"  style="background-image: url('@url');">
     <!-- Chapter Header -->
     <div class="flex items-center mb-2">
         <div class="w-8 h-8 rounded-full bg-text-third  flex items-center justify-center text-red-500 text-xl font-bold">
@@ -11,23 +11,21 @@
     </div>
 
     <!-- Chapter Status -->
-    <div class="mb-2 flex justify-between items-end">
+    <div class="mb-2 flex justify-end items-end">
         @if (IsCompleted)
         {
         <span class=" text-green-400 font-medium ">Completed</span>
-         <img src="image/icons/check.png" alt="checked"  class="h-8"/>
 
         }
         else if (IsOpen)
         {
 
-         <img src="image/icons/unlocked.png" alt="checked" class="h-8" />
+        
          <button  @onclick="GoArena" class= " bg-text-third text-red-600 font-bold rounded-lg py-1 px-2">Explore</button>
         }
         else
         {
 
-        <img src="image/icons/padlock.png" alt="checked" class="h-8" />
         <span class="  text-red-500 font-medium">Locked</span>
         }
     </div>
@@ -36,10 +34,13 @@
 
 
 @code {
+    [Parameter] public string? url { get; set; }
     [Parameter] public bool IsCompleted { get; set; }
     [Parameter] public bool IsOpen { get; set; }
     [Parameter] public int ProgressPercentage { get; set; }
     [Parameter] public int ChapterNumber { get; set; }
     [Parameter] public string? ChapterTitle { get; set; }
-    private void GoArena() => NavigationManager.NavigateTo("/ChapterOne");
+    [Parameter] public string? navUrl { get; set; }
+
+    private void GoArena() => NavigationManager.NavigateTo(navUrl);
 }

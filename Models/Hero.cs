@@ -19,6 +19,18 @@ namespace BlazorDex.Models
         public int TearHealHp { get; set; }
         public int MilkRegeStats { get; set; }
         public int Wins { get; set; }
+        public int Wounds { get; set; }
+        public bool Ability1 { get; set; }
+        public bool Ability2 { get; set; }
+        public bool Ability3 { get; set; }
+        public bool Story1 { get; set; }
+        public bool Story2 { get; set; }
+        public bool Story3 { get; set; }
+        public bool Story4 { get; set; }
+        public bool Story5 { get; set; }
+        public bool Story6 { get; set; }
+        public bool Story7 { get; set; }
+        public bool Story8 { get; set; }
 
 
 

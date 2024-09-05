@@ -6,7 +6,7 @@
 
 @if (!gameAccepted)
 {
-   <CardOfEnemy  OnClick="AcceptGame"   OnClickNavigate="GoStory"  Story="@Story" Armor="@_enemy.Armor" Hp="@_enemy.Hp"  Speed="@_enemy.Speed" Weakness="Speed"  Name="@_enemy.Name"  Dmg="@_enemy.Dmg"/>
+   <CardOfEnemy  OnClick="AcceptGame"  AbilityDesc=" None"   OnClickNavigate="GoStory"  Story="@Story" Armor="@_enemy.Armor" Hp="@_enemy.Hp"  Speed="@_enemy.Speed" Weakness="High Speed"  Name="@_enemy.Name"  Dmg="@_enemy.Dmg"/>
 }
 else {
 <Action 
@@ -24,6 +24,9 @@ else {
     ExperienceProvided="@_enemy.ExperienceProvided"
     NumberOfSpells="@_enemy.NumberOfSpells"
     EnemyAttack="EnemyAttack"
+    enemyAbilities="enemyAbilities" 
+
+
 />
 }
 
@@ -42,7 +45,8 @@ else {
         iconUrl: "image/icons/wolf.png",
         experienceProvided: 10,
         pointsProvided : 1,
-        numberOfSpells: 1
+        numberOfSpells: 1,
+         healUrl: "healUrl"
     );
     private bool gameAccepted { get; set; } = false;
 
@@ -53,13 +57,16 @@ else {
 
     private void GoStory() => NavigationManager.NavigateTo("/Story");
     private string Story = "Brother, dark news has reached our ears. A direwolf, swift as the mountain winds, has been terrorizing the villages. The elders say it moves so fast that the eye can barely track it, leaving only fear and destruction in its wake.";
+    private List<string> enemyAbilities = new List<string> { "Attack" };
 
-    private async Task<(int heroHp, int damageDealt)> EnemyAttack(int heroArmor, int heroHp, int enemyDmg)
+
+
+    private async Task<(int heroHp, int damageDealt, bool isMonster)> EnemyAttack(int heroArmor, int heroHp, int enemyDmg)
 {   
     await Task.Delay(10);
+    bool isMonster = true;
     int damageDealt = Math.Max(enemyDmg - heroArmor, 0);
     heroHp -= damageDealt;
-
-    return (heroHp, damageDealt); // Return the updated hero's HP and damage dealt
+    return (heroHp, damageDealt,isMonster); // Return the updated hero's HP and damage dealt
 }
 }

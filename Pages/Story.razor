@@ -1,24 +1,18 @@
 @page "/Story"
 @inject NavigationManager NavigationManager
 
-<div class="w-full flex flex-col bg-center bg-cover "  style="background-image: url('image/login1.png');">
-       <div  class=" w-full text-center text-text-third text-2xl my-4 font-bold uppercase tracking-widest ">chapters</div>
-    <div class="flex flex-col w-full gap-3 px-2 mb-20">
-        <ChapterComponents IsCompleted="false" IsOpen="true" ChapterNumber="1" ChapterTitle="Chapter I" />
-        <ChapterComponents IsCompleted="false" IsOpen="false" ChapterNumber="2" ChapterTitle="Chapter II" />
-        <ChapterComponents IsCompleted="false" IsOpen="false" ChapterNumber="3" ChapterTitle="Chapter III" />
-        <ChapterComponents IsCompleted="false" IsOpen="false" ChapterNumber="4" ChapterTitle="Chapter IV" />
-        <ChapterComponents IsCompleted="false" IsOpen="false" ChapterNumber="5" ChapterTitle="Chapter V" />
-        <ChapterComponents IsCompleted="false" IsOpen="false" ChapterNumber="6" ChapterTitle="Chapter VI" />
-        <ChapterComponents IsCompleted="false" IsOpen="false" ChapterNumber="7" ChapterTitle="Chapter VII" />
-        <ChapterComponents IsCompleted="false" IsOpen="false" ChapterNumber="8" ChapterTitle="Chapter VIII" />
-        <ChapterComponents IsCompleted="false" IsOpen="false" ChapterNumber="9" ChapterTitle="Chapter IX" />
-    </div>
+<div class=" bg-cover" style="background-image: url('image/login1.png');">
+    <div class="w-full  flex flex-col bg-center bg-cover  bg-bg-main"  style="background-color: rgba(255, 255, 255, 0.1);">
+        <div class="flex flex-col w-full gap-3 px-2  mb-20  mt-4 min-h-[calc(100dvh)]">
+            <ChapterComponents IsCompleted="false" IsOpen="true" ChapterNumber="1" ChapterTitle="Chapter I" url="image/woft.png"  navUrl="/ChapterOne"/>
+            <ChapterComponents IsCompleted="false" IsOpen="true" ChapterNumber="2" ChapterTitle="The Wrathful Nymphs" url="image/nympths.png" navUrl="/ChapterTwo" />
+        </div>
     
-    <div class="fixed bottom-0 p-3 bg-bg-second  w-full md:w-[450px] lg:w-[450px] ">
-        <img src="image/icons/back.png" class="h-8 cursor-pointer" alt="Stat Image" @onclick="GoHome">
-    </div>
+        <div class="fixed bottom-0 p-3 bg-bg-second  w-full md:w-[450px] lg:w-[450px] ">
+            <img src="image/icons/back.png" class="h-8 cursor-pointer" alt="Stat Image" @onclick="GoHome">
+        </div>
     
+    </div>
 </div>
 
 @code {

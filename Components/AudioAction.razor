@@ -4,6 +4,10 @@
 <audio id="armor" src="audio/armor.wav"></audio>
 <audio id="rage" src="audio/rage.mp3"></audio>
 <audio id="heavyMetal" src="audio/metal.mp3"></audio>
+<audio id="monsterattack" src="audio/monster.mp3"></audio>
+<audio id="nympth" src="audio/nympth.mp3"></audio>
+
+
 
 @code{
     // Hero Parameters
@@ -17,6 +21,10 @@
     [Parameter] public bool EnemyIsAtt { get; set; }
     [Parameter] public bool EnemyIsBessing { get; set; }
     [Parameter] public bool EnemyUpgradeArmor { get; set; }
+    [Parameter] public bool MonsterAttack { get; set; }
+    [Parameter] public bool NympthAttack { get; set; }
+
+
 
     [Inject] private IJSRuntime JSRuntime { get; set; } = null!;  // Mark as non-nullable
 
@@ -26,6 +34,9 @@
     private bool AudioDef = false;
     private bool AudioRage = false;
     private bool AudioHavyCrash = false;
+    private bool MonsterAttackAudio = false;
+    private bool NympthAttackAudio = false;
+
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -54,6 +65,16 @@
             await PlayHavyCrashAudio();
             AudioHavyCrash = false;
         }
+            if (MonsterAttackAudio)
+        {
+            await PlayMonsterAttack();
+            MonsterAttackAudio = false;
+        }
+         if (NympthAttackAudio)
+        {
+            await PlayNympthAttack();
+            NympthAttackAudio = false;
+        }
     }
 
     protected override Task OnParametersSetAsync()
@@ -62,7 +83,7 @@
         {
             shouldPlayAudio = true;
         }
-        if (HeroIsAtt || EnemyIsAtt)
+        if (HeroIsAtt || EnemyIsAtt && !MonsterAttack && !NympthAttack)
         {
             AudioAtt = true;
         }
@@ -77,9 +98,31 @@
         if (HeavyCrash)
         {
             AudioHavyCrash = true;
+
+        } if(MonsterAttack){
+            MonsterAttackAudio = true;
+        }
+         if(NympthAttack){
+            NympthAttackAudio = true;
         }
 
         return Task.CompletedTask;
+    }
+
+
+    private async Task PlayMonsterAttack()
+    {
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('monsterattack').volume = 0.3;");
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('monsterattack').play()");
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('metal').play()");
+    }
+       private async Task PlayNympthAttack()
+
+    {
+         Console.Write(true);
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('nympth').volume = 0.3;");
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('nympth').play()");
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('metal').play()");
     }
 
     private async Task PlayHealingAudio()

@@ -1,0 +1,92 @@
+@page "/ChapterTwo"
+@using BlazorDex.Models
+@using BlazorDex.Components
+@inject NavigationManager NavigationManager
+@inject GameAnimationService AnimationService
+@inject GameLogic gameLogic
+
+
+@if (!gameAccepted){
+ <CardOfEnemy  OnClick="AcceptGame"  AbilityDesc="Reduce Armor / Heals"  OnClickNavigate="GoHome"  Story="@Story" Armor="@_enemy.Armor" Hp="@_enemy.Hp"  Speed="@_enemy.Speed" Weakness="High Attack"  Name="The Wrathful Nymphs"  Dmg="@_enemy.Dmg"/>
+
+} else {
+    <Action 
+    SceneUrl="@_enemy.SceneUrl" 
+    AttackUrl="@_enemy.AttackUrl" 
+    StandUrl="@_enemy.StandUrl" 
+    DefendUrl="@_enemy.DefendUrl"  
+    BoostUrl="@_enemy.BoostUrl"
+    HealUrl="@_enemy.HealUrl"
+
+    EnemyHp="@_enemy.Hp"
+    EnemySpeed="@_enemy.Speed"
+    EnemyArmor="@_enemy.Armor"
+    EnemyDmg="@_enemy.Dmg"
+    IconUrl="@_enemy.IconUrl"
+    ExperienceProvided="@_enemy.ExperienceProvided"
+    PointsProvided="@_enemy.PointsProvided"
+    EnemyName="@_enemy.Name"
+    NumberOfSpells="@_enemy.NumberOfSpells"
+    EnemyHeal="@EnemyHeal"
+    enemyAbilities="enemyAbilities" 
+    specialAbility="@specialAbility"
+
+/>
+}
+
+@code {
+    private Enemy _enemy = new Enemy(
+        hp: 150,
+        speed: 1,
+        armor: 0,
+        dmg: 20,
+        name: "Nymphs",
+        sceneUrl: "image/scenes/ChapterTwo.jpg",
+        attackUrl: "image/motion/zanaatk.png",
+        standUrl: "image/motion/zanastand.png",
+        defendUrl: "image/motion/zanastand.png",
+        boostUrl: "image/motion/zanahealth.png",
+        iconUrl: "image/icons/nymphs.png",
+        experienceProvided: 25,
+        pointsProvided : 2,
+        numberOfSpells: 3,
+        healUrl: "image/motion/zanahealth.png"
+    );
+
+
+        private bool gameAccepted { get; set; } = false;
+        private void AcceptGame()
+    {
+        gameAccepted = true;
+    }
+
+    private void GoHome() => NavigationManager.NavigateTo("/game");
+
+    private string Story = "Brother, the village speaks in whispers of two cursed nymphs who have brought despair upon us. Their beauty masks a terrifying power, one that turns men into stone with a single look.  Only one with great strength and a sharper mind can hope to break their curse.";
+
+    private List<string> enemyAbilities = new List<string> { "SpecialAbility", "Heal" };
+
+private async Task<(int heroHp, int damageDealt, int heroArmor, int armorReduction, bool isNympth)> specialAbility(int heroArmor, int heroHp, int enemyDmg)
+{
+    
+    await Task.Delay(100);
+    int armorReduction = _enemy.Dmg;
+    int damageDealt = Math.Max(enemyDmg - heroArmor, armorReduction);
+    heroHp -= damageDealt;
+    heroArmor -= armorReduction;
+    bool isNympth = true;
+
+    return (heroHp, damageDealt, heroArmor, armorReduction, isNympth); // Return the updated hero's HP and damage dealt
+}
+
+
+private async Task<(int enemyHp, int hpAdded)> EnemyHeal(int enemyHp, int enemyStartingHp)
+{
+    await Task.Delay(100);
+    int hpAdded = 50;
+    enemyHp = Math.Min(enemyHp + hpAdded, enemyStartingHp);
+
+    return (enemyHp, hpAdded); // Return the updated hero's HP and damage dealt
+}
+
+}

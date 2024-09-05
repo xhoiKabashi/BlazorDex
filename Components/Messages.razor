@@ -12,14 +12,14 @@
                 </div>
         }
     </div>
-          <div class=" h-full flex justify-center items-center rounded-lg p-1" style="background-color: rgba(255, 249, 249, 0.1);" @onclick="GoHome">
+          <div class=" h-full flex justify-center items-center rounded-lg p-1" style="background-color: rgba(255, 249, 249, 0.1);" @onclick="OnClick">
                     <img src="image/icons/logout.png" alt="" class=" h-6">
             </div>
 </div>
 
 @code {
-    [Parameter]
-    public List<string> ActionMessages { get; set; } = new List<string>();
-    private void GoHome() => NavigationManager.NavigateTo("/game");
+    [Parameter]  public List<string> ActionMessages { get; set; } = new List<string>();
+    
+    [Parameter] public EventCallback<MouseEventArgs> OnClick { get; set; }
 
 }

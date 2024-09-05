@@ -46,8 +46,14 @@
                     </div>
 
                 </div>
+            } @if (EnemyHeavyCrash)
+            {
+                <div class="flex animate-bounce">
+                    <img src="image/icons/broken-shield.png" alt="arrow" class="h-6 object-cover ">
+                    <p class="font-bold   text-red-600">- @ArmorReduction</p>
+                </div>
+                
             }
-
 
         </div>
 
@@ -122,7 +128,7 @@
             EnemyIsHealing="@EnemyIsHealing" 
             EnemyUpgradeArmor="@EnemyUpgradeArmor" 
             AttackUrl="@AttackUrl"  StandUrl="@StandUrl"
-              BoostUrl="@BoostUrl"  DefendUrl="@DefendUrl"  HealUrl="@DefendUrl"/>
+              BoostUrl="@BoostUrl"  DefendUrl="@DefendUrl"  HealUrl="@HealUrl"/>
     </div>
 </div>
 <!-- Audio Elements -->
@@ -135,12 +141,18 @@
       EnemyIsAtt="@EnemyIsAtt" 
        EnemyIsBessing="@EnemyIsBessing" 
        EnemyUpgradeArmor="@EnemyUpgradeArmor" 
+       MonsterAttack="@MonsterAttack"
+       NympthAttack="@isNympth"
+       
 
         />
 
 
 @code {
    // Hero Parameters
+    [Parameter] public bool MonsterAttack { get; set; }
+    [Parameter] public bool isNympth { get; set; }
+
     [Parameter] public bool HeavyCrash { get; set; }
     [Parameter] public bool HeroBoosting { get; set; }
     [Parameter] public bool HeroIsHealing { get; set; }
@@ -151,6 +163,8 @@
 
     // Enemy Parameters
     [Parameter] public bool EnemyIsBessing { get; set; }
+    [Parameter] public bool EnemyHeavyCrash { get; set; }
+
     [Parameter] public bool EnemyIsHealing { get; set; }
     [Parameter] public bool EnemyUpgradeArmor { get; set; }
     [Parameter] public bool EnemyIsGettingDmg { get; set; }
@@ -177,7 +191,7 @@
  [Parameter] public string? AttackUrl { get; set; }
 
  [Parameter] public string? StandUrl { get; set; }
-
+ 
  [Parameter] public string? DefendUrl { get; set; }
 
  [Parameter] public string? HealUrl { get; set; }

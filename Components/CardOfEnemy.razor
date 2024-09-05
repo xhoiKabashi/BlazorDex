@@ -54,6 +54,13 @@
                         </div>
                         <span>@Weakness</span> <!-- Example Weakness -->
                     </div>
+                     <div class="flex justify-between">
+                        <div class=" flex justify-center items-center gap-2">
+                        <img src="image/icons/magic-book.png" class="h-6" alt="Stat Image">
+                         <span class="font-medium">Ability:</span>
+                        </div>
+                        <span>@AbilityDesc</span> <!-- Example Ability -->
+                    </div>
                     <!-- Add more stats as needed -->
                 </div>
             </div>
@@ -88,6 +95,8 @@
         public string? Weakness { get; set; }
     [Parameter]
         public string? Story { get; set; }
+    [Parameter]
+        public string? AbilityDesc { get; set; }
 
     [Parameter]
     public EventCallback<MouseEventArgs> OnClick { get; set; }

@@ -19,6 +19,12 @@ public class GameAnimationService
     public int ArmorReduction  { get; private set; }
     public bool HeroBoosting { get; private set; }
     public int GettingDamage { get; private set; }
+    public bool EnemyHeavyCrash { get; private set; }
+    public bool IsMonster { get; private set; }
+    public bool IsNympth { get; private set; }
+
+
+
 
 
   public void SetHeroBoosting(bool isHero, bool isBoosting, int armorAdded, int attckAdded)
@@ -43,13 +49,23 @@ public class GameAnimationService
         IsHeroTurn = isHeroTurn;
         IsEnemyTurn = !isHeroTurn;
     }
+        public void setIsMonster(bool isMonster)
+    {
+        IsMonster = isMonster;
+   
+    }
+       public void setIsNympth(bool isNympth)
+    {
+        IsNympth = isNympth;
+   
+    }
 
     public void SetHeavyCrash(bool isHero, bool isCrashing)
     {
         if (isHero)
             HeavyCrash = isCrashing;
         else
-            EnemyIsBessing = isCrashing;
+            EnemyHeavyCrash = isCrashing;
     }
 
 
@@ -127,10 +143,13 @@ public class GameAnimationService
         HeavyCrash = false;
         EnemyIsBessing = false;
         HeroIsMilkRaging = false;
+        EnemyHeavyCrash = false;
         ArmorAdded = 0;
         HpAdded = 0;
         AttackAdded = 0;
         HeroBoosting = false;
+        IsMonster = false;
+        IsNympth = false;
         GettingDamage = 0;
 
     }
