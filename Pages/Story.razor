@@ -7,12 +7,12 @@
     <div class="w-full  flex flex-col bg-center bg-cover  bg-bg-main"  style="background-color: rgba(255, 255, 255, 0.1);">
         <div class="flex flex-col w-full gap-3 px-2  mb-20  mt-4 min-h-[calc(100dvh)]">
             <ChapterComponents IsCompleted="@HeroStateService.Hero.Story01" IsOpen="true" ChapterNumber="1" ChapterTitle="Equal and free like wolves" url="image/woft.png"  navUrl="/ChapterOne"/>
-            <ChapterComponents IsCompleted="@HeroStateService.Hero.Story02" IsOpen="true" ChapterNumber="2" ChapterTitle="The Wrathful Nymphs" url="image/nympths.png" navUrl="/ChapterTwo" />
-            <ChapterComponents IsCompleted="false" IsOpen="true" ChapterNumber="3" ChapterTitle="A hateful stare" url="image/chapter3.jpg" navUrl="/ChapterThree" />
+            <ChapterComponents IsCompleted="@HeroStateService.Hero.Story02" IsOpen="@HeroStateService.Hero.Story1" ChapterNumber="2" ChapterTitle="The Wrathful Nymphs" url="image/nympths.png" navUrl="/ChapterTwo" />
+            <ChapterComponents IsCompleted="@HeroStateService.Hero.Story03" IsOpen="@HeroStateService.Hero.Story2" ChapterNumber="3" ChapterTitle="A hateful stare" url="image/chapter3.jpg" navUrl="/ChapterThree" />
             
         </div>
 
-        <div class="fixed bottom-0 p-3 bg-red-700  w-full md:w-[450px] lg:w-[450px] ">
+        <div class="fixed bottom-0 p-3 bg-bg-second  w-full md:w-[450px] lg:w-[450px] ">
             <img src="image/icons/back.png" class="h-8 cursor-pointer" alt="Stat Image" @onclick="GoHome">
         </div>
     

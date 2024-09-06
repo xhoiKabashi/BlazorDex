@@ -191,9 +191,9 @@ private async Task DetermineTurnOrder()
  //// Hero Actions / Upgarde Armor
  private async Task HeroUpgradeArmor(){
         /// Upgrade Logic
-         HeroArmor += 10;
+         HeroArmor += 5;
         /// Animation
-         AnimationService.SetUpgradeArmor(true, true, 10);
+         AnimationService.SetUpgradeArmor(true, true, 5);
          await DisplayActionMessage("Hero defends!");
          AnimationService.SetTurn(false);
          await AnimationService.ResetStatus();
@@ -211,7 +211,7 @@ private async Task DetermineTurnOrder()
         /// Animation
             AnimationService.SetHeavyCrash(true, true);
             AnimationService.SetArmorReduction(true, HeroStateService.Hero.HeavyCrashDmg);
-            await DisplayActionMessage("Heavy Crash!!");
+            await DisplayActionMessage("Heavy Crash!");
             AnimationService.SetTurn(false);
 
             // Notify the UI of the change
@@ -240,29 +240,13 @@ private async Task DetermineTurnOrder()
          HeroArmor += HeroStateService.Hero.MilkRegeStats;
        /// Animation
             AnimationService.SetHeroBoosting(true,true, HeroStateService.Hero.MilkRegeStats, HeroStateService.Hero.MilkRegeStats);
-            await DisplayActionMessage("Milk Rage!!");
+            await DisplayActionMessage("Milk Rage!");
             AnimationService.SetTurn(false);
             await AnimationService.ResetStatus();       
 
        /// Notify the UI of the change
           await AnimationService.ResetStatus();
   }
-        private async Task EnemyBoost(){
-        /// Ability logic
-        EnemyArmor += 5;
-        EnemyDmg +=10;
-       /// Animation     
-    
-        AnimationService.SetHeroBoosting(false, true, 5, 10); /// armor , attack
-        await DisplayActionMessage("Enemy is Raging!");
-        EnemyDmg += 5;
-        AnimationService.SetTurn(true);
-        await AnimationService.ResetStatus();
-        /// Notify the UI of the change
-        StateHasChanged(); 
-
- }
-
     private async Task ExecuteHeroAction(HeroActionType action)
     {
         switch (action)
