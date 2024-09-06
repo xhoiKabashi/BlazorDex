@@ -94,7 +94,7 @@
     [Parameter] public Func<int, int, int, Task<(int heroHp, int damageDealt, bool isMonster)>>? EnemyAttack { get; set; }
     [Parameter] public Func<int, Task<(int enemyArmor, int armorAdded)>>? EnemyUpgradeArmor { get; set; }
     [Parameter] public Func<int,int, Task<(int enemyHp, int hpAdded)>>? EnemyHeal { get; set; }
-    [Parameter] public Func<int,int,int, Task<(int heroHp, int damageDealt, int heroArmor, int armorReduction, bool isNympth)>>? specialAbility { get; set; }
+    [Parameter] public Func<int,int,int,int,int, Task<(int heroHp, int damageDealt, int heroArmor, int armorReduction, bool isNympth, int enemyHp,int hpAdded)>>? specialAbility { get; set; }
 
 
     /// Enemy Image
@@ -109,6 +109,9 @@
  /// Points and Experience
     [Parameter] public int ExperienceProvided {get; set; }
     [Parameter] public int PointsProvided {get; set; }
+    [Parameter] public string? ChapterNumber {get; set; }
+
+
 
    //// general parameters
     private int turnCounter = 0;
@@ -373,23 +376,43 @@ private async Task DetermineTurnOrder()
             }
         
                 break;
+
              case EnemyActionType.SpecialAbility:
+
+
              if(specialAbility != null) {
-             var abilityResult = await specialAbility(HeroArmor, HeroHP, EnemyDmg);
+             var abilityResult = await specialAbility(HeroArmor, HeroHP, EnemyDmg, EnemyHp, enemyStartingHp);
               HeroHP = abilityResult.heroHp;
               HeroArmor = abilityResult.heroArmor;
+
+            switch (ChapterNumber)
+    {
+    
+        case "Chapter2":
                  /// Animation
-                AnimationService.SetIsAtt(false, true);
-                AnimationService.SetGettingDamage(true, true, abilityResult.damageDealt);
-                AnimationService.SetArmorReduction(false, abilityResult.armorReduction);
-                AnimationService.setIsNympth(abilityResult.isNympth);
-                AnimationService.SetHeavyCrash(false, true);
+            AnimationService.SetIsAtt(false, true);
+            AnimationService.SetGettingDamage(true, true, abilityResult.damageDealt);
+            AnimationService.SetArmorReduction(false, abilityResult.armorReduction);
+            AnimationService.setIsNympth(abilityResult.isNympth);
+            AnimationService.SetHeavyCrash(false, true);
+            break;
+
+        case "Chapter3":
+           /// contect here
+           AnimationService.SetGettingDamage(true, true, abilityResult.damageDealt);
+           AnimationService.setIsNympth(abilityResult.isNympth);
+           EnemyHp = abilityResult.enemyHp;
+           AnimationService.SetHealing(false, true, abilityResult.hpAdded);
+            break;
+
+    }
                 await DisplayActionMessage($"{EnemyName} attacks!");
                 AnimationService.SetTurn(true);
                 await AnimationService.ResetStatus();
                 StateHasChanged(); 
                 await Task.Delay(2000);
                 HasPerformed = false;
+                
              }
             if (HeroHP <= 0)
             {
@@ -428,6 +451,35 @@ private EnemyActionType DetermineEnemyAction()
         int finalExperience = baseExperience * levelMultiplier;
         HeroStateService.Hero.Exp += finalExperience;
         HeroStateService.Hero.Points += PointsProvided;
+        /// update chapters 
+         switch (ChapterNumber)
+    {
+        case "Training":
+            if( HeroStateService.Hero.Wounds == 0 )
+            HeroStateService.Hero.Wounds += 1;
+            break;
+        case "Chapter1":
+            HeroStateService.Hero.Story1 = true;
+            HeroStateService.Hero.Story01 = true;
+            HeroStateService.Hero.Wounds += 1;
+
+            break;
+        case "Chapter2":
+            HeroStateService.Hero.Story2 = true;
+            HeroStateService.Hero.Story02 = true;
+            HeroStateService.Hero.Wounds += 1;
+            break;
+        case "Chapter3":
+            HeroStateService.Hero.Story3 = true;
+            HeroStateService.Hero.Story03 = true;
+            HeroStateService.Hero.Wounds += 1;
+            break;
+        case "Chapter4":
+            HeroStateService.Hero.Story4 = true;
+            HeroStateService.Hero.Story04 = true;
+            HeroStateService.Hero.Wounds += 1;
+            break;
+    }
 
 
         try

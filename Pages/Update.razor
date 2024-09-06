@@ -18,7 +18,16 @@
         </div>
 
         <!-- Level and Points Section -->
-    <StatsSection/>
+     <div class=" grid grid-cols-2 gap-1 uppercase  w-full ">
+        <StatsSectionModular ImageSrc="image/icons/sword.png" StatName="Attack" StatValue="@HeroStateService.Hero.Dmg" Points="@HeroStateService.Hero.Points"
+            ButtonClass="" OnStatChanged="HandleStatChanged" />
+        <StatsSectionModular ImageSrc="image/icons/armor.png" StatName="Armor" StatValue="@HeroStateService.Hero.Armor" Points="@HeroStateService.Hero.Points"
+            ButtonClass="" OnStatChanged="HandleStatChanged" />
+        <StatsSectionModular ImageSrc="image/icons/hermes.png" StatName="Speed" StatValue="@HeroStateService.Hero.Speed" Points="@HeroStateService.Hero.Points"
+            ButtonClass="" OnStatChanged="HandleStatChanged" />
+        <StatsSectionModular ImageSrc="image/icons/health.png" StatName="Hp" StatValue="@HeroStateService.Hero.Hp" Points="@HeroStateService.Hero.Points"
+            ButtonClass="" OnStatChanged="HandleStatChanged" />
+    </div>
 
         <!-- Hero Skills -->
         <div class="p-2 rounded-md shadow-md">
@@ -92,6 +101,8 @@
             "Heavy Crash" => change.Change > 0 ? 5 : 0,
             "Her Tears" => change.Change > 0 ? 5 : 0,
             "Rage Milk" => change.Change > 0 ? 5 : 0,
+            "Attack" => change.Change > 0 ? 1 : 0,
+            "Armor" => change.Change > 0 ? 1 : 0,
             _ => change.Change > 0 ? 1 : 0
         };
 

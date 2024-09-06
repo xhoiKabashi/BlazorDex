@@ -30,6 +30,9 @@ namespace BlazorDex.Models
         public int PointsProvided { get; set; }
         public int NumberOfSpells { get; set; }
 
+        
+
+
 
         
 

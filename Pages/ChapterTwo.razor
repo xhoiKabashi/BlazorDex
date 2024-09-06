@@ -30,6 +30,7 @@
     EnemyHeal="@EnemyHeal"
     enemyAbilities="enemyAbilities" 
     specialAbility="@specialAbility"
+    ChapterNumber="Chapter2"
 
 />
 }
@@ -39,7 +40,7 @@
         hp: 150,
         speed: 1,
         armor: 0,
-        dmg: 20,
+        dmg: 25,
         name: "Nymphs",
         sceneUrl: "image/scenes/ChapterTwo.jpg",
         attackUrl: "image/motion/zanaatk.png",
@@ -47,7 +48,7 @@
         defendUrl: "image/motion/zanastand.png",
         boostUrl: "image/motion/zanahealth.png",
         iconUrl: "image/icons/nymphs.png",
-        experienceProvided: 25,
+        experienceProvided: 150,
         pointsProvided : 2,
         numberOfSpells: 3,
         healUrl: "image/motion/zanahealth.png"
@@ -66,17 +67,18 @@
 
     private List<string> enemyAbilities = new List<string> { "SpecialAbility", "Heal" };
 
-private async Task<(int heroHp, int damageDealt, int heroArmor, int armorReduction, bool isNympth)> specialAbility(int heroArmor, int heroHp, int enemyDmg)
+private async Task<(int heroHp, int damageDealt, int heroArmor, int armorReduction, bool isNympth, int enemyHp, int hpAdded)> specialAbility(int heroArmor, int heroHp, int enemyDmg, int enemyHp, int hpAdded)
 {
-    
     await Task.Delay(100);
-    int armorReduction = _enemy.Dmg;
+
+    int armorReduction = _enemy.Dmg; // Assuming _enemy.Dmg is defined somewhere
     int damageDealt = Math.Max(enemyDmg - heroArmor, armorReduction);
     heroHp -= damageDealt;
     heroArmor -= armorReduction;
     bool isNympth = true;
 
-    return (heroHp, damageDealt, heroArmor, armorReduction, isNympth); // Return the updated hero's HP and damage dealt
+    // Return the updated hero's HP, damage dealt, armor reduction, and other values
+    return (heroHp, damageDealt, heroArmor, armorReduction, isNympth, enemyHp, hpAdded);
 }
 
 

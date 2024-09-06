@@ -1,0 +1,84 @@
+@page "/ChapterThree"
+@using BlazorDex.Models
+@using BlazorDex.Components
+@inject NavigationManager NavigationManager
+@inject GameAnimationService AnimationService
+@inject GameLogic gameLogic
+
+
+@if (!gameAccepted){
+ <CardOfEnemy  OnClick="AcceptGame"  AbilityDesc="Steals Enemy HP"  OnClickNavigate="GoHome"  Story="@Story" Armor="@_enemy.Armor" Hp="@_enemy.Hp"  Speed="@_enemy.Speed" Weakness="High Attack"  Name="Shtriga"  Dmg="@_enemy.Dmg"/>
+
+} else {
+    <Action 
+    SceneUrl="@_enemy.SceneUrl" 
+    AttackUrl="@_enemy.AttackUrl" 
+    StandUrl="@_enemy.StandUrl" 
+    DefendUrl="@_enemy.DefendUrl"  
+    BoostUrl="@_enemy.BoostUrl"
+    HealUrl="@_enemy.HealUrl"
+
+    EnemyHp="@_enemy.Hp"
+    EnemySpeed="@_enemy.Speed"
+    EnemyArmor="@_enemy.Armor"
+    EnemyDmg="@_enemy.Dmg"
+    IconUrl="@_enemy.IconUrl"
+    ExperienceProvided="@_enemy.ExperienceProvided"
+    PointsProvided="@_enemy.PointsProvided"
+    EnemyName="@_enemy.Name"
+    NumberOfSpells="@_enemy.NumberOfSpells"
+    enemyAbilities="enemyAbilities" 
+    specialAbility="@specialAbility"
+    ChapterNumber="Chapter3"
+
+/>
+}
+
+@code {
+    private Enemy _enemy = new Enemy(
+        hp: 200,
+        speed: 1,
+        armor: 0,
+        dmg: 50,
+        name: "Shtriga",
+        sceneUrl: "image/scenes/ChapterThree.jpg",
+        attackUrl: "image/motion/shtrigaattack.png",
+        standUrl: "image/motion/shtrigastand.png",
+        defendUrl: "image/motion/shtrigaattack.png",
+        boostUrl: "image/motion/shtrigaattack.png",
+        iconUrl: "image/icons/hood.png",
+        experienceProvided: 200,
+        pointsProvided : 8,
+        numberOfSpells: 1,
+        healUrl: "image/motion/shtrigaattack.png"
+    );
+
+
+        private bool gameAccepted { get; set; } = false;
+        private void AcceptGame()
+    {
+        gameAccepted = true;
+    }
+
+    private void GoHome() => NavigationManager.NavigateTo("/game");
+
+    private string Story = "Brother, the tales of our people speak of a Shtriga, a fearsome creature cloaked in darkness. By day, she appears as an innocent old woman, but by night, her true nature reveals itself. Her hunger for human blood is insatiable, and with each drop she consumes, her power grows stronger. Beware her piercing gaze, for it is said that she can drain the life from even the bravest soul.";
+
+    private List<string> enemyAbilities = new List<string> { "SpecialAbility" };
+
+private async Task<(int heroHp, int damageDealt, int heroArmor, int armorReduction, bool isNympth, int enemyHp, int hpAdded)> specialAbility(int heroArmor, int heroHp, int enemyDmg, int enemyHp, int enemyStartingHp)
+{
+    
+    await Task.Delay(100);
+    int armorReduction = _enemy.Dmg;
+    int damageDealt = Math.Max(enemyDmg - heroArmor, armorReduction);
+    heroHp -= damageDealt;
+    int hpAdded = 50;
+    enemyHp = Math.Min(enemyHp + hpAdded, enemyStartingHp);
+    bool isNympth = true;
+
+    return (heroHp, damageDealt, heroArmor, armorReduction, isNympth, enemyHp, hpAdded); // Return the updated hero's HP and damage dealt
+}
+
+
+}
