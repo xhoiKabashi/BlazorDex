@@ -4,6 +4,7 @@
         @inject NavigationManager NavigationManager
         @inject GameAnimationService AnimationService
         @inject GameLogic gameLogic
+        @inject HeroStateService HeroStateService
 
 
 
@@ -33,6 +34,7 @@
             EnemyUpgradeArmor="@EnemyUpgradeArmor"
             enemyAbilities="enemyAbilities" 
             ChapterNumber="Training"
+            EnemyLevel="HeroStateService.Hero.Level"
   
         />
         }
@@ -41,7 +43,7 @@
             private Enemy _enemy = new Enemy(
                 hp: 100,
                 speed: 4,
-                armor: 0,
+                armor: 2,
                 dmg: 22,
                 name: "Ulqin",
                 sceneUrl: "image/scenes/training.jpg",
@@ -55,13 +57,27 @@
                 numberOfSpells: 3,
                 healUrl: "image/motion/ulqniHealth.png"
             );
-
-
+         private int armorAdded = 3;
+            protected override void OnInitialized()
+    {
+        _enemy.Hp = ScaleEnemyStat(baseStat: _enemy.Hp, heroLevel: HeroStateService.Hero.Level, scalingFactor: 1.15);
+        _enemy.Armor = ScaleEnemyStat(baseStat: _enemy.Armor, heroLevel: HeroStateService.Hero.Level, scalingFactor: 1.4);
+        _enemy.Dmg = ScaleEnemyStat(baseStat: _enemy.Dmg, heroLevel: HeroStateService.Hero.Level, scalingFactor: 1.2);
+        _enemy.Speed = ScaleEnemyStat(baseStat: _enemy.Speed, heroLevel: HeroStateService.Hero.Level, scalingFactor: 1.2);
+        armorAdded = ScaleEnemyStat(baseStat: armorAdded, heroLevel: HeroStateService.Hero.Level, scalingFactor: 1.3);
+    }
                 private bool gameAccepted { get; set; } = false;
                 private void AcceptGame()
             {
+        
                 gameAccepted = true;
             }
+
+
+             private int ScaleEnemyStat(int baseStat, int heroLevel, double scalingFactor)
+                {
+                return (int)(baseStat * Math.Pow(scalingFactor, heroLevel - 1)); // Scale based on the hero's level
+                    }
 
             private void GoHome() => NavigationManager.NavigateTo("/game");
 
@@ -80,7 +96,6 @@
         private async Task<(int enemyArmor, int armorAdded)> EnemyUpgradeArmor(int enemyArmor)
         {   
             await Task.Delay(100);
-            int armorAdded = 3;
             enemyArmor += armorAdded;
 
             return (enemyArmor, armorAdded); // Return the updated hero's HP and damage dealt

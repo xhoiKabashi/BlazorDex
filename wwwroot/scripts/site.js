@@ -11,21 +11,47 @@ window.triggerAttackAnimation = () => {
 function toggleFullScreen() {
   var element = document.body; // or specific element
 
-  if (element.requestFullscreen) {
+  if (!document.fullscreenElement) {
+    // Enter fullscreen mode
+    if (element.requestFullscreen) {
       element.requestFullscreen();
-  } else if (element.webkitRequestFullscreen) { // Safari
+    } else if (element.webkitRequestFullscreen) { // Safari
       element.webkitRequestFullscreen();
-  } else if (element.mozRequestFullScreen) { // Firefox
+    } else if (element.mozRequestFullScreen) { // Firefox
       element.mozRequestFullScreen();
-  } else if (element.msRequestFullscreen) { // IE/Edge
+    } else if (element.msRequestFullscreen) { // IE/Edge
       element.msRequestFullscreen();
-  } else if (window.navigator.standalone) { // iOS specific
+    } else if (window.navigator.standalone) { // iOS specific
       // iOS specific full-screen handling
       document.documentElement.style.height = '100%';
       document.body.style.height = '100%';
       document.body.style.overflow = 'hidden';
+    }
   } else {
-      alert('Full-screen mode is not supported on this device.');
+    // Exit fullscreen mode
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.webkitExitFullscreen) { // Safari
+      document.webkitExitFullscreen();
+    } else if (document.mozCancelFullScreen) { // Firefox
+      document.mozCancelFullScreen();
+    } else if (document.msExitFullscreen) { // IE/Edge
+      document.msExitFullscreen();
+    }
   }
 }
+
+window.toggleAudioMute = (isMuted) => {
+  let audioElements = document.querySelectorAll("audio");
+  console.log("Audio elements found:", audioElements.length); // Check how many audio elements are selected
+  audioElements.forEach(audio => {
+      audio.muted = isMuted;
+      console.log(audio.id, " is now ", isMuted ? "muted" : "unmuted"); // Debug each audio element
+  });
+};
+
+
+
+
+
 

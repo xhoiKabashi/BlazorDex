@@ -31,13 +31,15 @@
     enemyAbilities="enemyAbilities" 
     specialAbility="@specialAbility"
     ChapterNumber="Chapter2"
+    EnemyLevel="4"
+
 
 />
 }
 
 @code {
     private Enemy _enemy = new Enemy(
-        hp: 150,
+        hp: 1,
         speed: 1,
         armor: 0,
         dmg: 25,
@@ -48,7 +50,7 @@
         defendUrl: "image/motion/zanastand.png",
         boostUrl: "image/motion/zanahealth.png",
         iconUrl: "image/icons/nymphs.png",
-        experienceProvided: 150,
+        experienceProvided: 80,
         pointsProvided : 7,
         numberOfSpells: 3,
         healUrl: "image/motion/zanahealth.png"

@@ -26,6 +26,7 @@ else {
     EnemyAttack="EnemyAttack"
     enemyAbilities="enemyAbilities" 
     ChapterNumber="Chapter1"
+    EnemyLevel="2"
 
 
 />
@@ -33,10 +34,10 @@ else {
 
 @code {
     private Enemy _enemy = new Enemy(
-        hp: 120,
+        hp: 1,
         speed: 12,
         armor: 0,
-        dmg: 40,
+        dmg: 1,
         name: "Black Wolf",
         sceneUrl: "image/scenes/chapterOne.jpg",
         attackUrl: "image/motion/wolfattk.png",
@@ -44,7 +45,7 @@ else {
         defendUrl: null,
         boostUrl: null,
         iconUrl: "image/icons/wolf.png",
-        experienceProvided: 100,
+        experienceProvided: 50,
         pointsProvided : 5,
         numberOfSpells: 1,
         healUrl: "healUrl"

@@ -11,13 +11,34 @@
 <div class=" h-full flex flex-col w-full items-center bg-center bg-cover" style="background-image: url('image/login1.png');">
     @if (gameEnd)
     {
-        <div class="flex flex-col w-full h-full justify-center items-center " style="background-image: url('image/login1.png');">
-            <h2 class="text-5xl font-extrabold  mb-6 text-text-third">@EndGameMessage</h2>
-            <button @onclick="GoHome"
-                class=" bg-text-third text-white font-extrabold tracking-widest uppercase py-4 px-8 rounded-3xl shadow-xl transition transform hover:scale-110">
+        <div class="flex flex-col justify-center items-center min-h-[calc(100dvh)] w-full text-text-third bg-cover bg-center px-4" style="background-image: url('image/login1.png');">
+
+    <div class="p-8 rounded-xl shadow-2xl max-w-sm w-full text-center" style="background-color: rgba(255, 249, 249, 0.1);">
+        <h2 class="text-2xl font-bold uppercase tracking-wider mb-4 text-yellow-400">@EndGameMessage</h2>
+
+     @if(winOnHero) {
+        <div class="flex flex-col space-y-2">
+            <div class="flex justify-between items-center">
+                <p class="text-green-50">Experience Increased by</p>
+                <h3 class="font-bold text-green-400">@finalExperience</h3>
+            </div>
+            <div class="flex justify-between items-center">
+                <p class="text-green-50">Honors Increased by</p>
+                <h3 class="font-bold text-green-400">@PointsProvided</h3>
+            </div>
+            
+        </div>
+     } 
+
+        <div class="flex justify-center mt-4">
+             <button @onclick="GoHome"
+               class="py-2 px-4 bg-red-600 hover:bg-red-700 text-text-third font-bold rounded-lg shadow-md transition-all duration-300 ease-in-out">
                Go Home
             </button>
         </div>
+    </div>
+</div>  
+
     }
     else
     {
@@ -25,7 +46,7 @@
 
             @if(HeroStateService.Hero != null){
             <HealthBar HeroHP="@HeroHP" HeroStartHP="@heroStartingHp" EnemyHP="@EnemyHp" EnemyStartHP="@enemyStartingHp"
-                HeroLevel="@HeroStateService.Hero.Level" EnemyLevel="1" EnemyIconSrc="@IconUrl"  HeroIconSrc="image/icons/heroIcon.png"/>
+                HeroLevel="@HeroStateService.Hero.Level" EnemyLevel="@EnemyLevel" EnemyIconSrc="@IconUrl"  HeroIconSrc="image/icons/heroIcon.png"/>
 
              }   
             <StatInAction HeroSpeed="@HeroSpeed" HeroDamage="@HeroDmg" HeroArmor="@HeroArmor" EnemySpeed="@EnemySpeed"
@@ -89,6 +110,8 @@
     [Parameter] public int EnemyDmg  {set; get;}
     [Parameter] public string? EnemyName { get; set; }
     [Parameter] public int NumberOfSpells {get; set; }
+    [Parameter] public int EnemyLevel {get; set; }
+
 
     [Parameter] public List<string> enemyAbilities { get; set; } = new List<string>();
     [Parameter] public Func<int, int, int, Task<(int heroHp, int damageDealt, bool isMonster)>>? EnemyAttack { get; set; }
@@ -106,8 +129,10 @@
     [Parameter] public string? BoostUrl {get; set; }
     [Parameter] public string? IconUrl {get; set; }
 
- /// Points and Experience
+ /// Points and Experience finalExperience
+    [Parameter] public int finalExperience {get; set; }
     [Parameter] public int ExperienceProvided {get; set; }
+
     [Parameter] public int PointsProvided {get; set; }
     [Parameter] public string? ChapterNumber {get; set; }
 
@@ -118,6 +143,8 @@
     private List<string> actionMessages = new List<string>();
     private bool HasPerformed = false;
     private bool gameEnd = false;
+    private bool winOnHero = false;
+
     private string? EndGameMessage;
     public int? heroStartingHp { get; set; }
     public int enemyStartingHp { get; set; }
@@ -184,6 +211,7 @@ private async Task DetermineTurnOrder()
         if (EnemyHp <= 0)
         {
             gameEnd = true;
+            winOnHero = true;
             EndGameMessage = "Victory!";
             await WinBattle();
         }
@@ -430,9 +458,8 @@ private EnemyActionType DetermineEnemyAction()
         if (HeroStateService.Hero == null)
         return; // Early exit if Hero is nul
         /// calculate the experience
-        int baseExperience = ExperienceProvided;
         int levelMultiplier = HeroStateService.Hero.Level > 1 ? HeroStateService.Hero.Level : 1;
-        int finalExperience = baseExperience * levelMultiplier;
+        finalExperience = ExperienceProvided * levelMultiplier;
         HeroStateService.Hero.Exp += finalExperience;
         HeroStateService.Hero.Points += PointsProvided;
         /// update chapters 

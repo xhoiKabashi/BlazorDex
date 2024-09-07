@@ -71,6 +71,17 @@ public class HeroStateService
     }
 }
 
+ public async Task DeleteAccount(int userId)
+    {
+        // var response = await this.Client.DeleteAsync($"http://localhost:5024/api/heroes/{userId}");
+        var response = await this.Client.DeleteAsync($"https://kreshnik-api.onrender.com/api/users/{userId}");
+
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new Exception($"Failed to delete account. Status code: {response.StatusCode}");
+        }
+    }
+
 
     }
 }

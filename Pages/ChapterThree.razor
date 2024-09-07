@@ -30,16 +30,17 @@
     enemyAbilities="enemyAbilities" 
     specialAbility="@specialAbility"
     ChapterNumber="Chapter3"
+    EnemyLevel="5"
 
 />
 }
 
 @code {
     private Enemy _enemy = new Enemy(
-        hp: 200,
+        hp: 1,
         speed: 1,
         armor: 0,
-        dmg: 50,
+        dmg: 500,
         name: "Shtriga",
         sceneUrl: "image/scenes/ChapterThree.jpg",
         attackUrl: "image/motion/shtrigaattack.png",
@@ -47,7 +48,7 @@
         defendUrl: "image/motion/shtrigaattack.png",
         boostUrl: "image/motion/shtrigaattack.png",
         iconUrl: "image/icons/hood.png",
-        experienceProvided: 200,
+        experienceProvided: 100,
         pointsProvided : 8,
         numberOfSpells: 1,
         healUrl: "image/motion/shtrigaattack.png"

@@ -1,10 +1,12 @@
+@inject NavigationManager NavigationManager
 <div class="flex w-full justify-between p-1 py-2  text-yellow-400 " style="background-color: rgba(255, 249, 249, 0.1);">
     <div class="flex items-center gap-1">
         <img src="image/icons/level-up.png" class="h-7" alt="level" />
         <p class=" font-semibold tracking-widest  text-sm">Level: @Level</p>
     </div>
-    <div class=" flex justify-center items-center ">
-         <img src="image/icons/heroIcon.png" class="h-10" alt="level" />
+    <div class=" flex flex-col justify-center items-center  cursor-pointer active:scale-95 focus:scale-95 " @onclick="@GoSettings">
+         <img src="image/icons/setting.png" class="h-7" alt="level" />
+         <p class=" text-xs font-semibold tracking-widest">Setting</p>
     </div>
     <div class="flex  items-center px-1">
         <p class=" font-semibold tracking-widest text-sm">Honors: @Points</p>
@@ -20,4 +22,6 @@
 
     [Parameter]
     public int Points { get; set; }
+
+    private void GoSettings() => NavigationManager.NavigateTo("/settings"); 
 }

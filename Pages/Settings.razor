@@ -1,0 +1,60 @@
+@page "/settings"
+@inject IJSRuntime JSRuntime
+@inject HeroStateService HeroStateService
+@inject NavigationManager NavigationManager
+
+<div class="flex flex-col  justify-between items-center min-h-[calc(100dvh)] w-full text-text-third bg-cover bg-center" style="background-image: url('image/login1.png');">
+    <h2 class="text-2xl font-bold uppercase tracking-wider py-2 px-7 rounded-lg  mt-10 text-yellow-400" style="background-color: rgba(255, 249, 249, 0.1);">Settings</h2>
+
+    <div class="p-8 rounded-xl shadow-2xl max-w-sm w-full text-center" style="background-color: rgba(255, 249, 249, 0.1);">
+
+        <div class="flex flex-col space-y-3">
+            <div class="flex justify-between items-center">
+                <p class="text-green-50">Audio</p>
+                <img src="image/icons/mute.png" alt="" class=" h-5 cursor-pointer" @onclick="@MuteAudio">
+            </div>
+            <div class="flex justify-between items-center">
+                <p class="text-green-50">Full Screen</p>
+                <img src="image/icons/fullscreen.png" alt="" class=" h-5 cursor-pointer" @onclick="@FullScreen">
+            </div>
+            <div class="flex justify-between items-center">
+                <p class="text-green-50">Delete Account</p>
+                <img src="image/icons/delete.png" alt="" class=" h-5 cursor-pointer" @onclick="@DeleteAccount">
+
+            </div>
+        </div>
+    </div>
+    <NavigationBar />
+</div>  
+
+@code {
+ [Inject] private HeroClient HeroClient { get; set; }
+  private bool isMuted = false;
+
+private async Task FullScreen(){
+
+  await JSRuntime.InvokeVoidAsync("toggleFullScreen");
+}
+
+private async Task MuteAudio()
+{
+    isMuted = !isMuted;
+    await JSRuntime.InvokeVoidAsync("toggleAudioMute", isMuted);
+}
+
+
+    private async Task DeleteAccount()
+    {
+        try
+        {
+            await HeroClient.DeleteAccount(HeroStateService.Hero.Id);
+             NavigationManager.NavigateTo("/");
+            
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error deleting account: {ex.Message}");
+        }
+    }
+
+}

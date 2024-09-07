@@ -7,6 +7,8 @@
 
 <PageTitle>Home</PageTitle>
 
+
+@if(!showLevelUpToast) {
 <div class="w-full min-h-[calc(100dvh)] flex flex-col justify-between items-center bg-cover bg-center  text-text-third" style="background-image: url('image/login1.png');">
     @if (HeroStateService.Hero != null)
     {
@@ -43,27 +45,60 @@
 
                   
         <NavigationBar />
-
-        @if (showLevelUpToast)
-        {
-            <div class="fixed bottom-5 right-5 bg-green-500 text-white p-4 rounded-md shadow-md">
-                <p>Level Up!</p>
-                <p>HP Increased by @hpIncrease</p>
-                <p>Damage Increased by @dmgIncrease</p>
-                <button @onclick="CloseToast" class="mt-2 text-sm underline">Close</button>
-            </div>
-        }
     }
     else
     {
         <p class="text-white text-xl">Failed to load Hero data.</p>
     }
 </div>
+}
+    @if (showLevelUpToast)
+        {
+<div class="flex flex-col justify-center items-center min-h-[calc(100dvh)] w-full text-text-third bg-cover bg-center px-4" style="background-image: url('image/login1.png');">
+
+    <div class="p-8 rounded-xl shadow-2xl max-w-sm w-full text-center" style="background-color: rgba(255, 249, 249, 0.1);">
+        <h2 class="text-2xl font-bold uppercase tracking-wider mb-4 text-yellow-400">Level Up!</h2>
+
+        <div class="flex flex-col space-y-2">
+            <div class="flex justify-between items-center">
+                <p class="text-green-50">HP Increased by</p>
+                <h3 class="font-bold text-green-400">@hpIncrease</h3>
+            </div>
+            <div class="flex justify-between items-center">
+                <p class="text-green-50">Honors Increased by</p>
+                <h3 class="font-bold text-green-400">@pointsIncrease</h3>
+            </div>
+            <div class="flex justify-between items-center">
+                <p class="text-green-50">Armor Increased by</p>
+                <h3 class="font-bold text-green-400">@ArmorIncrease</h3>
+            </div>
+            <div class="flex justify-between items-center">
+                <p class="text-green-50">Speed Increased by</p>
+                <h3 class="font-bold text-green-400">@SpeedIncrease</h3>
+            </div>
+            <div class="flex justify-between items-center">
+                <p class="text-green-50">Damage Increased by</p>
+                <h3 class="font-bold text-green-400">@dmgIncrease</h3>
+            </div>
+        </div>
+
+        <div class="flex justify-center mt-4">
+            <button @onclick="CloseToast" class="py-2 px-4 bg-red-600 hover:bg-red-700 text-text-third font-bold rounded-lg shadow-md transition-all duration-300 ease-in-out">
+                Close
+            </button>
+        </div>
+    </div>
+</div>  
+
+        }
 
 @code {
     private bool showLevelUpToast = false;
     private int hpIncrease;
     private int dmgIncrease;
+    private int pointsIncrease;
+    private int ArmorIncrease;
+    private int SpeedIncrease;
 
     protected override async Task OnInitializedAsync()
     {
@@ -85,29 +120,35 @@
         }
     }
 
-    private void LevelUpHero()
+    private  async void LevelUpHero()
     {    if (HeroStateService.Hero == null)
              return;
         // Increase the level
         HeroStateService.Hero.Level++;
         
         // Increase HP and Damage (customize these as needed)
-        hpIncrease = 10; // Example increment
-        dmgIncrease = 5;  // Example increment
+        hpIncrease = 5 + (HeroStateService.Hero.Level * 4); 
+        dmgIncrease = 1 + HeroStateService.Hero.Level;
+        pointsIncrease = 1 + HeroStateService.Hero.Level; 
+        ArmorIncrease = 1 + HeroStateService.Hero.Level; 
+        SpeedIncrease = 1 + HeroStateService.Hero.Level; 
         HeroStateService.Hero.Hp += hpIncrease;
         HeroStateService.Hero.Dmg += dmgIncrease;
+        HeroStateService.Hero.Points += pointsIncrease;
+        HeroStateService.Hero.Armor += ArmorIncrease;
+        HeroStateService.Hero.Speed += SpeedIncrease;
 
         // Set experience to the difference beyond the threshold
         HeroStateService.Hero.Exp = HeroStateService.Hero.Exp - HeroStateService.Hero.ExpThreshold;
 
         // Increase the experience threshold for the next level
-        HeroStateService.Hero.ExpThreshold = (int)(HeroStateService.Hero.ExpThreshold * 1.5);
+        HeroStateService.Hero.ExpThreshold = (int)(HeroStateService.Hero.ExpThreshold * 1.7);
 
         // Show the level-up toast notification
         showLevelUpToast = true;
 
         // Update the hero data on the server if needed
-        // await client.UpdateHero(HeroStateService.Hero);
+         await client.UpdateHero(HeroStateService.Hero);
 
         // Trigger UI update
         StateHasChanged();
