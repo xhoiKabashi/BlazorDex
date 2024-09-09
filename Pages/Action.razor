@@ -144,6 +144,8 @@
     private bool HasPerformed = false;
     private bool gameEnd = false;
     private bool winOnHero = false;
+    private bool onGame = true;
+
 
     private string? EndGameMessage;
     public int? heroStartingHp { get; set; }
@@ -152,6 +154,8 @@
     /// Initialization of the stats form the game State
     protected override async Task OnInitializedAsync()
     {
+
+        
         HeroStateService.OnChange += StateHasChanged;
 
         if (HeroStateService.Hero != null)
@@ -348,7 +352,7 @@ private async Task DetermineTurnOrder()
                 AnimationService.SetTurn(true);
                 await AnimationService.ResetStatus();
                 StateHasChanged(); 
-                if (HeroHP <= 0)
+                if (HeroHP <= 0 && gameEnd)
             {
                  gameEnd = true;
                 EndGameMessage = "Hero is defeated!";
@@ -458,10 +462,12 @@ private EnemyActionType DetermineEnemyAction()
         if (HeroStateService.Hero == null)
         return; // Early exit if Hero is nul
         /// calculate the experience
+        if(onGame){
         int levelMultiplier = HeroStateService.Hero.Level > 1 ? HeroStateService.Hero.Level : 1;
         finalExperience = ExperienceProvided * levelMultiplier;
         HeroStateService.Hero.Exp += finalExperience;
         HeroStateService.Hero.Points += PointsProvided;
+        } 
         /// update chapters 
          switch (ChapterNumber)
     {
@@ -543,10 +549,12 @@ private EnemyActionType DetermineEnemyAction()
 
     private async Task GoHomeAndReset() 
     { 
+    onGame = false; 
       
     NavigationManager.NavigateTo("/game");
 
     // Reset enemy stats
+    gameEnd = false;
     EnemyHp = 0;
     EnemySpeed = 0;
     EnemyArmor = 0;
@@ -563,7 +571,6 @@ private EnemyActionType DetermineEnemyAction()
     await AnimationService.ResetStatus();
     // Reset game state variables
     actionMessages.Clear();
-    gameEnd = false;
     HasPerformed = false;
     turnCounter = 0;
     EndGameMessage = null;

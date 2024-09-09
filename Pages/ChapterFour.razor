@@ -1,0 +1,74 @@
+@page "/ChapterFour"
+@using BlazorDex.Models
+@inject NavigationManager NavigationManager
+
+
+
+@if (!gameAccepted)
+{
+   <CardOfEnemy  OnClick="AcceptGame"  AbilityDesc=" None"   OnClickNavigate="GoStory"  Story="@Story" Armor="@_enemy.Armor" Hp="@_enemy.Hp"  Speed="@_enemy.Speed" Weakness="High Speed"  Name="@_enemy.Name"  Dmg="@_enemy.Dmg"/>
+}
+else {
+<Action 
+    SceneUrl="@_enemy.SceneUrl" 
+    AttackUrl="@_enemy.AttackUrl" 
+    StandUrl="@_enemy.StandUrl" 
+
+    EnemyHp="@_enemy.Hp"
+    EnemySpeed="@_enemy.Speed"
+    EnemyArmor="@_enemy.Armor"
+    EnemyDmg="@_enemy.Dmg"
+    IconUrl="@_enemy.IconUrl"
+    EnemyName="@_enemy.Name"
+    PointsProvided="@_enemy.PointsProvided"
+    ExperienceProvided="@_enemy.ExperienceProvided"
+    NumberOfSpells="@_enemy.NumberOfSpells"
+    EnemyAttack="EnemyAttack"
+    enemyAbilities="enemyAbilities" 
+    ChapterNumber="Chapter1"
+    EnemyLevel="2"
+
+
+/>
+}
+
+@code {
+    private Enemy _enemy = new Enemy(
+        hp: 500,
+        speed: 15,
+        armor: 0,
+        dmg: 100,
+        name: "Katallani",
+        sceneUrl: "image/scenes/ChapterFive.jpg",
+        attackUrl: "image/motion/katallaniAttack.png",
+        standUrl: "image/motion/katallaniStand.png",
+        defendUrl: null,
+        boostUrl: null,
+        iconUrl: "image/icons/giant.png",
+        experienceProvided: 200,
+        pointsProvided : 5,
+        numberOfSpells: 1,
+        healUrl: "healUrl"
+    );
+    private bool gameAccepted { get; set; } = false;
+
+    private void AcceptGame()
+    {
+        gameAccepted = true;
+    }
+
+    private void GoStory() => NavigationManager.NavigateTo("/Story");
+    private string Story = "Brother, the legends were true. Katallani, the one-eyed beast with legs as straight as iron, has returned to claim what he believes is his—human lives. His name is whispered in fear across the land, and the earth itself trembles beneath his steps. No man has ever stood against him and lived to speak of it.";
+    private List<string> enemyAbilities = new List<string> { "Attack" };
+
+
+
+    private async Task<(int heroHp, int damageDealt, bool isMonster)> EnemyAttack(int heroArmor, int heroHp, int enemyDmg)
+{   
+    await Task.Delay(10);
+    bool isMonster = false;
+    int damageDealt = Math.Max(enemyDmg - heroArmor, 0);
+    heroHp -= damageDealt;
+    return (heroHp, damageDealt,isMonster); // Return the updated hero's HP and damage dealt
+}
+}
