@@ -6,9 +6,10 @@
 
 @if (!gameAccepted)
 {
-   <CardOfEnemy  OnClick="AcceptGame"  AbilityDesc=" None"   OnClickNavigate="GoStory"  Story="@Story" Armor="@_enemy.Armor" Hp="@_enemy.Hp"  Speed="@_enemy.Speed" Weakness="High Speed"  Name="@_enemy.Name"  Dmg="@_enemy.Dmg"/>
+   <CardOfEnemy  OnClick="AcceptGame"  AbilityDesc=" Readuce 20 of your Dmg"   OnClickNavigate="GoStory"  Story="@Story" Armor="@_enemy.Armor" Hp="@_enemy.Hp"  Speed="@_enemy.Speed" Weakness="None"  Name="@_enemy.Name"  Dmg="@_enemy.Dmg"/>
 }
 else {
+
 <Action 
     SceneUrl="@_enemy.SceneUrl" 
     AttackUrl="@_enemy.AttackUrl" 
@@ -23,16 +24,19 @@ else {
     PointsProvided="@_enemy.PointsProvided"
     ExperienceProvided="@_enemy.ExperienceProvided"
     NumberOfSpells="@_enemy.NumberOfSpells"
-    EnemyAttack="EnemyAttack"
+    specialAbilityKucedra="EnemyAttack"
     enemyAbilities="enemyAbilities" 
-    ChapterNumber="Chapter1"
+    ChapterNumber="Chapter5"
     EnemyLevel="2"
 
 
 />
+ <audio id="kucedra" src="audio/Kucedra.mp3"></audio>
 }
 
 @code {
+    [Inject] private IJSRuntime JSRuntime { get; set; } = null!;
+
     private Enemy _enemy = new Enemy(
         hp: 400,
         speed: 22,
@@ -59,16 +63,22 @@ else {
 
     private void GoStory() => NavigationManager.NavigateTo("/Story");
     private string Story = "Brother, the rivers have stopped flowing, and the skies grow darker by the day. It is Kucedra, the serpent of legend, whose monstrous form coils around the mountains, blocking the waters with her massive body. The people tremble, for they say she demands a sacrifice, or she will unleash floods upon the land, drowning all in her wrath.";
-    private List<string> enemyAbilities = new List<string> { "Attack" };
+    private List<string> enemyAbilities = new List<string> { "SpecialAbility" };
 
 
 
-    private async Task<(int heroHp, int damageDealt, bool isMonster)> EnemyAttack(int heroArmor, int heroHp, int enemyDmg)
+    private async Task<(int heroHp, int damageDealt, bool isMonster, int heroDmg)> EnemyAttack(int heroArmor, int heroHp, int enemyDmg, int heroDmg)
 {   
-    await Task.Delay(10);
+    await PlayMonsterAttack();
     bool isMonster = false;
     int damageDealt = Math.Max(enemyDmg - heroArmor, 0);
     heroHp -= damageDealt;
-    return (heroHp, damageDealt,isMonster); // Return the updated hero's HP and damage dealt
+    heroDmg -= 20;
+    return (heroHp, damageDealt,isMonster, heroDmg); // Return the updated hero's HP and damage dealt
+}
+private async Task PlayMonsterAttack()
+{
+    await JSRuntime.InvokeVoidAsync("eval", @"
+        const audio = document.getElementById('kucedra'); audio.volume = 0.3; audio.play()");
 }
 }

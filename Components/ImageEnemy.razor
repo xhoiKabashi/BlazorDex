@@ -14,16 +14,26 @@
     <div class=" flex w-full ">
             <img src="@BoostUrl" alt="Hero Image" class="h-full object-cover overflow-visible scale-95"
                 style="display: @(EnemyIsBessing ? "block" : "none") ; overflow: visible;">
+            
+        </div>
+            <div class=" flex w-full ">
+            <img src="@BoostUrl" alt="Hero Image" class="h-full object-cover overflow-visible scale-95"
+                style="display: @(EnemyUsingAbility ? "block" : "none") ; overflow: visible;">
+                  @if(EnemyIsBessing){
+                Console.WriteLine(BoostUrl);
+                Console.WriteLine("Se ca behet");
+                }
         </div>
 
      <div class=" flex w-full ">
             <img src="@StandUrl" alt="Hero Image" class="h-full object-cover overflow-visible scale-95" 
-                style="display: @(!EnemyIsHealing && !EnemyUpgradeArmor && !EnemyIsAtt &&  !EnemyIsBessing  ? "block" : "none") ; overflow: visible;">
+                style="display: @(!EnemyIsHealing && !EnemyUpgradeArmor && !EnemyIsAtt &&  !EnemyIsBessing  && !EnemyUsingAbility ? "block" : "none") ; overflow: visible;">
     </div>
 
 
     @code {
     [Parameter] public bool EnemyIsBessing { get; set; }
+    [Parameter] public bool EnemyUsingAbility { get; set; }
 
     [Parameter] public bool EnemyIsHealing { get; set; }
 

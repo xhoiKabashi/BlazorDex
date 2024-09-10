@@ -22,9 +22,19 @@ public class GameAnimationService
     public bool EnemyHeavyCrash { get; private set; }
     public bool IsMonster { get; private set; }
     public bool IsNympth { get; private set; }
+    public bool IsReducingDamage { get; private set; }
+    public int DamageReduced { get; private set; }
+    public bool EnemyUsingAbility { get; private set; }
 
 
 
+
+
+       public void setEnemyUsingAbility(bool isUsingAbility)
+    {
+        EnemyUsingAbility = isUsingAbility;
+   
+    }
 
 
   public void SetHeroBoosting(bool isHero, bool isBoosting, int armorAdded, int attckAdded)
@@ -128,11 +138,18 @@ public class GameAnimationService
         }
           
     }
+        public void SetReducingDamage( bool isReducingDamage, int damageReduced)
+    {
+            IsReducingDamage = isReducingDamage;
+            DamageReduced =  damageReduced; 
+    }
 
     public async Task ResetStatus(int delay = 1000)
     {
         await Task.Delay(delay);
+        IsReducingDamage = false;
         HeroIsHealing = false;
+        DamageReduced = 0;
         EnemyIsHealing = false;
         HeroUpgradeArmor = false;
         EnemyUpgradeArmor = false;
@@ -151,6 +168,7 @@ public class GameAnimationService
         IsMonster = false;
         IsNympth = false;
         GettingDamage = 0;
+        EnemyUsingAbility = false;
 
     }
 }

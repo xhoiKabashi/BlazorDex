@@ -64,6 +64,9 @@
                 HeavyCrash="@AnimationService.HeavyCrash" EnemyIsBessing="@AnimationService.EnemyIsBessing" 
                 HeroBoosting="@AnimationService.HeroBoosting" ArmorAdded="@AnimationService.ArmorAdded" 
                 ArmorReduction="@AnimationService.ArmorReduction" AttackAdded="AnimationService.AttackAdded"
+                IsReducingDamage="@AnimationService.IsReducingDamage"
+                DamageReduced="@AnimationService.DamageReduced"
+
                 EnemyIsAtt="@AnimationService.EnemyIsAtt"
                 SceneUrl="@SceneUrl"
                 AttackUrl="@AttackUrl"
@@ -73,6 +76,7 @@
                 BoostUrl="@BoostUrl"
                 MonsterAttack="@AnimationService.IsMonster"
                 isNympth="@AnimationService.IsNympth"
+                EnemyUsingAbility="@AnimationService.EnemyUsingAbility"
             
                  />
 
@@ -117,7 +121,15 @@
     [Parameter] public Func<int, int, int, Task<(int heroHp, int damageDealt, bool isMonster)>>? EnemyAttack { get; set; }
     [Parameter] public Func<int, Task<(int enemyArmor, int armorAdded)>>? EnemyUpgradeArmor { get; set; }
     [Parameter] public Func<int,int, Task<(int enemyHp, int hpAdded)>>? EnemyHeal { get; set; }
-    [Parameter] public Func<int,int,int,int,int, Task<(int heroHp, int damageDealt, int heroArmor, int armorReduction, bool isNympth, int enemyHp,int hpAdded)>>? specialAbility { get; set; }
+    [Parameter] public Func<int,int,int,int,int, Task<(int heroHp, int damageDealt, int heroArmor, int armorReduction, bool isNympth, int enemyHp,int hpAdded)>>? specialAbilityNympth { get; set; }
+    [Parameter] public Func<int,int,int,int, Task<(int heroHp, int damageDealt, bool isNympth, int enemyHp,int hpAdded)>>? specialAbilityShtriga { get; set; }
+    [Parameter] public Func<int, Task<(int armorReduction, bool isNympth,int heroArmor)>>? specialAbilityKatallani { get; set; }
+    [Parameter] public Func<int, int, int,int, Task<(int heroHp, int damageDealt, bool isMonster, int heroDmg)>>? specialAbilityKucedra { get; set; }
+    [Parameter] public Func<int, int, int, Task<(int heroHp, int damageDealt, bool isMonster)>>? specialAbilityLugati{ get; set; }
+
+
+
+
 
 
     /// Enemy Image
@@ -340,7 +352,7 @@ private async Task DetermineTurnOrder()
             case EnemyActionType.Attack:
              if (EnemyAttack != null) 
             { 
-                   var result = await EnemyAttack(HeroArmor, HeroHP, EnemyDmg);
+                var result = await EnemyAttack(HeroArmor, HeroHP, EnemyDmg);
                  HeroHP = result.heroHp;
     
                 int damageDealt = result.damageDealt;
@@ -352,7 +364,8 @@ private async Task DetermineTurnOrder()
                 AnimationService.SetTurn(true);
                 await AnimationService.ResetStatus();
                 StateHasChanged(); 
-                if (HeroHP <= 0 && gameEnd)
+
+                if (HeroHP <= 0)
             {
                  gameEnd = true;
                 EndGameMessage = "Hero is defeated!";
@@ -393,46 +406,108 @@ private async Task DetermineTurnOrder()
         
                 break;
 
-             case EnemyActionType.SpecialAbility:
+            case EnemyActionType.SpecialAbility:
 
-
-             if(specialAbility != null) {
-             var abilityResult = await specialAbility(HeroArmor, HeroHP, EnemyDmg, EnemyHp, enemyStartingHp);
-              HeroHP = abilityResult.heroHp;
-              HeroArmor = abilityResult.heroArmor;
 
             switch (ChapterNumber)
     {
     
         case "Chapter2":
-                 /// Animation
+        if (specialAbilityNympth != null) {
+            var abilityResultNymph = await specialAbilityNympth(HeroArmor, HeroHP, EnemyDmg, EnemyHp, enemyStartingHp);
+            HeroHP = abilityResultNymph.heroHp;
+            HeroArmor = abilityResultNymph.heroArmor;
             AnimationService.SetIsAtt(false, true);
-            AnimationService.SetGettingDamage(true, true, abilityResult.damageDealt);
-            AnimationService.SetArmorReduction(false, abilityResult.armorReduction);
-            AnimationService.setIsNympth(abilityResult.isNympth);
+            AnimationService.SetGettingDamage(true, true, abilityResultNymph.damageDealt);
+            AnimationService.SetArmorReduction(false, abilityResultNymph.armorReduction);
+            AnimationService.setIsNympth(abilityResultNymph.isNympth);
             AnimationService.SetHeavyCrash(false, true);
+            await DisplayActionMessage($"{EnemyName} use ability!");
+       
+        }
             break;
 
         case "Chapter3":
-           /// contect here
-           AnimationService.SetGettingDamage(true, true, abilityResult.damageDealt);
-           AnimationService.setIsNympth(abilityResult.isNympth);
-           EnemyHp = abilityResult.enemyHp;
-           AnimationService.SetHealing(false, true, abilityResult.hpAdded);
+        if (specialAbilityShtriga != null) {
+           var abilityResultShtriga = await specialAbilityShtriga(HeroHP, EnemyDmg, EnemyHp, enemyStartingHp);
+           HeroHP = abilityResultShtriga.heroHp;
+           AnimationService.SetGettingDamage(true, true, abilityResultShtriga.damageDealt);
+           AnimationService.setIsNympth(abilityResultShtriga.isNympth);
+           EnemyHp = abilityResultShtriga.enemyHp;
+           AnimationService.SetHealing(false, true, abilityResultShtriga.hpAdded);
+           await DisplayActionMessage($"{EnemyName} use ability!");
+        }
             break;
 
+            case "Chapter4":
+            if (specialAbilityKatallani != null) {
+           var abilityResultKatallani = await specialAbilityKatallani(HeroArmor);
+           HeroArmor = abilityResultKatallani.heroArmor;
+           AnimationService.SetHeavyCrash(false, true);
+           AnimationService.setEnemyUsingAbility(true);
+           AnimationService.setIsMonster(abilityResultKatallani.isNympth);   
+           AnimationService.SetArmorReduction(false, abilityResultKatallani.armorReduction);
+           await DisplayActionMessage($"{EnemyName} use ability!");
+             }
+
+            break;
+
+            case "Chapter5":
+             if (specialAbilityKucedra != null) 
+            { 
+                var resultKucedra = await specialAbilityKucedra(HeroArmor, HeroHP, EnemyDmg, HeroDmg);
+                 HeroHP = resultKucedra.heroHp;
+                 HeroDmg = resultKucedra.heroDmg;
+                AnimationService.SetIsAtt(false, true);
+                AnimationService.setIsMonster(resultKucedra.isMonster);
+                AnimationService.SetGettingDamage(true, true, resultKucedra.damageDealt);
+                AnimationService.SetReducingDamage(true, 20);
+                await DisplayActionMessage($"{EnemyName} use ability!");
+            }
+
+            break;
+
+            case "Chapter6":
+                    if (specialAbilityLugati != null) { 
+                        var resultLugati = await specialAbilityLugati(HeroArmor, HeroHP, EnemyDmg);
+                        HeroHP = resultLugati.heroHp;
+                        AnimationService.SetIsAtt(false, true);
+                        AnimationService.setIsMonster(resultLugati.isMonster);
+                        AnimationService.SetGettingDamage(true, true, resultLugati.damageDealt);
+                        
+                        chapter6ActionCounter++;
+
+                        if (chapter6ActionCounter < 2)
+                        {
+                            // Check if the action needs to be performed again
+                            await DisplayActionMessage($"{EnemyName} uses ability!");
+                            await AnimationService.ResetStatus();
+                            AnimationService.SetTurn(false);
+                            StateHasChanged(); 
+                            await Task.Delay(2000);
+                            HasPerformed = true;
+                            await ExecuteEnemyAction(); // Perform the action again
+                        }
+                        else
+                        {
+                            chapter6ActionCounter = 0; // Reset the counter after performing the action twice
+                            await DisplayActionMessage($"{EnemyName} uses ability!");
+                        }
+                    }
+
+            break;
     }
-                await DisplayActionMessage($"{EnemyName} attacks!");
-                AnimationService.SetTurn(true);
                 await AnimationService.ResetStatus();
+                AnimationService.SetTurn(true);
                 StateHasChanged(); 
                 await Task.Delay(2000);
                 HasPerformed = false;
-                
-             }
+        
+       
             if (HeroHP <= 0)
             {
                 gameEnd = true;
+                onGame = false;
                 EndGameMessage = "Hero is defeated!";
             }
            
@@ -577,5 +652,5 @@ private EnemyActionType DetermineEnemyAction()
     EnemyName = null;
     StateHasChanged();
     }
-
+private int chapter6ActionCounter = 0;
 }

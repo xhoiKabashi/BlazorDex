@@ -1,0 +1,83 @@
+@page "/Lugati"
+@using BlazorDex.Models
+@inject NavigationManager NavigationManager
+
+
+
+@if (!gameAccepted)
+{
+   <CardOfEnemy  OnClick="AcceptGame"  AbilityDesc="Attacks 2 times in a row"   OnClickNavigate="GoStory"  Story="@Story" Armor="@_enemy.Armor" Hp="@_enemy.Hp"  Speed="@_enemy.Speed" Weakness="Hight Speed"  Name="@_enemy.Name"  Dmg="@_enemy.Dmg"/>
+}
+else {
+
+<Action 
+    SceneUrl="@_enemy.SceneUrl" 
+    AttackUrl="@_enemy.AttackUrl" 
+    StandUrl="@_enemy.StandUrl" 
+
+    EnemyHp="@_enemy.Hp"
+    EnemySpeed="@_enemy.Speed"
+    EnemyArmor="@_enemy.Armor"
+    EnemyDmg="@_enemy.Dmg"
+    IconUrl="@_enemy.IconUrl"
+    EnemyName="@_enemy.Name"
+    PointsProvided="@_enemy.PointsProvided"
+    ExperienceProvided="@_enemy.ExperienceProvided"
+    NumberOfSpells="@_enemy.NumberOfSpells"
+    specialAbilityLugati="EnemyAttack"
+    enemyAbilities="enemyAbilities" 
+    ChapterNumber="Chapter6"
+    EnemyLevel="10"
+
+
+/>
+ <audio id="lugati" src="audio/lugati.mp3"></audio>
+}
+
+@code {
+    [Inject] private IJSRuntime JSRuntime { get; set; } = null!;
+
+    private Enemy _enemy = new Enemy(
+        hp: 450,
+        speed: 30,
+        armor: 50,
+        dmg: 170,
+        name: "Lugati",
+        sceneUrl: "image/scenes/Lugati.jpg",
+        attackUrl: "image/motion/lugatiattack.png",
+        standUrl: "image/motion/lugatistand.png",
+        defendUrl: null,
+        boostUrl: null,
+        iconUrl: "image/icons/zombie.png",
+        experienceProvided: 300,
+        pointsProvided : 5,
+        numberOfSpells: 1,
+        healUrl: "healUrl"
+    );
+    private bool gameAccepted { get; set; } = false;
+
+    private void AcceptGame()
+    {
+        gameAccepted = true;
+    }
+
+    private void GoStory() => NavigationManager.NavigateTo("/Story");
+    private string Story = "Brother, you know old Nana at the edge of the village, always muttering her curses. She’s been at it again, complaining about the Lugat. Says she saw his shadow last night, creeping by her window, cold as death. She swears he’s after her goats... or maybe it’s just her nerves. She says his eyes burned through the darkness like coals, hungry for blood. Poor Nana barely sleeps. Maybe next time you pass by, you should 'hunt' this creature and give her some peace of mind.";
+    private List<string> enemyAbilities = new List<string> { "SpecialAbility" };
+
+
+
+    private async Task<(int heroHp, int damageDealt, bool isMonster)> EnemyAttack(int heroArmor, int heroHp, int enemyDmg)
+{   
+    await PlayMonsterAttack();
+    bool isMonster = false;
+    int damageDealt = Math.Max(enemyDmg - heroArmor, 0);
+    heroHp -= damageDealt;
+    return (heroHp, damageDealt,isMonster); // Return the updated hero's HP and damage dealt
+}
+private async Task PlayMonsterAttack()
+{
+    await JSRuntime.InvokeVoidAsync("eval", @"
+        const audio = document.getElementById('lugati'); audio.volume = 0.3; audio.play()");
+}
+}

@@ -28,14 +28,16 @@
     EnemyName="@_enemy.Name"
     NumberOfSpells="@_enemy.NumberOfSpells"
     enemyAbilities="enemyAbilities" 
-    specialAbility="@specialAbility"
+    specialAbilityShtriga="@specialAbility"
     ChapterNumber="Chapter3"
     EnemyLevel="5"
 
 />
+    <audio id="shtriga" src="audio/Shtriga.mp3"></audio>
 }
 
 @code {
+        [Inject] private IJSRuntime JSRuntime { get; set; } = null!;
     private Enemy _enemy = new Enemy(
         hp: 200,
         speed: 1,
@@ -67,18 +69,24 @@
 
     private List<string> enemyAbilities = new List<string> { "SpecialAbility" };
 
-private async Task<(int heroHp, int damageDealt, int heroArmor, int armorReduction, bool isNympth, int enemyHp, int hpAdded)> specialAbility(int heroArmor, int heroHp, int enemyDmg, int enemyHp, int enemyStartingHp)
+private async Task<(int heroHp, int damageDealt, bool isNympth, int enemyHp, int hpAdded)> specialAbility(int heroHp, int enemyDmg, int enemyHp, int enemyStartingHp)
 {
     
-    await Task.Delay(100);
-    int armorReduction = _enemy.Dmg;
-    int damageDealt = Math.Max(enemyDmg - heroArmor, armorReduction);
+    await PlayMonsterAttack();
+    int damageDealt = _enemy.Dmg;
     heroHp -= damageDealt;
     int hpAdded = 50;
     enemyHp = Math.Min(enemyHp + hpAdded, enemyStartingHp);
     bool isNympth = true;
 
-    return (heroHp, damageDealt, heroArmor, armorReduction, isNympth, enemyHp, hpAdded); // Return the updated hero's HP and damage dealt
+    return (heroHp, damageDealt, isNympth, enemyHp, hpAdded); // Return the updated hero's HP and damage dealt
+}
+
+
+private async Task PlayMonsterAttack()
+{
+    await JSRuntime.InvokeVoidAsync("eval", @"
+        const audio = document.getElementById('shtriga'); audio.volume = 0.3; audio.play()");
 }
 
 

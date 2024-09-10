@@ -29,15 +29,16 @@
     NumberOfSpells="@_enemy.NumberOfSpells"
     EnemyHeal="@EnemyHeal"
     enemyAbilities="enemyAbilities" 
-    specialAbility="@specialAbility"
+    specialAbilityNympth="@specialAbility"
     ChapterNumber="Chapter2"
     EnemyLevel="4"
 
 
 />
 }
-
+<audio id="zana" src="audio/zana.mp3"></audio>
 @code {
+    [Inject] private IJSRuntime JSRuntime { get; set; } = null!;
     private Enemy _enemy = new Enemy(
         hp: 150,
         speed: 1,
@@ -71,7 +72,7 @@
 
 private async Task<(int heroHp, int damageDealt, int heroArmor, int armorReduction, bool isNympth, int enemyHp, int hpAdded)> specialAbility(int heroArmor, int heroHp, int enemyDmg, int enemyHp, int hpAdded)
 {
-    await Task.Delay(100);
+    await PlayMonsterAttack();
 
     int armorReduction = _enemy.Dmg; // Assuming _enemy.Dmg is defined somewhere
     int damageDealt = Math.Max(enemyDmg - heroArmor, armorReduction);
@@ -86,11 +87,15 @@ private async Task<(int heroHp, int damageDealt, int heroArmor, int armorReducti
 
 private async Task<(int enemyHp, int hpAdded)> EnemyHeal(int enemyHp, int enemyStartingHp)
 {
-    await Task.Delay(100);
+    await PlayMonsterAttack();
     int hpAdded = 50;
     enemyHp = Math.Min(enemyHp + hpAdded, enemyStartingHp);
 
     return (enemyHp, hpAdded); // Return the updated hero's HP and damage dealt
 }
-
+private async Task PlayMonsterAttack()
+{
+    await JSRuntime.InvokeVoidAsync("eval", @"
+        const audio = document.getElementById('zana'); audio.volume = 0.3; audio.play()");
+}
 }

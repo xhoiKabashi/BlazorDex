@@ -22,15 +22,22 @@
             @if (HeroIsGettingDmg)
             {
                 <div class="flex animate-bounce">
-                <img src="image/icons/scratch.png" alt="arrow" class="h-6 object-cover ">
-                <p class="font-bold  text-red-700  tracking-widest"> -@HeroDamageTaken</p>
+                <img src="image/icons/heart.png" alt="arrow" class="h-6 object-cover ">
+                <p class="font-bold  text-red-700  tracking-widest">-@HeroDamageTaken</p>
+                </div>
+            }
+                @if (IsReducingDamage)
+            {
+                <div class="flex animate-bounce">
+                <img src="image/icons/attackdown.png" alt="arrow" class="h-7 object-cover ">
+                <p class="font-bold  text-red-700  tracking-widest">@DamageReduced</p>
                 </div>
             }
             @if (HeroIsHealing)
             {
                 <div class="flex animate-bounce">
                     <img src="image/icons/regeneration.png" alt="arrow" class="h-6 object-cover">
-                    <p class="font-bold text-green-600">+ @HpAdded</p>
+                    <p class="font-bold text-green-600">+@HpAdded</p>
                 </div>
             }
            @if (HeroBoosting)
@@ -38,7 +45,7 @@
                 <div class="flex flex-col animate-bounce text-blue-700">
                     <div class="flex">
                         <img src="image/icons/sword.png" alt="arrow" class="h-6 object-cover">
-                       <p class="font-bold ">+ @AttackAdded</p>
+                       <p class="font-bold ">+@AttackAdded</p>
                     </div>
                          <div class="flex">
                         <img src="image/icons/shieldUp.png" alt="arrow" class="h-6 object-cover ">
@@ -50,7 +57,7 @@
             {
                 <div class="flex animate-bounce">
                     <img src="image/icons/broken-shield.png" alt="arrow" class="h-6 object-cover ">
-                    <p class="font-bold   text-red-600">- @ArmorReduction</p>
+                    <p class="font-bold   text-red-600">-@ArmorReduction</p>
                 </div>
                 
             }
@@ -79,37 +86,37 @@
             {
                 <div class="flex animate-bounce">
                     <img src="image/icons/shieldUp.png" alt="arrow" class="h-6 object-cover ">
-                    <p class="font-bold text-blue-700">+ @ArmorAdded Armor</p>
+                    <p class="font-bold text-blue-700">+@ArmorAdded Armor</p>
                 </div>
             }
 
             @if (EnemyIsGettingDmg)
             {
                 <div class="flex animate-bounce">
-                    <img src="image/icons/scratch.png" alt="arrow" class="h-6 object-cover ">
+                    <img src="image/icons/heart.png" alt="arrow" class="h-6 object-cover ">
                     <p class="font-bold  text-red-600 tracking-widest">
-                        - @EnemyDamageTaken</p>
+                       -@EnemyDamageTaken</p>
                 </div>
             }
             @if (EnemyIsHealing)
             {
                 <div class="flex animate-bounce">
                   <img src="image/icons/regeneration.png" alt="arrow" class="h-6 object-cover">
-                    <p class="font-bold  text-green-600">+ @HpAdded</p>
+                    <p class="font-bold  text-green-600">+@HpAdded</p>
                 </div>
             }
                   @if (HeavyCrash)
             {
                 <div class="flex animate-bounce">
                     <img src="image/icons/broken-shield.png" alt="arrow" class="h-6 object-cover ">
-                    <p class="font-bold   text-red-600">- @ArmorReduction</p>
+                    <p class="font-bold   text-red-600">-@ArmorReduction</p>
                 </div>
             }  @if (EnemyIsBessing)
             {
                 <div class="flex flex-col animate-bounce text-blue-700">
                     <div class="flex">
                         <img src="image/icons/sword.png" alt="arrow" class="h-6 object-cover">
-                       <p class="font-bold ">+ @AttackAdded</p>
+                       <p class="font-bold ">+@AttackAdded</p>
                     </div>
                          <div class="flex">
                         <img src="image/icons/shieldUp.png" alt="arrow" class="h-6 object-cover ">
@@ -124,11 +131,13 @@
         <!-- Enemy Images -->
 
             <ImageEnemy EnemyIsAtt="@EnemyIsAtt"
+            EnemyUsingAbility="@EnemyUsingAbility"
             EnemyIsBessing="@EnemyIsBessing" 
             EnemyIsHealing="@EnemyIsHealing" 
             EnemyUpgradeArmor="@EnemyUpgradeArmor" 
             AttackUrl="@AttackUrl"  StandUrl="@StandUrl"
               BoostUrl="@BoostUrl"  DefendUrl="@DefendUrl"  HealUrl="@HealUrl"/>
+            
     </div>
 </div>
 <!-- Audio Elements -->
@@ -150,9 +159,9 @@
 
 @code {
    // Hero Parameters
-    [Parameter] public bool MonsterAttack { get; set; }
-    [Parameter] public bool isNympth { get; set; }
 
+    [Parameter] public bool IsReducingDamage { get; set; }
+    [Parameter] public int DamageReduced { get; set; }
     [Parameter] public bool HeavyCrash { get; set; }
     [Parameter] public bool HeroBoosting { get; set; }
     [Parameter] public bool HeroIsHealing { get; set; }
@@ -163,6 +172,8 @@
 
     // Enemy Parameters
     [Parameter] public bool EnemyIsBessing { get; set; }
+    [Parameter] public bool EnemyUsingAbility { get; set; }
+
     [Parameter] public bool EnemyHeavyCrash { get; set; }
 
     [Parameter] public bool EnemyIsHealing { get; set; }
@@ -170,6 +181,8 @@
     [Parameter] public bool EnemyIsGettingDmg { get; set; }
     [Parameter] public bool EnemyIsAtt { get; set; }
     [Parameter] public int EnemyDamageTaken { get; set; }
+    [Parameter] public bool MonsterAttack { get; set; }
+    [Parameter] public bool isNympth { get; set; }
 
     // Both 
     [Parameter] public int ArmorAdded { get; set; }

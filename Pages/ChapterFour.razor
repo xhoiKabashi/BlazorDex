@@ -6,13 +6,14 @@
 
 @if (!gameAccepted)
 {
-   <CardOfEnemy  OnClick="AcceptGame"  AbilityDesc=" None"   OnClickNavigate="GoStory"  Story="@Story" Armor="@_enemy.Armor" Hp="@_enemy.Hp"  Speed="@_enemy.Speed" Weakness="High Speed"  Name="@_enemy.Name"  Dmg="@_enemy.Dmg"/>
+   <CardOfEnemy  OnClick="AcceptGame"  AbilityDesc="Reduce 100% of your armor"   OnClickNavigate="GoStory"  Story="@Story" Armor="@_enemy.Armor" Hp="@_enemy.Hp"  Speed="@_enemy.Speed" Weakness="High HP"  Name="@_enemy.Name"  Dmg="@_enemy.Dmg"/>
 }
 else {
 <Action 
     SceneUrl="@_enemy.SceneUrl" 
     AttackUrl="@_enemy.AttackUrl" 
     StandUrl="@_enemy.StandUrl" 
+    BoostUrl="@_enemy.BoostUrl"
 
     EnemyHp="@_enemy.Hp"
     EnemySpeed="@_enemy.Speed"
@@ -25,14 +26,14 @@ else {
     NumberOfSpells="@_enemy.NumberOfSpells"
     EnemyAttack="EnemyAttack"
     enemyAbilities="enemyAbilities" 
-    ChapterNumber="Chapter1"
+    ChapterNumber="Chapter4"
     EnemyLevel="2"
-
-
+    specialAbilityKatallani="specialAbility"
 />
+ <audio id="katallani" src="audio/Katallani.wav"></audio>
 }
-
 @code {
+    [Inject] private IJSRuntime JSRuntime { get; set; } = null!;
     private Enemy _enemy = new Enemy(
         hp: 500,
         speed: 15,
@@ -42,8 +43,8 @@ else {
         sceneUrl: "image/scenes/ChapterFive.jpg",
         attackUrl: "image/motion/katallaniAttack.png",
         standUrl: "image/motion/katallaniStand.png",
-        defendUrl: null,
-        boostUrl: null,
+        defendUrl: "image/motion/KatallaniCrash.png",
+        boostUrl: "image/motion/KatallaniCrash.png",
         iconUrl: "image/icons/giant.png",
         experienceProvided: 200,
         pointsProvided : 5,
@@ -59,16 +60,34 @@ else {
 
     private void GoStory() => NavigationManager.NavigateTo("/Story");
     private string Story = "Brother, the legends were true. Katallani, the one-eyed beast with legs as straight as iron, has returned to claim what he believes is his—human lives. His name is whispered in fear across the land, and the earth itself trembles beneath his steps. No man has ever stood against him and lived to speak of it.";
-    private List<string> enemyAbilities = new List<string> { "Attack" };
+    private List<string> enemyAbilities = new List<string> {"Attack",  "SpecialAbility" };
 
 
 
     private async Task<(int heroHp, int damageDealt, bool isMonster)> EnemyAttack(int heroArmor, int heroHp, int enemyDmg)
 {   
-    await Task.Delay(10);
+     await PlayMonsterAttack();
     bool isMonster = false;
     int damageDealt = Math.Max(enemyDmg - heroArmor, 0);
     heroHp -= damageDealt;
     return (heroHp, damageDealt,isMonster); // Return the updated hero's HP and damage dealt
+}
+
+
+private async Task<(int armorReduction, bool isNympth, int heroArmor)> specialAbility(int heroArmor)
+{
+    await PlayMonsterAttack();
+    int armorReduction = heroArmor; 
+    heroArmor -= armorReduction;
+    bool isNympth = true;
+
+    return (armorReduction, isNympth, heroArmor); // Return the updated hero's HP and damage dealt
+}
+
+
+private async Task PlayMonsterAttack()
+{
+    await JSRuntime.InvokeVoidAsync("eval", @"
+        const audio = document.getElementById('katallani'); audio.volume = 0.3; audio.play()");
 }
 }
