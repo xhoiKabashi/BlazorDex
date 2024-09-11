@@ -50,6 +50,15 @@ window.toggleAudioMute = (isMuted) => {
   });
 };
 
+window.preloadImages = function (imageUrls) {
+  imageUrls.forEach(function (url) {
+      const img = new Image();
+      img.src = url;
+  });
+};
+
+
+
 
 
 

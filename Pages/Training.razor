@@ -5,6 +5,8 @@
         @inject GameAnimationService AnimationService
         @inject GameLogic gameLogic
         @inject HeroStateService HeroStateService
+        @inject IJSRuntime JSRuntime
+
 
 
 
@@ -52,14 +54,16 @@
                 defendUrl: "image/motion/ulqiniDef.png",
                 boostUrl: "image/motion/ulqinBlessing.png",
                 iconUrl: "image/icons/ulshqiniIcon.png",
-                experienceProvided: 20005,
-                pointsProvided : 4,
+                experienceProvided: 25,
+                pointsProvided : 6,
                 numberOfSpells: 3,
                 healUrl: "image/motion/ulqniHealth.png"
             );
          private int armorAdded = 3;
-            protected override void OnInitialized()
+            protected override async Task OnInitializedAsync()
     {
+         
+          await PreloadImages();
         _enemy.Hp = ScaleEnemyStat(baseStat: _enemy.Hp, heroLevel: HeroStateService.Hero.Level, scalingFactor: 1.15);
         _enemy.Armor = ScaleEnemyStat(baseStat: _enemy.Armor, heroLevel: HeroStateService.Hero.Level, scalingFactor: 1.4);
         _enemy.Dmg = ScaleEnemyStat(baseStat: _enemy.Dmg, heroLevel: HeroStateService.Hero.Level, scalingFactor: 1.2);
@@ -73,6 +77,24 @@
                 gameAccepted = true;
             }
 
+     private async Task PreloadImages()
+    {
+        var imageUrls = new List<string>
+        {
+            _enemy.SceneUrl,
+            _enemy.AttackUrl,
+            _enemy.StandUrl,
+            _enemy.IconUrl,
+            _enemy.DefendUrl,
+            _enemy.BoostUrl,
+            _enemy.HealUrl,
+
+        };
+
+        await JSRuntime.InvokeVoidAsync("preloadImages", imageUrls);
+    }
+
+ 
 
              private int ScaleEnemyStat(int baseStat, int heroLevel, double scalingFactor)
                 {
