@@ -28,7 +28,7 @@
 </div>  
 
 @code {
- [Inject] private HeroClient HeroClient { get; set; }
+ [Inject] private HeroClient? HeroClient { get; set; }
   private bool isMuted = false;
 
 private async Task FullScreen(){

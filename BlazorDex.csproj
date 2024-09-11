@@ -5,6 +5,8 @@
     <BrowserLink>false</BrowserLink>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <BlazorWebAssemblyEnableAOTCompilation>true</BlazorWebAssemblyEnableAOTCompilation>
+
     
   </PropertyGroup>
 

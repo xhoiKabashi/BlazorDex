@@ -482,10 +482,8 @@ private async Task DetermineTurnOrder()
                             // Check if the action needs to be performed again
                             await DisplayActionMessage($"{EnemyName} uses ability!");
                             await AnimationService.ResetStatus();
-                            AnimationService.SetTurn(false);
                             StateHasChanged(); 
                             await Task.Delay(2000);
-                            HasPerformed = true;
                             await ExecuteEnemyAction(); // Perform the action again
                         }
                         else
