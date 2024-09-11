@@ -37,7 +37,7 @@
 }
 
 @code {
-        [Inject] private IJSRuntime JSRuntime { get; set; } = null!;
+    [Inject] private IJSRuntime JSRuntime { get; set; } = null!;
     private Enemy _enemy = new Enemy(
         hp: 200,
         speed: 1,
@@ -56,7 +56,26 @@
         healUrl: "image/motion/shtrigaattack.png"
     );
 
+        protected override async Task OnInitializedAsync()
+    {
+          await PreloadImages();
+    }
 
+     private async Task PreloadImages()
+    {
+ var imageUrls = new List<string>();
+
+    // Add only non-null URLs to the list
+    if (!string.IsNullOrEmpty(_enemy.SceneUrl)) imageUrls.Add(_enemy.SceneUrl);
+    if (!string.IsNullOrEmpty(_enemy.AttackUrl)) imageUrls.Add(_enemy.AttackUrl);
+    if (!string.IsNullOrEmpty(_enemy.StandUrl)) imageUrls.Add(_enemy.StandUrl);
+    if (!string.IsNullOrEmpty(_enemy.IconUrl)) imageUrls.Add(_enemy.IconUrl);
+    if (!string.IsNullOrEmpty(_enemy.DefendUrl)) imageUrls.Add(_enemy.DefendUrl);
+    if (!string.IsNullOrEmpty(_enemy.BoostUrl)) imageUrls.Add(_enemy.BoostUrl);
+    if (!string.IsNullOrEmpty(_enemy.HealUrl)) imageUrls.Add(_enemy.HealUrl);
+
+        await JSRuntime.InvokeVoidAsync("preloadImages", imageUrls);
+    }
         private bool gameAccepted { get; set; } = false;
         private void AcceptGame()
     {
