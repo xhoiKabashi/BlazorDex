@@ -29,7 +29,7 @@ else
         experienceProvided: 50,
         pointsProvided: 5,
         numberOfSpells: 1,
-        healUrl: "healUrl"
+        healUrl: null
     );
 
     private bool gameAccepted { get; set; } = false;
@@ -41,13 +41,13 @@ else
 
     private async Task PreloadImages()
     {
-        var imageUrls = new List<string>
-        {
-            _enemy.SceneUrl,
-            _enemy.AttackUrl,
-            _enemy.StandUrl,
-            _enemy.IconUrl
-        };
+    var imageUrls = new List<string>();
+
+    // Add only non-null URLs to the list
+    if (!string.IsNullOrEmpty(_enemy.SceneUrl)) imageUrls.Add(_enemy.SceneUrl);
+    if (!string.IsNullOrEmpty(_enemy.AttackUrl)) imageUrls.Add(_enemy.AttackUrl);
+    if (!string.IsNullOrEmpty(_enemy.StandUrl)) imageUrls.Add(_enemy.StandUrl);
+    if (!string.IsNullOrEmpty(_enemy.IconUrl)) imageUrls.Add(_enemy.IconUrl);
 
         await JSRuntime.InvokeVoidAsync("preloadImages", imageUrls);
     }

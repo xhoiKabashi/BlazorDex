@@ -53,7 +53,7 @@ else {
         experienceProvided: 300,
         pointsProvided : 5,
         numberOfSpells: 1,
-        healUrl: "healUrl"
+        healUrl: null
     );
 
             protected override async Task OnInitializedAsync()
@@ -71,10 +71,6 @@ else {
     if (!string.IsNullOrEmpty(_enemy.AttackUrl)) imageUrls.Add(_enemy.AttackUrl);
     if (!string.IsNullOrEmpty(_enemy.StandUrl)) imageUrls.Add(_enemy.StandUrl);
     if (!string.IsNullOrEmpty(_enemy.IconUrl)) imageUrls.Add(_enemy.IconUrl);
-    if (!string.IsNullOrEmpty(_enemy.DefendUrl)) imageUrls.Add(_enemy.DefendUrl);
-    if (!string.IsNullOrEmpty(_enemy.BoostUrl)) imageUrls.Add(_enemy.BoostUrl);
-    if (!string.IsNullOrEmpty(_enemy.HealUrl)) imageUrls.Add(_enemy.HealUrl);
-
         await JSRuntime.InvokeVoidAsync("preloadImages", imageUrls);
     }
 
