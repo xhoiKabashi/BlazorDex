@@ -8,28 +8,114 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-    <title>BlazorDex</title>
+    <title>Kreshnik</title>
     <base href="/" />
-    <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
     <link href="css/site.css" rel="stylesheet" />
     <link rel="stylesheet" href="css/app.css" />
     <link rel="stylesheet" href="css/tailwind.css" />
     <link rel="icon" type="image/png" href="favicon.png" />
-    <link rel="preload" href="scenes/ChapterFive.jpg" as="image"  type="jpg">
-    <link rel="preload" href="images/scenes/ChapterFour.jpg" as="image"  type="jpg">
-    <link rel="preload" href="images/scenes/ChapterOne.jpg" as="image"  type="jpg">
-    <link rel="preload" href="images/scenes/ChapterThree.jpg" as="image"  type="jpg">
-    <link rel="preload" href="images/scenes/ChapterTwo.jpg" as="image"  type="jpg">
-    <link rel="preload" href="images/scenes/Lugati.jpg" as="image"  type="jpg">
-    <link rel="preload" href="images/scenes/training.jpg" as="image"  type="jpg">
+    <!--  -->
+    <link rel="preload" href="css/tailwind.css" as="style" />
+    <link rel="preload" href="scripts/site.js" as="script" />
+    <!-- Scenes -->
+    <link rel="preload" href="image/scenes/ChapterFive.jpg" as="image">
+    <link rel="preload" href="image/scenes/ChapterFour.jpg" as="image">
+    <link rel="preload" href="image/scenes/ChapterOne.jpg" as="image">
+    <link rel="preload" href="image/scenes/ChapterThree.jpg" as="image">
+    <link rel="preload" href="image/scenes/ChapterTwo.jpg" as="image">
+    <link rel="preload" href="image/scenes/Lugati.jpg" as="image">
+    <link rel="preload" href="image/scenes/training.jpg" as="image">
+    <!-- motion -->
+    <link rel="preload" href="image/motion/attacking.png" as="image">
+    <link rel="preload" href="image/motion/defending.png" as="image">
+    <link rel="preload" href="image/motion/katallaniAttack.png" as="image">
+    <link rel="preload" href="image/motion/KatallaniCrash.png" as="image">
+    <link rel="preload" href="image/motion/katallaniStand.png" as="image">
+    <link rel="preload" href="image/motion/kucedra.png" as="image">
+    <link rel="preload" href="image/motion/kucedraAtt.png" as="image">
+    <link rel="preload" href="image/motion/lugatiattack.png" as="image">
+    <link rel="preload" href="image/motion/lugatistand.png" as="image">
+    <link rel="preload" href="image/motion/milk.png" as="image">
+    <link rel="preload" href="image/motion/shtrigaattack.png" as="image">
+    <link rel="preload" href="image/motion/shtrigastand.png" as="image">
+    <link rel="preload" href="image/motion/sister.png" as="image">
+    <link rel="preload" href="image/motion/standing.png" as="image">
+    <link rel="preload" href="image/motion/topuz.png" as="image">
+    <link rel="preload" href="image/motion/ulqinBlessing.png" as="image">
+    <link rel="preload" href="image/motion/ulqiniAtt.png" as="image">
+    <link rel="preload" href="image/motion/ulqiniDef.png" as="image">
+    <link rel="preload" href="image/motion/ulqiniStand.png" as="image">
+    <link rel="preload" href="image/motion/wolfattk.png" as="image">
+    <link rel="preload" href="image/motion/wolfstand.png" as="image">
+    <link rel="preload" href="image/motion/zanaatk.png" as="image">
+    <link rel="preload" href="image/motion/zanahealth.png" as="image">
+    <link rel="preload" href="image/motion/zanastand.png" as="image">
+   <!-- image -->
+    <link rel="preload" href="image/chapter3.jpg" as="image">
+    <link rel="preload" href="image/chapterFiveCover.jpg" as="image">
+    <link rel="preload" href="image/homeImage.png" as="image">
+    <link rel="preload" href="image/katallanChapter.jpg" as="image">
+    <link rel="preload" href="image/lugatiCover.jpg" as="image">
+    <link rel="preload" href="image/nympths.png" as="image">
+    <link rel="preload" href="image/vs.png" as="image">
+    <link rel="preload" href="image/wolf.jpg" as="image">
+    <!-- Icons -->
+    <link rel="preload" href="image/icons/achilles.png" as="image">
+    <link rel="preload" href="image/icons/adventure-game.png" as="image">
+    <link rel="preload" href="image/icons/armor.png" as="image">
+    <link rel="preload" href="image/icons/att.png" as="image">
+    <link rel="preload" href="image/icons/attackdown.png" as="image">
+    <link rel="preload" href="image/icons/back.png" as="image">
+    <link rel="preload" href="image/icons/bleeding.png" as="image">
+    <link rel="preload" href="image/icons/broken-shield.png" as="image">
+    <link rel="preload" href="image/icons/buff.png" as="image">
+    <link rel="preload" href="image/icons/check.png" as="image">
+    <link rel="preload" href="image/icons/delete.png" as="image">
+    <link rel="preload" href="image/icons/dragon.png" as="image">
+    <link rel="preload" href="image/icons/fullscreen.png" as="image">
+    <link rel="preload" href="image/icons/gaming.png" as="image">
+    <link rel="preload" href="image/icons/giant.png" as="image">
+    <link rel="preload" href="image/icons/health.png" as="image">
+    <link rel="preload" href="image/icons/heart.png" as="image">
+    <link rel="preload" href="image/icons/her.png" as="image">
+    <link rel="preload" href="image/icons/hermes.png" as="image">
+    <link rel="preload" href="image/icons/heroicon.png" as="image">
+    <link rel="preload" href="image/icons/hood.png" as="image">
+    <link rel="preload" href="image/icons/level-up.png" as="image">
+    <link rel="preload" href="image/icons/logout.png" as="image">
+    <link rel="preload" href="image/icons/mace.png" as="image">
+    <link rel="preload" href="image/icons/magic-book.png" as="image">
+    <link rel="preload" href="image/icons/medal-of-honor.png" as="image">
+    <link rel="preload" href="image/icons/mute.png" as="image">
+    <link rel="preload" href="image/icons/nymph.png" as="image">
+    <link rel="preload" href="image/icons/nymphs.png" as="image">
+    <link rel="preload" href="image/icons/padlock.png" as="image">
+    <link rel="preload" href="image/icons/potion.png" as="image">
+    <link rel="preload" href="image/icons/regeneration.png" as="image">
 
+    <link rel="preload" href="image/icons/regeneration.png" as="image">
+    <link rel="preload" href="image/icons/scratch.png" as="image">
+    <link rel="preload" href="image/icons/script.png" as="image">
+    <link rel="preload" href="image/icons/scroll.png" as="image">
+    <link rel="preload" href="image/icons/setting.png" as="image">
+    <link rel="preload" href="image/icons/scroll.png" as="image">
+    <link rel="preload" href="image/icons/shield.png" as="image">
+    <link rel="preload" href="image/icons/sword.png" as="image">
+    <link rel="preload" href="image/icons/tears.png" as="image">
+    <link rel="preload" href="image/icons/ulshqiniIcon.png" as="image">
+    <link rel="preload" href="image/icons/unlocked.png" as="image">
+    <link rel="preload" href="image/icons/upgrade.png" as="image">
+    <link rel="preload" href="image/icons/wolf.png" as="image">
+    <link rel="preload" href="image/icons/zombie.png" as="image">
+<!--  -->
+    <link rel="preload" href="image/login1.png" as="image">
     <link
       href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
       rel="stylesheet"
     />
   </head>
-  <body class=" flex flex-col w-full  min-h-[calc(100dvh)] bg-cover bg-center md:bg-contain bg-black" >
-    <div id="app" class=" w-full flex flex-col  items-center min-h-[calc(100dvh)]">
+  <body class=" flex flex-col w-full  justify-center items-center min-h-[calc(100dvh)]  bg-black" >
+    <div id="app" class=" w-full sm:w-full md:w-[450px] flex flex-col bg-cover bg-center items-center min-h-[calc(100dvh)]"  style="background-image: url('image/login1.png');">
     
         <svg class="loading-progress">
           <circle r="40%" cx="50%" cy="50%" />
@@ -53,5 +139,6 @@
           }
       };
   </script>
+
   </body>
 </html>
