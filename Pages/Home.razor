@@ -9,7 +9,7 @@
 
 
 @if(!showLevelUpToast) {
-<div class="w-full min-h-[calc(100dvh)] flex flex-col justify-between items-center bg-cover bg-center  text-text-third" style="background-image: url('image/login1.png');">
+<div class="w-full min-h-[calc(100dvh)] flex flex-col justify-between items-center  text-text-third" >
     @if (HeroStateService.Hero != null)
     {
         <LevelPoints Level="@HeroStateService.Hero.Level" Points="@HeroStateService.Hero.Points" />

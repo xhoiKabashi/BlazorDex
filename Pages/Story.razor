@@ -3,8 +3,8 @@
 @inject HeroStateService HeroStateService
 
 
-<div class="  " style="background-image: url('image/login1.png');">
-    <div class="w-full  flex flex-col bg-center bg-cover  bg-bg-main"  style="background-color: rgba(255, 255, 255, 0.1);">
+
+    <div class="w-full  flex flex-col">
         <div class="flex flex-col w-full gap-3 px-2  mb-20  mt-4 min-h-[calc(100dvh)]">
             <ChapterComponents IsCompleted="@false" IsOpen="true" ChapterNumber="1" ChapterTitle="Equal and free like wolves" url="image/woft.png"  navUrl="/ChapterOne"/>
             <ChapterComponents IsCompleted="@false" IsOpen="true" ChapterNumber="2" ChapterTitle="The Wrathful Nymphs" url="image/nympths.png" navUrl="/ChapterTwo" />
@@ -15,12 +15,10 @@
              
         </div>
 
-        <div class="fixed bottom-0 p-3 bg-bg-second  w-full md:w-[450px] lg:w-[450px] ">
+        <div class="fixed bottom-0 p-3 bg-red-700 w-full md:w-[450px] lg:w-[450px] ">
             <img src="image/icons/back.png" class="h-8 cursor-pointer" alt="Stat Image" @onclick="GoHome">
         </div>
-    
     </div>
-</div>
 
 @code {
     private void GoHome() => NavigationManager.NavigateTo("/game");

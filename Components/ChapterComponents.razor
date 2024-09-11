@@ -3,9 +3,9 @@
 <div class="p-2 rounded-lg shadow-lg w-full bg-center bg-cover"  style="background-image: url('@url');">
     <!-- Chapter Header -->
     <div class="flex items-center mb-2">
-        <div class="w-8 h-8 rounded-full bg-text-third  flex items-center justify-center text-red-500 text-xl font-bold">
+        <div class="w-8 h-8 rounded-full flex items-center justify-center text-red-600 text-2xl font-bold">
             <!-- Placeholder for chapter icon or number -->
-            <span>@ChapterNumber</span> <!-- Example Chapter Number -->
+            <span>@ChapterNumber.</span> <!-- Example Chapter Number -->
         </div>
         <h2 class="ml-4 text-lg font-bold tracking-widest text-text-third">@ChapterTitle</h2>
     </div>
@@ -14,7 +14,7 @@
     <div class="mb-2 flex justify-end items-end">
         @if (IsCompleted)
         {
-        <span class=" text-green-400 font-medium ">Completed</span>
+        <span class=" text-green-400 font-medium ">Completed</span> 
 
         }
         else if (IsOpen)
