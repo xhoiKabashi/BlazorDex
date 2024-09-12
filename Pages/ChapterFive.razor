@@ -56,7 +56,7 @@ else {
         healUrl: null
     );
 
-            protected override async Task OnInitializedAsync()
+            @* protected override async Task OnInitializedAsync()
     {
         
           await PreloadImages();
@@ -72,7 +72,7 @@ else {
     if (!string.IsNullOrEmpty(_enemy.StandUrl)) imageUrls.Add(_enemy.StandUrl);
     if (!string.IsNullOrEmpty(_enemy.IconUrl)) imageUrls.Add(_enemy.IconUrl);
         await JSRuntime.InvokeVoidAsync("preloadImages", imageUrls);
-    }
+    } *@
 
 
     private bool gameAccepted { get; set; } = false;

@@ -34,7 +34,7 @@ else
 
     private bool gameAccepted { get; set; } = false;
 
-    protected override async Task OnInitializedAsync()
+    @* protected override async Task OnInitializedAsync()
     {
         await PreloadImages();
     }
@@ -50,7 +50,7 @@ else
     if (!string.IsNullOrEmpty(_enemy.IconUrl)) imageUrls.Add(_enemy.IconUrl);
 
         await JSRuntime.InvokeVoidAsync("preloadImages", imageUrls);
-    }
+    } *@
 
     private void AcceptGame()
     {

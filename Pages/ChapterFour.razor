@@ -52,7 +52,7 @@ else {
         healUrl: null
     );
 
-            protected override async Task OnInitializedAsync()
+            @* protected override async Task OnInitializedAsync()
     {
           await PreloadImages();
     }
@@ -70,7 +70,7 @@ else {
     if (!string.IsNullOrEmpty(_enemy.BoostUrl)) imageUrls.Add(_enemy.BoostUrl);
 
         await JSRuntime.InvokeVoidAsync("preloadImages", imageUrls);
-    }
+    } *@
     private bool gameAccepted { get; set; } = false;
 
     private void AcceptGame()
