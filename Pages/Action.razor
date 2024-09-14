@@ -86,8 +86,7 @@
         Attack="() => PerformAction(HeroActionType.Attack)"
         Defend="() => PerformAction(HeroActionType.Defend)"
         Ability="() => PerformAction(HeroActionType.HeavyCrash)"
-         HerTears="() => PerformAction(HeroActionType.HerTears)"
-         Ability2="() => PerformAction(HeroActionType.MilkRage)"   />
+         HerTears="() => PerformAction(HeroActionType.HerTears)" />
                 }
             else
                     {
@@ -106,6 +105,9 @@
     private int HeroHP;
     private int HeroSpeed;
     private int HeroArmor;
+    private int originalArmor;
+    private bool isDefending = false;
+
 
     //// Enemy Props and Parameters
     [Parameter] public int EnemyHp {set; get;}
@@ -115,6 +117,8 @@
     [Parameter] public string? EnemyName { get; set; }
     [Parameter] public int NumberOfSpells {get; set; }
     [Parameter] public int EnemyLevel {get; set; }
+    private int originalArmorEnemy;
+    private bool isDefendingEnemy = false;
 
 
     [Parameter] public List<string> enemyAbilities { get; set; } = new List<string>();
@@ -163,6 +167,9 @@
     public int? heroStartingHp { get; set; }
     public int enemyStartingHp { get; set; }
 
+
+
+
     /// Initialization of the stats form the game State
     protected override async Task OnInitializedAsync()
     {
@@ -195,8 +202,8 @@ private async Task DetermineTurnOrder()
     {
         AnimationService.SetTurn(false);
         HasPerformed = true;
-        await Task.Delay(2000);  // Optional: Add delay for a smoother transition
-
+        Console.WriteLine("Turn");
+        await Task.Delay(2000); 
         // Trigger the enemy's attack or action immediately
         await ExecuteEnemyAction();
         
@@ -233,17 +240,39 @@ private async Task DetermineTurnOrder()
         }
     }
  //// Hero Actions / Upgarde Armor
- private async Task HeroUpgradeArmor(){
-        /// Upgrade Logic
-         HeroArmor += 5;
-        /// Animation
-         AnimationService.SetUpgradeArmor(true, true, 5);
-         await DisplayActionMessage("Hero defends!");
-         AnimationService.SetTurn(false);
-         await AnimationService.ResetStatus();
-        // Notify the UI of the change
-         StateHasChanged();
- }
+private async Task HeroUpgradeArmor()
+{
+    // Upgrade Logic
+    isDefending = true;
+    
+    if (isDefending)
+    {
+        // Check if the armor is negative
+        if (HeroArmor < 0)
+        {
+            // Multiply the negative armor to reduce its absolute value
+            HeroArmor = HeroArmor / 2; // Example: -20 becomes -10
+        }
+        else
+        {
+            // Double the armor for positive values
+            HeroArmor *= 2; // Example: 10 becomes 20
+        }
+    }
+
+    // Animation
+    AnimationService.SetUpgradeArmor(true, true, HeroArmor);
+    await DisplayActionMessage(HeroArmor < 0 
+        ? "Reduces the negative armor value!" 
+        : "Doubles the armor for one turn!");
+    
+    AnimationService.SetTurn(false);
+    await AnimationService.ResetStatus();
+    
+    // Notify the UI of the change
+    StateHasChanged();
+}
+
  //// Hero Actions / Heavy Crash
 
   private async Task HeavyCrash(){
@@ -279,17 +308,22 @@ private async Task DetermineTurnOrder()
   private async Task MilkRage(){
         if (HeroStateService.Hero == null)
         return; // Early exit if Hero is null
+          HasPerformed = true;
        /// Ability logic
          HeroDmg  += HeroStateService.Hero.MilkRegeStats;
-         HeroArmor += HeroStateService.Hero.MilkRegeStats;
+             if (HeroArmor < 0)
+        {
+            // Multiply the negative armor to reduce its absolute value
+            HeroArmor = HeroArmor - HeroStateService.Hero.MilkRegeStats; // Example: -20 becomes -10
+        }
+        else
+        {
+            // Double the armor for positive values
+            HeroArmor += HeroStateService.Hero.MilkRegeStats; // Example: 10 becomes 20
+        }
        /// Animation
             AnimationService.SetHeroBoosting(true,true, HeroStateService.Hero.MilkRegeStats, HeroStateService.Hero.MilkRegeStats);
-            await DisplayActionMessage("Milk Rage!");
-            AnimationService.SetTurn(false);
-            await AnimationService.ResetStatus();       
-
-       /// Notify the UI of the change
-          await AnimationService.ResetStatus();
+            await AnimationService.ResetStatus();   
   }
     private async Task ExecuteHeroAction(HeroActionType action)
     {
@@ -310,11 +344,6 @@ private async Task DetermineTurnOrder()
                 case HeroActionType.HerTears:
                 HasPerformed = true;
                 await TearsHealing();
-
-                break;
-                case HeroActionType.MilkRage:
-                HasPerformed = true;
-                await MilkRage();
                 break;
         }
     }
@@ -327,11 +356,22 @@ private async Task DetermineTurnOrder()
         turnCounter++;
 
         if (AnimationService.IsHeroTurn)
-        {
+        {  
+                if(HeroStateService.Hero.MilkRegeLevel > 0){
+                await MilkRage();
+                }
             await ExecuteHeroAction(action);
+                    if(isDefendingEnemy){
+                    EnemyArmor /= 2;
+                    isDefendingEnemy = false;
+                    }
             if (!gameEnd)
             {
                 await ExecuteEnemyAction();
+                if(isDefending){
+                    HeroArmor /= 2;
+                    isDefending = false;
+                }
             }
         }
         else
@@ -371,7 +411,6 @@ private async Task DetermineTurnOrder()
                 EndGameMessage = "Hero is defeated!";
             }
             }
-                await Task.Delay(2000);
                 HasPerformed = false;
                 break;
 
@@ -379,10 +418,13 @@ private async Task DetermineTurnOrder()
              if (EnemyUpgradeArmor != null) 
             { 
                  var ArmordResult = await EnemyUpgradeArmor(EnemyArmor);
-                EnemyArmor = ArmordResult.enemyArmor;
+                 isDefendingEnemy = true;
+                 if(isDefendingEnemy){
+                  EnemyArmor *= 2;
+                 }
                 /// Animation
-                AnimationService.SetUpgradeArmor(false, true, ArmordResult.armorAdded);
-                await DisplayActionMessage($"{EnemyName} defends!");
+                AnimationService.SetUpgradeArmor(false, true, EnemyArmor / 2);
+                await DisplayActionMessage($"{EnemyName} double armor one turn!");
                 AnimationService.SetTurn(true);
                 await AnimationService.ResetStatus();
                 StateHasChanged(); 
@@ -498,7 +540,7 @@ private async Task DetermineTurnOrder()
                 await AnimationService.ResetStatus();
                 AnimationService.SetTurn(true);
                 StateHasChanged(); 
-                await Task.Delay(2000);
+                await Task.Delay(1500);
                 HasPerformed = false;
         
        
@@ -516,7 +558,21 @@ private async Task DetermineTurnOrder()
 private EnemyActionType DetermineEnemyAction()
 {
     Random random = new Random();
-    string randomAbility = enemyAbilities[random.Next(enemyAbilities.Count)];
+    string randomAbility;
+    
+    do
+    {
+        randomAbility = enemyAbilities[random.Next(enemyAbilities.Count)];
+
+        // Check if the enemy has full HP and try to avoid healing
+        if (randomAbility == "Heal" && EnemyHp == enemyStartingHp) 
+        {
+            continue; // Skip "Heal" if HP is full and select another ability
+        }
+        break; // Exit loop if a valid ability is selected
+    }
+    while (true);
+
     return randomAbility switch
     {
         "Attack" => EnemyActionType.Attack,
@@ -569,6 +625,16 @@ private EnemyActionType DetermineEnemyAction()
             HeroStateService.Hero.Story04 = true;
             HeroStateService.Hero.Wounds += 1;
             break;
+            case "Chapter5":
+            HeroStateService.Hero.Story5 = true;
+            HeroStateService.Hero.Story05 = true;
+            HeroStateService.Hero.Wounds += 1;
+            break;
+                case "Chapter6":
+            HeroStateService.Hero.Story6 = true;
+            HeroStateService.Hero.Story06 = true;
+            HeroStateService.Hero.Wounds += 1;
+            break;
     }
 
 
@@ -594,7 +660,7 @@ private EnemyActionType DetermineEnemyAction()
         }
     }
 
-    private async Task DisplayActionMessage(string message, int delay = 2000)
+    private async Task DisplayActionMessage(string message, int delay = 1500)
     {
         actionMessages.Add(message);
         StateHasChanged();
@@ -609,7 +675,7 @@ private EnemyActionType DetermineEnemyAction()
         Defend,
         HeavyCrash,
         HerTears,
-        MilkRage
+        
     }
      private enum EnemyActionType
     {

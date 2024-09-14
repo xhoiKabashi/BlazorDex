@@ -995,6 +995,11 @@ video {
   background-color: rgb(234 179 8 / var(--tw-bg-opacity));
 }
 
+.bg-red-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 68 68 / var(--tw-bg-opacity));
+}
+
 .bg-cover {
   background-size: cover;
 }
@@ -1339,10 +1344,6 @@ video {
 @media (min-width: 768px) {
   .md\:w-\[450px\] {
     width: 450px;
-  }
-
-  .md\:bg-contain {
-    background-size: contain;
   }
 }
 

@@ -1,78 +1,77 @@
 @inject HeroStateService HeroStateService
 
-
-
 <!-- ActionButton.razor -->
-<div class="flex p-3  m-1  rounded-md" style="background-color: rgba(255, 249, 249, 0.1);">
- <div class="grid grid-cols-2 grid-rows-2 ">
-    <!-- First Item (Attack) in the top-left -->
-    <div class=" flex flex-col justify-center items-center text-white">
-        <button @onclick="() => Attack.InvokeAsync()" class=" p-2 rounded-full bg-red-600" >
-            <img src="image/icons/sword.png" alt="" class="h-8">
-        </button>
-        @* <p class=" text text-xs">Attack</p> *@
+<div class="flex p-3 m-1 rounded-md" style="background-color: rgba(255, 249, 249, 0.1);">
+    <div class="grid grid-cols-2 grid-rows-2">
+        <!-- First Item (Attack) in the top-left -->
+        <div class="flex flex-col justify-center items-center text-white">
+            <button @onclick="() => DebounceClick(Attack)" class="p-2 rounded-full bg-red-600">
+                <img src="image/icons/sword.png" alt="" class="h-8">
+            </button>
+        </div>
+        <div></div>
+        <div class="flex flex-col justify-center items-center text-white row-start-2 col-start-2">
+            <button @onclick="() => DebounceClick(Defend)" class="p-2 rounded-full bg-blue-400">
+                <img src="image/icons/shield.png" alt="" class="h-8">
+            </button>
+        </div>
     </div>
-    <div></div>
-     <div class=" flex flex-col justify-center items-center text-white  row-start-2 col-start-2">
-        <button @onclick="() => Defend.InvokeAsync()" class=" p-2 rounded-full bg-blue-400">
-            <img src="image/icons/shield.png" alt="" class="h-8">
-        </button>
-               @* <p class=" text text-xs">Defend </p> *@
+
+    <div class="flex gap-3 flex-1 justify-center items-center">
+        <div class="flex flex-col justify-center items-center text-white">
+            <button 
+                @onclick="() => DebounceClick(Ability)" 
+                class="p-1 rounded-full @(HeroStateService.Hero.Ability1 ? "bg-gray-400" : "bg-gray-600")"
+                disabled="@(!HeroStateService.Hero.Ability1)">
+                <img src="image/icons/mace.png" alt="" class="h-12 p-1 scale-125 @(HeroStateService.Hero.Ability1 ? "" : "opacity-50")">
+            </button>
+            <h1 class="text-xs font-semibold @(HeroStateService.Hero.Ability1 ? "text-text-third" : "text-gray-600")">
+                @(HeroStateService.Hero.Ability1 ? "Heavy Crash" : "Locked")
+            </h1>
+        </div>
+        
+        <div class="flex flex-col justify-center items-center text-white">
+            <button 
+                @onclick="() => DebounceClick(HerTears)" 
+                class="p-2 rounded-full @(HeroStateService.Hero.Ability2 ? "bg-green-500" : "bg-gray-600")"
+                disabled="@(!HeroStateService.Hero.Ability2)">
+                <img src="image/icons/tears.png" alt="" class="h-10 @(HeroStateService.Hero.Ability2 ? "" : "opacity-50")">
+            </button>
+            <h1 class="text-xs font-semibold @(HeroStateService.Hero.Ability2 ? "text-text-third" : "text-gray-600")">
+                @(HeroStateService.Hero.Ability2 ? "Her Tears" : "Locked")
+            </h1>
+        </div>
+        
+        <div class="flex flex-col justify-center items-center text-white">
+            <button 
+                @onclick="() => DebounceClick(Ability2)" 
+                class="p-2 rounded-full @(HeroStateService.Hero.Ability3 ? "bg-yellow-500" : "bg-gray-600")"
+                disabled="@(!HeroStateService.Hero.Ability3)">
+                <img src="image/icons/nymph.png" alt="" class="h-10 @(HeroStateService.Hero.Ability3 ? "" : "opacity-50")">
+            </button>
+            <h1 class="text-xs font-semibold @(HeroStateService.Hero.Ability3 ? "text-text-third" : "text-gray-600")">
+                @(HeroStateService.Hero.Ability3 ? "Milk Rage" : "Locked")
+            </h1>
+        </div>
     </div>
 </div>
-
-<div class="flex gap-3 flex-1 justify-center items-center">
-    <div class="flex flex-col justify-center items-center text-white">
-        <button 
-            @onclick="() => Ability.InvokeAsync()" 
-            class="p-1 rounded-full @(HeroStateService.Hero.Ability1 ? "bg-gray-400" : "bg-gray-600")"
-            disabled="@(!HeroStateService.Hero.Ability1)">
-            <img src="image/icons/mace.png" alt="" class="h-12 p-1 scale-125 @(HeroStateService.Hero.Ability1 ? "" : "opacity-50")">
-        </button>
-        <h1 class="text-xs font-semibold @(HeroStateService.Hero.Ability1 ? "text-text-third" : "text-gray-600")">
-            @(HeroStateService.Hero.Ability1 ? "Heavy Crash" : "Locked")
-        </h1>
-    </div>
-    
-    <div class="flex flex-col justify-center items-center text-white">
-        <button 
-            @onclick="() => HerTears.InvokeAsync()" 
-            class="p-2 rounded-full @(HeroStateService.Hero.Ability2 ? "bg-green-500" : "bg-gray-600")"
-            disabled="@(!HeroStateService.Hero.Ability2)">
-            <img src="image/icons/tears.png" alt="" class="h-10 @(HeroStateService.Hero.Ability2 ? "" : "opacity-50")">
-        </button>
-        <h1 class="text-xs font-semibold @(HeroStateService.Hero.Ability2 ? "text-text-third" : "text-gray-600")">
-            @(HeroStateService.Hero.Ability2 ? "Her Tears" : "Locked")
-        </h1>
-    </div>
-    
-    <div class="flex flex-col justify-center items-center text-white">
-        <button 
-            @onclick="() => Ability2.InvokeAsync()" 
-            class="p-2 rounded-full @(HeroStateService.Hero.Ability3 ? "bg-yellow-500" : "bg-gray-600")"
-            disabled="@(!HeroStateService.Hero.Ability3)">
-            <img src="image/icons/nymph.png" alt="" class="h-10 @(HeroStateService.Hero.Ability3 ? "" : "opacity-50")">
-        </button>
-        <h1 class="text-xs font-semibold @(HeroStateService.Hero.Ability3 ? "text-text-third" : "text-gray-600")">
-            @(HeroStateService.Hero.Ability3 ? "Milk Rage" : "Locked")
-        </h1>
-    </div>
-</div>
-
-
-
-</div>
-
 
 @code {
-[Parameter] public EventCallback Attack { get; set; }
+    private bool isDebouncing = false;
 
-[Parameter] public EventCallback Defend { get; set; }
+    private async Task DebounceClick(EventCallback callback)
+    {
+        if (isDebouncing) return;
 
-[Parameter] public EventCallback Ability { get; set; }
+        isDebouncing = true;
+        await callback.InvokeAsync();
+        await Task.Delay(500); // 1 second delay
+        isDebouncing = false;
+    }
 
-[Parameter]  public EventCallback HerTears { get; set; }
-
-[Parameter] public EventCallback Ability2 { get; set; }
-
+    [Parameter] public EventCallback Attack { get; set; }
+    [Parameter] public EventCallback Defend { get; set; }
+    [Parameter] public EventCallback Ability { get; set; }
+    [Parameter] public EventCallback HerTears { get; set; }
+    [Parameter] public EventCallback Ability2 { get; set; }
 }

@@ -42,16 +42,16 @@
             }
            @if (HeroBoosting)
             {
-                <div class="flex flex-col animate-bounce text-blue-700">
-                    <div class="flex">
+                <div class="flex  gap-2 animate-bounce text-blue-700">
+                       <div class="flex gap-1">
                         <img src="image/icons/sword.png" alt="arrow" class="h-6 object-cover">
-                       <p class="font-bold ">+@AttackAdded</p>
-                    </div>
-                         <div class="flex">
+                        <p class="font-bold ">+@AttackAdded</p>
+                        </div>
+                        <div class="flex gap-1">
                         <img src="image/icons/shieldUp.png" alt="arrow" class="h-6 object-cover ">
-                        <p class="font-bold ">+@ArmorAdded</p>
-                    </div>
-
+                         <p class="font-bold ">+@ArmorAdded</p>
+                        </div>
+            
                 </div>
             } @if (EnemyHeavyCrash)
             {
@@ -67,7 +67,6 @@
         <!-- Hero Images -->
         <ImagesHero HeavyCrash="@HeavyCrash" 
         HeroIsHealing="@HeroIsHealing"
-        HeroBoosting="@HeroBoosting"
         HeroIsAtt="@HeroIsAtt"
         HeroUpgradeArmor="@HeroUpgradeArmor"
 />
@@ -143,7 +142,6 @@
 <!-- Audio Elements -->
 <AudioAction HeavyCrash="@HeavyCrash"
  HeroIsHealing="@HeroIsHealing" 
-  HeroBoosting="@HeroBoosting" 
    HeroUpgradeArmor="@HeroUpgradeArmor" 
     HeroIsAtt="@HeroIsAtt" 
      EnemyIsHealing="@EnemyIsHealing" 

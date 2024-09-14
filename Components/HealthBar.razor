@@ -7,9 +7,9 @@
                 <p class="text-xs font-thin">Level</p>
             </div>
         </div>
-        <div class="bg-red-700 h-3 rounded-full w-32 mr-2">
+        <div class="bg-red-700 h-3 rounded-full w-32 mr-2 ">
             <div class="bg-yellow-500 h-3 rounded-full"
-                style="width: @((HeroHP ?? 0) == 0 ? "0%" : $"{(HeroHP ?? 0) * 100 / (HeroStartHP ?? 1)}%")">
+                style="width: @((HeroHP ?? 0) == 0 ? "1%" : $"{(HeroHP ?? 1) * 100 / (HeroStartHP ?? 0)}%")">
             </div>
         </div>
 

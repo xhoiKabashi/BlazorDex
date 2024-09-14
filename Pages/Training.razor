@@ -45,7 +45,7 @@
             private Enemy _enemy = new Enemy(
                 hp: 100,
                 speed: 4,
-                armor: 2,
+                armor: 8,
                 dmg: 22,
                 name: "Ulqin",
                 sceneUrl: "image/scenes/training.jpg",
@@ -63,7 +63,6 @@
             protected override async Task OnInitializedAsync()
     {
          
-          @* await PreloadImages(); *@
         _enemy.Hp = ScaleEnemyStat(baseStat: _enemy.Hp, heroLevel: HeroStateService.Hero.Level, scalingFactor: 1.15);
         _enemy.Armor = ScaleEnemyStat(baseStat: _enemy.Armor, heroLevel: HeroStateService.Hero.Level, scalingFactor: 1.4);
         _enemy.Dmg = ScaleEnemyStat(baseStat: _enemy.Dmg, heroLevel: HeroStateService.Hero.Level, scalingFactor: 1.2);
@@ -76,23 +75,6 @@
         
                 gameAccepted = true;
             }
-
-     @* private async Task PreloadImages()
-    {
-     var imageUrls = new List<string>();
-    // Add only non-null URLs to the list
-    if (!string.IsNullOrEmpty(_enemy.SceneUrl)) imageUrls.Add(_enemy.SceneUrl);
-    if (!string.IsNullOrEmpty(_enemy.AttackUrl)) imageUrls.Add(_enemy.AttackUrl);
-    if (!string.IsNullOrEmpty(_enemy.StandUrl)) imageUrls.Add(_enemy.StandUrl);
-    if (!string.IsNullOrEmpty(_enemy.IconUrl)) imageUrls.Add(_enemy.IconUrl);
-    if (!string.IsNullOrEmpty(_enemy.DefendUrl)) imageUrls.Add(_enemy.DefendUrl);
-    if (!string.IsNullOrEmpty(_enemy.BoostUrl)) imageUrls.Add(_enemy.BoostUrl);
-
-        await JSRuntime.InvokeVoidAsync("preloadImages", imageUrls);
-    } *@
-
- 
-
              private int ScaleEnemyStat(int baseStat, int heroLevel, double scalingFactor)
                 {
                 return (int)(baseStat * Math.Pow(scalingFactor, heroLevel - 1)); // Scale based on the hero's level
