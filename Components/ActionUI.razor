@@ -69,6 +69,8 @@
         HeroIsHealing="@HeroIsHealing"
         HeroIsAtt="@HeroIsAtt"
         HeroUpgradeArmor="@HeroUpgradeArmor"
+        HeroStandingImageUrl="@HeroStandingImageUrl"
+        HeroStandingAttackUrl="@HeroStandingAttackUrl"
 />
     </div>
 
@@ -86,6 +88,13 @@
                 <div class="flex animate-bounce">
                     <img src="image/icons/shieldUp.png" alt="arrow" class="h-6 object-cover ">
                     <p class="font-bold text-blue-700">+@ArmorAdded Armor</p>
+                </div>
+            }
+            @if (eIsAddingDamage)
+            {
+                <div class="flex  gap-2 animate-bounce text-blue-700">
+                        <img src="image/icons/sword.png" alt="arrow" class="h-6 object-cover">
+                        <p class="font-bold ">+@eDamageAdded</p>
                 </div>
             }
 
@@ -158,6 +167,8 @@
 @code {
    // Hero Parameters
 
+    [Parameter] public bool eIsAddingDamage { get; set; }
+    [Parameter] public int eDamageAdded { get; set; }
     [Parameter] public bool IsReducingDamage { get; set; }
     [Parameter] public int DamageReduced { get; set; }
     [Parameter] public bool HeavyCrash { get; set; }
@@ -208,6 +219,12 @@
  [Parameter] public string? HealUrl { get; set; }
 
  [Parameter] public string? BoostUrl { get; set; }
+
+// Hero 
+
+[Parameter] public string? HeroStandingImageUrl { get; set; }
+[Parameter] public string? HeroStandingAttackUrl { get; set; }
+
 
 
     

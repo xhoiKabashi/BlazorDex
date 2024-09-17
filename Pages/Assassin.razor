@@ -1,0 +1,98 @@
+@page "/Assassin"
+@using BlazorDex.Models
+@inject NavigationManager NavigationManager
+
+
+
+
+@if (!gameAccepted)
+{
+   <CardOfEnemy  OnClick="AcceptGame"  AbilityDesc=" Steals your attack dmg"   OnClickNavigate="GoStory"  Story="@Story" Armor="@_enemy.Armor" Hp="@_enemy.Hp"  Speed="@_enemy.Speed" Weakness="None"  Name="@_enemy.Name"  Dmg="@_enemy.Dmg"/>
+}
+else {
+
+<Action 
+    SceneUrl="@_enemy.SceneUrl" 
+    AttackUrl="@_enemy.AttackUrl" 
+    StandUrl="@_enemy.StandUrl" 
+
+    EnemyHp="@_enemy.Hp"
+    EnemySpeed="@_enemy.Speed"
+    EnemyArmor="@_enemy.Armor"
+    EnemyDmg="@_enemy.Dmg"
+    IconUrl="@_enemy.IconUrl"
+    EnemyName="@_enemy.Name"
+    PointsProvided="@_enemy.PointsProvided"
+    ExperienceProvided="@_enemy.ExperienceProvided"
+    NumberOfSpells="@_enemy.NumberOfSpells"
+    specialAssassin="EnemyAbility"
+    enemyAbilities="enemyAbilities" 
+    EnemyAttack="EnemyAttack"
+    ChapterNumber="Assassin"
+    EnemyLevel="7"
+
+
+/>
+ <audio id="audio" src="audio/stab.mp3"></audio>
+}
+
+@code {
+    [Inject] private IJSRuntime JSRuntime { get; set; } = null!;
+
+    private Enemy _enemy = new Enemy(
+        hp: 600,
+        speed: 100,
+        armor: 80,
+        dmg: 200,
+        name: "Assassin",
+        sceneUrl: "image/scenes/assassinScene.jpg",
+        attackUrl: "image/motion/blindAssassin.png",
+        standUrl: "image/motion/blindAssassinStand.png",
+        defendUrl: null,
+        boostUrl: null,
+        iconUrl: "image/icons/assasin.png",
+        experienceProvided: 700,
+        pointsProvided : 18,
+        numberOfSpells: 1,
+        healUrl: null
+    );
+
+    private bool gameAccepted { get; set; } = false;
+
+    private void AcceptGame()
+    {
+        gameAccepted = true;
+    }
+
+    private void GoStory() => NavigationManager.NavigateTo("/Story");
+private string Story = "Brother, I bring you grave news. The assassin we now face is the same who butchered twelve brothers in battle, leaving their sister Doruntina in endless sorrow. She knows his cruelty well, for the screams of her brothers still haunt her dreams. He is a man without mercy, a killer forged in war. His heart is as black as the night, and soon, his shadow will fall upon us too. We must be ready";
+    private List<string> enemyAbilities = new List<string> { "Attack", "SpecialAbility" };
+
+
+    private async Task<(int heroHp, int damageDealt, bool isMonster)> EnemyAttack(int heroArmor, int heroHp, int enemyDmg)
+    {
+        await PlayMonsterAttack();
+        bool isMonster = false;
+        int damageDealt = Math.Max(enemyDmg - heroArmor, 0);
+        heroHp -= damageDealt;
+        return (heroHp, damageDealt, isMonster); // Return the updated hero's HP and damage dealt
+    }
+
+
+private async Task<(int enemyDmg, bool isMonster, int heroDmg)> EnemyAbility(int enemyDmg, int heroDmg)
+{   
+    await PlayMonsterAttack();
+    bool isMonster = false;
+    heroDmg -= 30;
+    enemyDmg += 30;
+    return (enemyDmg, isMonster, heroDmg); // Return the updated hero's HP and damage dealt in correct order
+}
+
+
+// audio
+private async Task PlayMonsterAttack()
+{
+    await JSRuntime.InvokeVoidAsync("eval", @"
+        const audio = document.getElementById('audio'); audio.volume = 0.3; audio.play()");
+}
+}

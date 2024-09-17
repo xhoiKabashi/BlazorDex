@@ -32,6 +32,7 @@
     specialAbilityNympth="@specialAbility"
     ChapterNumber="Chapter2"
     EnemyLevel="4"
+  
 
 
 />
@@ -40,10 +41,10 @@
 @code {
     [Inject] private IJSRuntime JSRuntime { get; set; } = null!;
     private Enemy _enemy = new Enemy(
-        hp: 150,
+        hp: 220,
         speed: 1,
         armor: 0,
-        dmg: 25,
+        dmg: 30,
         name: "Nymphs",
         sceneUrl: "image/scenes/ChapterTwo.jpg",
         attackUrl: "image/motion/zanaatk.png",
@@ -51,8 +52,8 @@
         defendUrl: "image/motion/zanastand.png",
         boostUrl: "image/motion/zanahealth.png",
         iconUrl: "image/icons/nymphs.png",
-        experienceProvided: 80,
-        pointsProvided : 7,
+        experienceProvided: 90,
+        pointsProvided : 8,
         numberOfSpells: 3,
         healUrl: "image/motion/zanahealth.png"
     );
@@ -86,7 +87,7 @@ private async Task<(int heroHp, int damageDealt, int heroArmor, int armorReducti
 private async Task<(int enemyHp, int hpAdded)> EnemyHeal(int enemyHp, int enemyStartingHp)
 {
     await PlayMonsterAttack();
-    int hpAdded = 50;
+    int hpAdded = 70;
     enemyHp = Math.Min(enemyHp + hpAdded, enemyStartingHp);
 
     return (enemyHp, hpAdded); // Return the updated hero's HP and damage dealt

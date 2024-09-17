@@ -22,35 +22,36 @@
             <button 
                 @onclick="() => DebounceClick(Ability)" 
                 class="p-1 rounded-full @(HeroStateService.Hero.Ability1 ? "bg-gray-400" : "bg-gray-600")"
-                disabled="@(!HeroStateService.Hero.Ability1)">
-                <img src="image/icons/mace.png" alt="" class="h-12 p-1 scale-125 @(HeroStateService.Hero.Ability1 ? "" : "opacity-50")">
+                disabled="@(!HeroStateService.Hero.Ability1 || !AbilityNotLocked)">
+                <img src="image/icons/mace.png" alt="" class="h-12 p-1 scale-125 @(HeroStateService.Hero.Ability1 && AbilityNotLocked ? "" : "opacity-50")">
             </button>
-            <h1 class="text-xs font-semibold @(HeroStateService.Hero.Ability1 ? "text-text-third" : "text-gray-600")">
-                @(HeroStateService.Hero.Ability1 ? "Heavy Crash" : "Locked")
+            <h1 class="text-xs font-semibold @(HeroStateService.Hero.Ability1 && AbilityNotLocked ? "text-text-third" : "text-gray-600")">
+                @(HeroStateService.Hero.Ability1 && AbilityNotLocked ? "Heavy Crash" : "Locked")
             </h1>
         </div>
         
-        <div class="flex flex-col justify-center items-center text-white">
-            <button 
-                @onclick="() => DebounceClick(HerTears)" 
-                class="p-2 rounded-full @(HeroStateService.Hero.Ability2 ? "bg-green-500" : "bg-gray-600")"
-                disabled="@(!HeroStateService.Hero.Ability2)">
-                <img src="image/icons/tears.png" alt="" class="h-10 @(HeroStateService.Hero.Ability2 ? "" : "opacity-50")">
-            </button>
-            <h1 class="text-xs font-semibold @(HeroStateService.Hero.Ability2 ? "text-text-third" : "text-gray-600")">
-                @(HeroStateService.Hero.Ability2 ? "Her Tears" : "Locked")
-            </h1>
-        </div>
+<div class="flex flex-col justify-center items-center text-white">
+    <button 
+        @onclick="() => DebounceClick(HerTears)" 
+        class="p-2 rounded-full @(HeroStateService.Hero.Ability2 && AbilityNotLocked ? "bg-green-500" : "bg-gray-600")"
+        disabled="@(!HeroStateService.Hero.Ability2 || !AbilityNotLocked)">
+        <img src="image/icons/tears.png" alt="" class="h-10 @(HeroStateService.Hero.Ability2 && AbilityNotLocked ? "" : "opacity-50")">
+    </button>
+    <h1 class="text-xs font-semibold @(HeroStateService.Hero.Ability2 && AbilityNotLocked ? "text-text-third" : "text-gray-600")">
+        @(HeroStateService.Hero.Ability2 && AbilityNotLocked ? "Her Tears" : "Locked")
+    </h1>
+</div>
+
         
         <div class="flex flex-col justify-center items-center text-white">
             <button 
                 @onclick="() => DebounceClick(Ability2)" 
-                class="p-2 rounded-full @(HeroStateService.Hero.Ability3 ? "bg-yellow-500" : "bg-gray-600")"
-                disabled="@(!HeroStateService.Hero.Ability3)">
-                <img src="image/icons/nymph.png" alt="" class="h-10 @(HeroStateService.Hero.Ability3 ? "" : "opacity-50")">
+                class="p-2 rounded-full @(HeroStateService.Hero.Ability3 && AbilityNotLocked ? "bg-yellow-500" : "bg-gray-600")"
+                disabled="@(!HeroStateService.Hero.Ability3 || !AbilityNotLocked)">
+                <img src="image/icons/nymph.png" alt="" class="h-10 @(HeroStateService.Hero.Ability3 && AbilityNotLocked ? "" : "opacity-50")">
             </button>
-            <h1 class="text-xs font-semibold @(HeroStateService.Hero.Ability3 ? "text-text-third" : "text-gray-600")">
-                @(HeroStateService.Hero.Ability3 ? "Milk Rage" : "Locked")
+            <h1 class="text-xs font-semibold @(HeroStateService.Hero.Ability3 && AbilityNotLocked  ? "text-text-third" : "text-gray-600")">
+                @(HeroStateService.Hero.Ability3 && AbilityNotLocked ? "Milk Rage" : "Locked")
             </h1>
         </div>
     </div>
@@ -74,4 +75,5 @@
     [Parameter] public EventCallback Ability { get; set; }
     [Parameter] public EventCallback HerTears { get; set; }
     [Parameter] public EventCallback Ability2 { get; set; }
+    [Parameter] public bool AbilityNotLocked {get; set; } = true;
 }

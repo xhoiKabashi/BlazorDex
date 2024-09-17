@@ -1,4 +1,4 @@
-@page "/ChapterFive"
+@page "/Bailozi"
 @using BlazorDex.Models
 @inject NavigationManager NavigationManager
 
@@ -7,7 +7,7 @@
 
 @if (!gameAccepted)
 {
-   <CardOfEnemy  OnClick="AcceptGame"  AbilityDesc=" Readuce your attack dmg"   OnClickNavigate="GoStory"  Story="@Story" Armor="@_enemy.Armor" Hp="@_enemy.Hp"  Speed="@_enemy.Speed" Weakness="None"  Name="@_enemy.Name"  Dmg="@_enemy.Dmg"/>
+   <CardOfEnemy  OnClick="AcceptGame"  AbilityDesc="None"   OnClickNavigate="GoStory"  Story="@Story" Armor="@_enemy.Armor" Hp="@_enemy.Hp"  Speed="@_enemy.Speed" Weakness="None"  Name="@_enemy.Name"  Dmg="@_enemy.Dmg"/>
 }
 else {
 
@@ -25,33 +25,33 @@ else {
     PointsProvided="@_enemy.PointsProvided"
     ExperienceProvided="@_enemy.ExperienceProvided"
     NumberOfSpells="@_enemy.NumberOfSpells"
-    specialAbilityKucedra="EnemyAttack"
+    EnemyAttack="EnemyAttack"
     enemyAbilities="enemyAbilities" 
-    ChapterNumber="Chapter5"
-    EnemyLevel="8"
+    ChapterNumber="Bailozi"
+    EnemyLevel="15"
 
 
 />
- <audio id="kucedra" src="audio/Kucedra.mp3"></audio>
+ <audio id="audio" src="audio/mace.mp3"></audio>
 }
 
 @code {
     [Inject] private IJSRuntime JSRuntime { get; set; } = null!;
 
     private Enemy _enemy = new Enemy(
-        hp: 400,
-        speed: 22,
-        armor: 80,
-        dmg: 140,
-        name: "Kucedra",
-        sceneUrl: "image/scenes/ChapterFour.jpg",
-        attackUrl: "image/motion/kucedraAtt.png",
-        standUrl: "image/motion/kucedra.png",
+        hp: 1000,
+        speed: 500,
+        armor: 400,
+        dmg: 1000,
+        name: "Bailozi",
+        sceneUrl: "image/scenes/bailozi.png",
+        attackUrl: "image/motion/bailoziAttack.png",
+        standUrl: "image/motion/bailoziStand.png",
         defendUrl: null,
         boostUrl: null,
-        iconUrl: "image/icons/dragon.png",
+        iconUrl: "image/icons/knight.png",
         experienceProvided: 300,
-        pointsProvided : 14,
+        pointsProvided : 5,
         numberOfSpells: 1,
         healUrl: null
     );
@@ -65,22 +65,20 @@ else {
 
     private void GoStory() => NavigationManager.NavigateTo("/Story");
     private string Story = "Brother, the rivers have stopped flowing, and the skies grow darker by the day. It is Kucedra, the serpent of legend, whose monstrous form coils around the mountains, blocking the waters with her massive body. The people tremble, for they say she demands a sacrifice, or she will unleash floods upon the land, drowning all in her wrath.";
-    private List<string> enemyAbilities = new List<string> { "SpecialAbility" };
+   
+    private List<string> enemyAbilities = new List<string> { "Attack" };
 
-
-
-    private async Task<(int heroHp, int damageDealt, bool isMonster, int heroDmg)> EnemyAttack(int heroArmor, int heroHp, int enemyDmg, int heroDmg)
-{   
-    await PlayMonsterAttack();
-    bool isMonster = false;
-    int damageDealt = Math.Max(enemyDmg - heroArmor, 0);
-    heroHp -= damageDealt;
-    heroDmg -= 20;
-    return (heroHp, damageDealt,isMonster, heroDmg); // Return the updated hero's HP and damage dealt
-}
+    private async Task<(int heroHp, int damageDealt, bool isMonster)> EnemyAttack(int heroArmor, int heroHp, int enemyDmg)
+    {
+        await PlayMonsterAttack();
+        bool isMonster = false;
+        int damageDealt = Math.Max(enemyDmg - heroArmor, 0);
+        heroHp -= damageDealt;
+        return (heroHp, damageDealt, isMonster); // Return the updated hero's HP and damage dealt
+    }
 private async Task PlayMonsterAttack()
 {
     await JSRuntime.InvokeVoidAsync("eval", @"
-        const audio = document.getElementById('kucedra'); audio.volume = 0.3; audio.play()");
+        const audio = document.getElementById('audio'); audio.volume = 0.3; audio.play()");
 }
 }

@@ -39,10 +39,10 @@
 @code {
     [Inject] private IJSRuntime JSRuntime { get; set; } = null!;
     private Enemy _enemy = new Enemy(
-        hp: 200,
+        hp: 250,
         speed: 1,
         armor: 0,
-        dmg: 50,
+        dmg: 60,
         name: "Shtriga",
         sceneUrl: "image/scenes/ChapterThree.jpg",
         attackUrl: "image/motion/shtrigaattack.png",
@@ -50,8 +50,8 @@
         defendUrl: "image/motion/shtrigaattack.png",
         boostUrl: "image/motion/shtrigaattack.png",
         iconUrl: "image/icons/hood.png",
-        experienceProvided: 100,
-        pointsProvided : 8,
+        experienceProvided: 120,
+        pointsProvided : 10,
         numberOfSpells: 1,
         healUrl: "image/motion/shtrigaattack.png"
     );
@@ -73,7 +73,7 @@ private async Task<(int heroHp, int damageDealt, bool isNympth, int enemyHp, int
     await PlayMonsterAttack();
     int damageDealt = _enemy.Dmg;
     heroHp -= damageDealt;
-    int hpAdded = 50;
+    int hpAdded = _enemy.Dmg;
     enemyHp = Math.Min(enemyHp + hpAdded, enemyStartingHp);
     bool isNympth = true;
 

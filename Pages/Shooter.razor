@@ -1,4 +1,4 @@
-@page "/ChapterFive"
+@page "/Shooter"
 @using BlazorDex.Models
 @inject NavigationManager NavigationManager
 
@@ -7,7 +7,7 @@
 
 @if (!gameAccepted)
 {
-   <CardOfEnemy  OnClick="AcceptGame"  AbilityDesc=" Readuce your attack dmg"   OnClickNavigate="GoStory"  Story="@Story" Armor="@_enemy.Armor" Hp="@_enemy.Hp"  Speed="@_enemy.Speed" Weakness="None"  Name="@_enemy.Name"  Dmg="@_enemy.Dmg"/>
+   <CardOfEnemy  OnClick="AcceptGame"  AbilityDesc="Blocks your abilities"   OnClickNavigate="GoStory"  Story="@Story" Armor="@_enemy.Armor" Hp="@_enemy.Hp"  Speed="@_enemy.Speed" Weakness="None"  Name="@_enemy.Name"  Dmg="@_enemy.Dmg"/>
 }
 else {
 
@@ -25,33 +25,34 @@ else {
     PointsProvided="@_enemy.PointsProvided"
     ExperienceProvided="@_enemy.ExperienceProvided"
     NumberOfSpells="@_enemy.NumberOfSpells"
-    specialAbilityKucedra="EnemyAttack"
+    specialAbilityShooter="EnemyAttack"
     enemyAbilities="enemyAbilities" 
-    ChapterNumber="Chapter5"
-    EnemyLevel="8"
+    ChapterNumber="Shooter"
+    EnemyLevel="11"
+    AbilityNotLocked="false"
 
 
 />
- <audio id="kucedra" src="audio/Kucedra.mp3"></audio>
+ <audio id="audio" src="audio/bow.mp3"></audio>
 }
 
 @code {
     [Inject] private IJSRuntime JSRuntime { get; set; } = null!;
 
     private Enemy _enemy = new Enemy(
-        hp: 400,
-        speed: 22,
-        armor: 80,
-        dmg: 140,
-        name: "Kucedra",
-        sceneUrl: "image/scenes/ChapterFour.jpg",
-        attackUrl: "image/motion/kucedraAtt.png",
-        standUrl: "image/motion/kucedra.png",
+        hp: 1,
+        speed: 110,
+        armor: 100,
+        dmg: 200,
+        name: "Genovesi",
+        sceneUrl: "image/scenes/acher.jpg",
+        attackUrl: "image/motion/shooterAttack.png",
+        standUrl: "image/motion/shooterStand.png",
         defendUrl: null,
         boostUrl: null,
-        iconUrl: "image/icons/dragon.png",
-        experienceProvided: 300,
-        pointsProvided : 14,
+        iconUrl: "image/icons/crossbow.png",
+        experienceProvided: 500,
+        pointsProvided : 20,
         numberOfSpells: 1,
         healUrl: null
     );
@@ -64,7 +65,7 @@ else {
     }
 
     private void GoStory() => NavigationManager.NavigateTo("/Story");
-    private string Story = "Brother, the rivers have stopped flowing, and the skies grow darker by the day. It is Kucedra, the serpent of legend, whose monstrous form coils around the mountains, blocking the waters with her massive body. The people tremble, for they say she demands a sacrifice, or she will unleash floods upon the land, drowning all in her wrath.";
+    private string Story = "Brother, the enemy didn’t just bring a big army—they had a Genoese crossbowman with them. This one mercenary, famous for his deadly aim, was all it took to break our defenses. Even though our men fought bravely, his arrows hit their targets every time. Because of him, we lost our last castle. We can’t undo what’s happened, but we have to get ready for the next battle.";
     private List<string> enemyAbilities = new List<string> { "SpecialAbility" };
 
 
@@ -75,12 +76,11 @@ else {
     bool isMonster = false;
     int damageDealt = Math.Max(enemyDmg - heroArmor, 0);
     heroHp -= damageDealt;
-    heroDmg -= 20;
     return (heroHp, damageDealt,isMonster, heroDmg); // Return the updated hero's HP and damage dealt
 }
 private async Task PlayMonsterAttack()
 {
     await JSRuntime.InvokeVoidAsync("eval", @"
-        const audio = document.getElementById('kucedra'); audio.volume = 0.3; audio.play()");
+        const audio = document.getElementById('audio'); audio.volume = 0.3; audio.play()");
 }
 }

@@ -35,10 +35,10 @@ else {
 @code {
     [Inject] private IJSRuntime JSRuntime { get; set; } = null!;
     private Enemy _enemy = new Enemy(
-        hp: 500,
-        speed: 15,
+        hp: 600,
+        speed: 50,
         armor: 0,
-        dmg: 100,
+        dmg: 130,
         name: "Katallani",
         sceneUrl: "image/scenes/ChapterFive.jpg",
         attackUrl: "image/motion/katallaniAttack.png",
@@ -47,7 +47,7 @@ else {
         boostUrl: "image/motion/KatallaniCrash.png",
         iconUrl: "image/icons/giant.png",
         experienceProvided: 200,
-        pointsProvided : 5,
+        pointsProvided : 12,
         numberOfSpells: 1,
         healUrl: null
     );

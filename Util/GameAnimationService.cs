@@ -25,6 +25,8 @@ public class GameAnimationService
     public bool IsReducingDamage { get; private set; }
     public int DamageReduced { get; private set; }
     public bool EnemyUsingAbility { get; private set; }
+    public int eDamageAdded { get; private set; }
+    public bool eIsAddingDamage { get; private set; }
 
 
 
@@ -143,11 +145,19 @@ public class GameAnimationService
             IsReducingDamage = isReducingDamage;
             DamageReduced =  damageReduced; 
     }
+            public void eSetAddingDamage( bool isAddingDamage, int damageAdded)
+    {
+            eIsAddingDamage = isAddingDamage;
+            eDamageAdded =  damageAdded; 
+    }
+
 
     public async Task ResetStatus(int delay = 1000)
     {
         await Task.Delay(delay);
         IsReducingDamage = false;
+        eDamageAdded = 0;
+        eIsAddingDamage = false;
         HeroIsHealing = false;
         DamageReduced = 0;
         EnemyIsHealing = false;

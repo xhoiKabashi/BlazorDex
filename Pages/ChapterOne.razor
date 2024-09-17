@@ -10,15 +10,20 @@
 }
 else
 {
-    <Action SceneUrl="@_enemy.SceneUrl" AttackUrl="@_enemy.AttackUrl" StandUrl="@_enemy.StandUrl" EnemyHp="@_enemy.Hp" EnemySpeed="@_enemy.Speed" EnemyArmor="@_enemy.Armor" EnemyDmg="@_enemy.Dmg" IconUrl="@_enemy.IconUrl" EnemyName="@_enemy.Name" PointsProvided="@_enemy.PointsProvided" ExperienceProvided="@_enemy.ExperienceProvided" NumberOfSpells="@_enemy.NumberOfSpells" EnemyAttack="EnemyAttack" enemyAbilities="enemyAbilities" ChapterNumber="Chapter1" EnemyLevel="2" />
+    <Action SceneUrl="@_enemy.SceneUrl" AttackUrl="@_enemy.AttackUrl" StandUrl="@_enemy.StandUrl" 
+    EnemyHp="@_enemy.Hp" EnemySpeed="@_enemy.Speed" EnemyArmor="@_enemy.Armor" 
+    EnemyDmg="@_enemy.Dmg" IconUrl="@_enemy.IconUrl" EnemyName="@_enemy.Name" 
+    PointsProvided="@_enemy.PointsProvided" ExperienceProvided="@_enemy.ExperienceProvided" 
+    NumberOfSpells="@_enemy.NumberOfSpells" EnemyAttack="EnemyAttack" enemyAbilities="enemyAbilities" 
+    ChapterNumber="Chapter1" EnemyLevel="2" />
 }
 
 @code {
     private Enemy _enemy = new Enemy(
-        hp: 120,
-        speed: 12,
+        hp: 150,
+        speed: 16,
         armor: 0,
-        dmg: 43,
+        dmg: 50,
         name: "Black Wolf",
         sceneUrl: "image/scenes/chapterOne.jpg",
         attackUrl: "image/motion/wolfattk.png",
@@ -26,8 +31,8 @@ else
         defendUrl: null,
         boostUrl: null,
         iconUrl: "image/icons/wolf.png",
-        experienceProvided: 50,
-        pointsProvided: 5,
+        experienceProvided: 70,
+        pointsProvided: 6,
         numberOfSpells: 1,
         healUrl: null
     );

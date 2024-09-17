@@ -23,7 +23,6 @@
                 <StatsSectionModular ImageSrc="image/icons/health.png" StatName="HP" StatValue="@HeroStateService.Hero.Hp"/>
                 <StatsSectionModular ImageSrc="image/icons/bleeding.png" StatName="Wound" StatValue="@HeroStateService.Hero.Wounds"/>
             </div>
-                <StatsSectionModular ImageSrc="image/icons/shield.png" StatName="Skill: Doubles armor for one turn. Level" StatValue="1" />
     </div>
 
         <div class="mb-4 flex flex-col justify-center items-center w-full">
@@ -43,7 +42,9 @@
             <StatsSectionModular ImageSrc="image/icons/tears.png" StatName="Level"   StatValue="@HeroStateService.Hero.TearHealLevel"/>
             <StatsSectionModular ImageSrc="image/icons/nymph.png" StatName="Level"  StatValue="@HeroStateService.Hero.MilkRegeLevel"/>
             </div>
-
+         <div class="px-2">
+             <StatsSectionModular ImageSrc="image/icons/shield.png" StatName="Doubles armor for one turn. Level" StatValue="1"  ButtonClass="justify-center"/>
+         </div>
                   
         <NavigationBar />
     }

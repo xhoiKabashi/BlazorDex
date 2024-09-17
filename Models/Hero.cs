@@ -31,6 +31,8 @@ namespace BlazorDex.Models
         public bool Story6 { get; set; }
         public bool Story7 { get; set; }
         public bool Story8 { get; set; }
+        public bool Story9 { get; set; }
+
         public bool Story01 { get; set; }
         public bool Story02 { get; set; }
         public bool Story03 { get; set; }
@@ -40,6 +42,7 @@ namespace BlazorDex.Models
         public bool Story07 { get; set; }
         public bool Story08 { get; set; }
         public bool Story09 { get; set; }
+        
 
 
 

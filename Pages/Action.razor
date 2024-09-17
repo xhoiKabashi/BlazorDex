@@ -66,6 +66,9 @@
                 ArmorReduction="@AnimationService.ArmorReduction" AttackAdded="AnimationService.AttackAdded"
                 IsReducingDamage="@AnimationService.IsReducingDamage"
                 DamageReduced="@AnimationService.DamageReduced"
+                eDamageAdded="@AnimationService.eDamageAdded"
+                eIsAddingDamage="AnimationService.eIsAddingDamage"
+
 
                 EnemyIsAtt="@AnimationService.EnemyIsAtt"
                 SceneUrl="@SceneUrl"
@@ -77,6 +80,9 @@
                 MonsterAttack="@AnimationService.IsMonster"
                 isNympth="@AnimationService.IsNympth"
                 EnemyUsingAbility="@AnimationService.EnemyUsingAbility"
+                HeroStandingImageUrl="@HeroStandingImageUrl"
+                HeroStandingAttackUrl="@HeroStandingAttackUrl"
+
             
                  />
 
@@ -86,11 +92,11 @@
         Attack="() => PerformAction(HeroActionType.Attack)"
         Defend="() => PerformAction(HeroActionType.Defend)"
         Ability="() => PerformAction(HeroActionType.HeavyCrash)"
-         HerTears="() => PerformAction(HeroActionType.HerTears)" />
+         HerTears="() => PerformAction(HeroActionType.HerTears)" AbilityNotLocked="@AbilityNotLocked"/> 
                 }
             else
                     {
-      <ActionButton />
+      <ActionButton  AbilityNotLocked="@AbilityNotLocked"/>
       }
     
         </div>
@@ -107,6 +113,7 @@
     private int HeroArmor;
     private int originalArmor;
     private bool isDefending = false;
+ 
 
 
     //// Enemy Props and Parameters
@@ -117,6 +124,8 @@
     [Parameter] public string? EnemyName { get; set; }
     [Parameter] public int NumberOfSpells {get; set; }
     [Parameter] public int EnemyLevel {get; set; }
+    [Parameter] public bool AbilityNotLocked {get; set; } = true;
+
     private int originalArmorEnemy;
     private bool isDefendingEnemy = false;
 
@@ -130,6 +139,11 @@
     [Parameter] public Func<int, Task<(int armorReduction, bool isNympth,int heroArmor)>>? specialAbilityKatallani { get; set; }
     [Parameter] public Func<int, int, int,int, Task<(int heroHp, int damageDealt, bool isMonster, int heroDmg)>>? specialAbilityKucedra { get; set; }
     [Parameter] public Func<int, int, int, Task<(int heroHp, int damageDealt, bool isMonster)>>? specialAbilityLugati{ get; set; }
+    [Parameter] public Func<int, int, Task<(int enemyDmg, bool isMonster, int heroDmg)>>? specialAssassin { get; set; }
+     [Parameter] public Func<int, int, int,int, Task<(int heroHp, int damageDealt, bool isMonster, int heroDmg)>>? specialAbilityShooter { get; set; }
+
+
+
 
 
 
@@ -154,6 +168,7 @@
 
 
 
+
    //// general parameters
     private int turnCounter = 0;
     private List<string> actionMessages = new List<string>();
@@ -167,6 +182,8 @@
     public int? heroStartingHp { get; set; }
     public int enemyStartingHp { get; set; }
 
+    private string HeroStandingImageUrl = "image/motion/standing.png";
+    private string HeroStandingAttackUrl = "image/motion/attacking.png";
 
 
 
@@ -186,7 +203,19 @@
             HeroArmor = HeroStateService.Hero.Armor;
         }
 
-        enemyStartingHp = EnemyHp;
+    enemyStartingHp = EnemyHp;
+    if(ChapterNumber == "Bailozi") 
+    {
+    HeroStandingImageUrl = "image/motion/9Stand.jpg";
+    HeroStandingAttackUrl = "image/motion/9Attack.png";
+
+    HeroDmg = 1500;
+     heroStartingHp = 500;
+    HeroHP = 500;
+    HeroArmor = 501;
+
+
+    }
 
         await DetermineTurnOrder();
 
@@ -202,7 +231,6 @@ private async Task DetermineTurnOrder()
     {
         AnimationService.SetTurn(false);
         HasPerformed = true;
-        Console.WriteLine("Turn");
         await Task.Delay(2000); 
         // Trigger the enemy's attack or action immediately
         await ExecuteEnemyAction();
@@ -357,8 +385,11 @@ private async Task HeroUpgradeArmor()
 
         if (AnimationService.IsHeroTurn)
         {  
-                if(HeroStateService.Hero.MilkRegeLevel > 0){
+              if(AbilityNotLocked){
+               if(HeroStateService.Hero.MilkRegeLevel > 0){
                 await MilkRage();
+              } 
+                
                 }
             await ExecuteHeroAction(action);
                     if(isDefendingEnemy){
@@ -536,6 +567,37 @@ private async Task HeroUpgradeArmor()
                     }
 
             break;
+               case "Assassin":
+             if (specialAssassin != null) 
+            { 
+                var resultKucedra = await specialAssassin(EnemyDmg, HeroDmg);
+                 EnemyDmg = resultKucedra.enemyDmg;
+                 HeroDmg = resultKucedra.heroDmg;
+                AnimationService.SetIsAtt(false, true);
+                AnimationService.setIsMonster(resultKucedra.isMonster);
+                AnimationService.SetReducingDamage(true, 30);
+                AnimationService.eSetAddingDamage(true, 30);
+
+                await DisplayActionMessage($"{EnemyName} use ability!");
+            }
+
+            break;
+            case "Shooter":
+             if (specialAbilityShooter != null) 
+            { 
+                var resultKucedra = await specialAbilityShooter(HeroArmor, HeroHP, EnemyDmg, HeroDmg);
+                 HeroHP = resultKucedra.heroHp;
+                 HeroArmor -= 60;
+                AnimationService.SetIsAtt(false, true);
+                AnimationService.setIsMonster(resultKucedra.isMonster);
+                AnimationService.SetGettingDamage(true, true, resultKucedra.damageDealt);
+                AnimationService.SetHeavyCrash(false, true);
+                 AnimationService.SetArmorReduction(false, 60);
+                await DisplayActionMessage($"{EnemyName} use ability!");
+            }
+
+            break;
+            
     }
                 await AnimationService.ResetStatus();
                 AnimationService.SetTurn(true);
@@ -566,6 +628,10 @@ private EnemyActionType DetermineEnemyAction()
 
         // Check if the enemy has full HP and try to avoid healing
         if (randomAbility == "Heal" && EnemyHp == enemyStartingHp) 
+        {
+            continue; // Skip "Heal" if HP is full and select another ability
+        }
+        if (randomAbility == "SpecialAbility" && HeroArmor == 0) 
         {
             continue; // Skip "Heal" if HP is full and select another ability
         }
@@ -635,6 +701,16 @@ private EnemyActionType DetermineEnemyAction()
             HeroStateService.Hero.Story06 = true;
             HeroStateService.Hero.Wounds += 1;
             break;
+                case "Assassin":
+            HeroStateService.Hero.Story7 = true;
+            HeroStateService.Hero.Story07 = true;
+            HeroStateService.Hero.Wounds += 1;
+            break;
+                case "Shooter":
+            HeroStateService.Hero.Story8 = true;
+            HeroStateService.Hero.Story08 = true;
+            HeroStateService.Hero.Wounds += 1;
+            break;
     }
 
 
@@ -689,9 +765,8 @@ private EnemyActionType DetermineEnemyAction()
     private async Task GoHomeAndReset() 
     { 
     onGame = false; 
-      
+    AbilityNotLocked = true;
     NavigationManager.NavigateTo("/game");
-
     // Reset enemy stats
     gameEnd = false;
     EnemyHp = 0;
@@ -714,6 +789,7 @@ private EnemyActionType DetermineEnemyAction()
     turnCounter = 0;
     EndGameMessage = null;
     EnemyName = null;
+   
     StateHasChanged();
     }
 private int chapter6ActionCounter = 0;

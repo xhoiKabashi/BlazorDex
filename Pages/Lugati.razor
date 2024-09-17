@@ -6,7 +6,7 @@
 
 @if (!gameAccepted)
 {
-   <CardOfEnemy  OnClick="AcceptGame"  AbilityDesc="Attacks 2 times in a row"   OnClickNavigate="GoStory"  Story="@Story" Armor="@_enemy.Armor" Hp="@_enemy.Hp"  Speed="@_enemy.Speed" Weakness="High Armor"  Name="@_enemy.Name"  Dmg="@_enemy.Dmg"/>
+   <CardOfEnemy  OnClick="AcceptGame"  AbilityDesc="Attacks 2 times in row"   OnClickNavigate="GoStory"  Story="@Story" Armor="@_enemy.Armor" Hp="@_enemy.Hp"  Speed="@_enemy.Speed" Weakness="High Armor"  Name="@_enemy.Name"  Dmg="@_enemy.Dmg"/>
 }
 else {
 
@@ -38,10 +38,10 @@ else {
     [Inject] private IJSRuntime JSRuntime { get; set; } = null!;
 
     private Enemy _enemy = new Enemy(
-        hp: 450,
-        speed: 30,
+        hp: 550,
+        speed: 50,
         armor: 50,
-        dmg: 170,
+        dmg: 200,
         name: "Lugati",
         sceneUrl: "image/scenes/Lugati.jpg",
         attackUrl: "image/motion/lugatiattack.png",
@@ -50,7 +50,7 @@ else {
         boostUrl: null,
         iconUrl: "image/icons/zombie.png",
         experienceProvided: 300,
-        pointsProvided : 5,
+        pointsProvided : 16,
         numberOfSpells: 1,
         healUrl: null
     );

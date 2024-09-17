@@ -7,7 +7,7 @@
                 style="display: @(HeroBoosting ? "block" : "none"); overflow: visible;">
         </div>
      <div class=" flex w-full ">
-            <img src="image/motion/attacking.png" alt="Enemy Image" class="h-full overflow-visible object-cover"
+            <img src="@HeroStandingAttackUrl" alt="Enemy Image" class="h-full overflow-visible object-cover"
                 style="display: @(HeroIsAtt ? "block" : "none"); overflow: visible;">
         </div>
 
@@ -21,7 +21,7 @@
         </div>
 
         <div class=" flex w-full bg-cover bg-center">
-            <img src="image/motion/standing.png" alt="Hero Image" class=" h-full object-cover"
+            <img src="@HeroStandingImageUrl" alt="Hero Image" class=" h-full object-cover"
                 style="display: @(!HeroIsHealing && !HeroUpgradeArmor && !HeroIsAtt && !HeavyCrash && !HeroBoosting ? "block" : "none"); overflow: visible;">
         </div>
 
@@ -31,6 +31,10 @@
     [Parameter] public bool HeroIsAtt { get; set; }
     [Parameter] public bool HeavyCrash { get; set; }
     [Parameter] public bool HeroUpgradeArmor { get; set; }
+    [Parameter] public string? HeroStandingImageUrl { get; set; }
+    [Parameter] public string? HeroStandingAttackUrl { get; set; }
+
+
 
 
 
