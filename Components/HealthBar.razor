@@ -7,11 +7,16 @@
                 <p class="text-xs font-thin">Level</p>
             </div>
         </div>
-        <div class="bg-red-700 h-3 rounded-full w-32 mr-2 ">
-            <div class="bg-yellow-500 h-3 rounded-full"
-                style="width: @((HeroHP ?? 0) == 0 ? "1%" : $"{(HeroHP ?? 1) * 100 / (HeroStartHP ?? 0)}%")">
-            </div>
-        </div>
+<div class="bg-red-700 h-3 rounded-full w-32 mr-2">
+   @if (HeroHP > 0)
+    {
+        <div class="bg-yellow-500 h-full rounded-full" style="width: @($"{HeroHP * 100 / HeroStartHP}%")"></div>
+    }
+    else
+    {
+        <div class="bg-red-700 h-full w-full rounded-full"></div>
+    }
+</div>
 
      <div class="flex justify-center items-center gap-1">
             <img src="image/icons/health.png" alt="" class=" h-5">
@@ -30,7 +35,7 @@
             <img src="@EnemyIconSrc" alt="" class=" h-9" />
         </div>
 
-        <div class="bg-red-600 h-3 rounded-full w-32 mr-2">
+        <div class="bg-red-700 h-3 rounded-full w-32 mr-2">
             <div class="bg-yellow-500 h-3 rounded-full"
                 style="width: @((EnemyHP == 0 ? 0 : Math.Max((EnemyHP * 100 / EnemyStartHP), 2)) + "%")">
             </div>

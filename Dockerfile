@@ -17,6 +17,9 @@ WORKDIR /usr/share/nginx/html
 # Copy the published output from the build stage to the Nginx html directory
 COPY --from=build /app/out/wwwroot .
 
+# Copy custom Nginx configuration
+COPY nginx.conf /etc/nginx/nginx.conf
+
 # Expose port 80 for the web server
 EXPOSE 80
 

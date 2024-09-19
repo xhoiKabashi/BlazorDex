@@ -61,8 +61,8 @@ public class HeroStateService
     var heroJson = JsonSerializer.Serialize(hero);
     var content = new StringContent(heroJson, Encoding.UTF8, "application/json");
 
-    // var response = await this.Client.PutAsync($"http://localhost:5024/api/heroes/{hero.Id}", content);
-    var response = await this.Client.PutAsync($"https://kreshnik-api.onrender.com/api/heroes/{hero.Id}", content);
+    var response = await this.Client.PutAsync($"https://backend.momotech.al/api/heroes/{hero.Id}", content);
+    // var response = await this.Client.PutAsync($"https://kreshnik-api.onrender.com/api/heroes/{hero.Id}", content);
 
 
     if (!response.IsSuccessStatusCode)
@@ -73,8 +73,8 @@ public class HeroStateService
 
  public async Task DeleteAccount(int userId)
     {
-        // var response = await this.Client.DeleteAsync($"http://localhost:5024/api/heroes/{userId}");
-        var response = await this.Client.DeleteAsync($"https://kreshnik-api.onrender.com/api/users/{userId}");
+        var response = await this.Client.DeleteAsync($"http://backend.momotech.al/api/heroes/{userId}");
+        // var response = await this.Client.DeleteAsync($"https://kreshnik-api.onrender.com/api/users/{userId}");
 
         if (!response.IsSuccessStatusCode)
         {

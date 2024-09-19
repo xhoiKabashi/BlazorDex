@@ -7,75 +7,72 @@
 @inject HeroClient HeroClient
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JSRuntime
+@using System.ComponentModel.DataAnnotations
 
+<EditForm Model="loginRequest" OnValidSubmit="FetchOrCreateHero">
+    <div class="flex flex-col justify-center items-center min-h-screen bg-cover bg-center px-2">
+        <div class="rounded-lg shadow-lg p-8 max-w-md w-full " style="background-color: rgba(255, 249, 249, 0.1);">
+            <h2 class="text-5xl font-extrabold text-yellow-500 text-center uppercase mb-8 tracking-wide">Kreshnik</h2>
+            
+            <div class="w-full text-sm">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+            </div>
 
-<div class="flex flex-col  justify-center items-center min-h-[calc(100dvh)]  w-full  text-text-third bg-cover bg-center px-4 uppercase">
-    <div class=" p-6 rounded-lg shadow-lg max-w-sm w-full"  style="background-color: rgba(255, 249, 249, 0.1);" >
-        <h2 class="text-5xl font-extrabold text-text-third  text-center mb-20">Kreshnik</h2>
-        <div class="mb-4">
-            <label for="playerName" class="block  font-semibold mb-2">name:</label>
-            <input @bind="playerName" id="playerName" type="text" class="w-full px-4 py-2 border rounded-lg text-text-third bg-yellow-50 focus:outline-none focus:ring-2 focus:ring-yellow-400" />
+            <div class="mb-8">
+                <div class="mb-6">
+                    <label for="playerName" class="block font-semibold text-gray-300 uppercase tracking-wider my-2">Name:</label>
+                    <InputText id="playerName" @bind-Value="loginRequest.PlayerName" class="w-full px-4 py-3 rounded-lg  border-yellow-500 bg-transparent text-yellow-100 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:border-transparent transition" placeholder="Enter your name" />
+                </div>
+                
+                <div class="mb-6">
+                    <label for="password" class="block font-semibold text-gray-300 uppercase tracking-wider my-2">Password:</label>
+                    <InputText id="password" @bind-Value="loginRequest.Password" type="password" class="w-full px-4 py-3  rounded-lg  border-yellow-500 bg-transparent text-yellow-100 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:border-transparent transition" placeholder="Enter your password" />
+                </div>
+            </div>
+
+            <div class="flex justify-center items-center">
+                <button type="submit" class=" w-1/2 bg-yellow-500 hover:bg-yellow-600 text-yellow-100 font-bold py-3 px-4 uppercase rounded-lg transition transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-yellow-700">
+                    Start
+                </button>
+            </div>
+
+            @if (errorMessage != null)
+            {
+                <p class="text-red-600 mt-6 text-center uppercase">@errorMessage</p>
+            }
         </div>
-        <div class="mb-6">
-            <label for="password" class="block  font-semibold mb-2">PIN:</label>
-            <input @bind="password" id="password" type="password" class="w-full px-4 py-2 border rounded-lg text-text-third bg-yellow-50 focus:outline-none focus:ring-2 focus:ring-yellow-400" />
-        </div>
-        <button @onclick="FetchOrCreateHero" class="w-full bg-yellow-500 hover:bg-yellow-600 text-yellow-100 font-bold py-2 px-4  uppercase rounded-lg transition transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-700">
-            Start
-        </button>
-        @if (errorMessage != null)
-        {
-            <p class="text-red-600 mt-4 text-cente uppercase">@errorMessage</p>
-        }
     </div>
-</div>
+</EditForm>
 
 @code {
-    private string? playerName;
-    private string? password;
+    private HeroLoginRequest loginRequest = new HeroLoginRequest();
     private string? errorMessage;
 
     private async Task FetchOrCreateHero()
     {
         errorMessage = null;
-         
-     ///   await JSRuntime.InvokeVoidAsync("toggleFullScreen");
 
         try
         {
-            // Create the login request object
-            var loginRequest = new HeroLoginRequest
-                {
-                    PlayerName = playerName,
-                    Password = password
-                };
-
-            // Serialize the login request
             var requestContent = new StringContent(JsonSerializer.Serialize(loginRequest), Encoding.UTF8, "application/json");
-
-            // Send the request to the API
-            @* var response = await HeroClient.Client.PostAsync("http://localhost:5024/api/heroes/fetchorcreate", requestContent); *@
-            var response = await HeroClient.Client.PostAsync("https://kreshnik-api.onrender.com/api/heroes/fetchorcreate", requestContent);
-
+            var response = await HeroClient.Client.PostAsync("https://backend.momotech.al/api/heroes/fetchorcreate", requestContent);
 
             if (!response.IsSuccessStatusCode)
             {
-                throw new Exception("Failed to fetch or create hero.");
+                throw new Exception("Incorrect password");
             }
 
-            // Deserialize the hero from the response
             var heroJson = await response.Content.ReadAsStringAsync();
             var hero = JsonSerializer.Deserialize<Hero>(heroJson, new JsonSerializerOptions
-                {
-                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-                });
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            });
 
-            // Set the hero in the HeroStateService
-            if(hero == null)
-               return;
+            if (hero == null)
+                return;
+
             HeroStateService.SetHero(hero);
-
-            // Navigate to the game page (or any other page)
             NavigationManager.NavigateTo("/game");
         }
         catch (Exception ex)

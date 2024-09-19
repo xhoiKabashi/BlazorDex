@@ -3,58 +3,61 @@
 @inject HeroStateService HeroStateService
 @inject NavigationManager NavigationManager
 
-<div class="flex flex-col  justify-between items-center min-h-[calc(100dvh)] w-full text-text-third">
-    <h2 class="text-2xl font-bold uppercase tracking-wider py-2 px-7 rounded-lg  mt-10 text-yellow-400" style="background-color: rgba(255, 249, 249, 0.1);">Settings</h2>
+<div class="flex flex-col justify-between items-center min-h-[calc(100dvh)] w-full text-text-third">
+    <h2 class="text-2xl font-bold uppercase tracking-wider py-2 px-7 rounded-lg mt-10 text-yellow-400" style="background-color: rgba(255, 249, 249, 0.1);">Settings</h2>
 
     <div class="p-8 rounded-xl shadow-2xl max-w-sm w-full text-center" style="background-color: rgba(255, 249, 249, 0.1);">
-
-        <div class="flex flex-col  gap-6">
+        <div class="flex flex-col gap-6">
             <div class="flex justify-between items-center">
-                <p class="text-green-50">Audio</p>
-                <img src="image/icons/mute.png" alt="" class=" h-5 cursor-pointer" @onclick="@MuteAudio">
-            </div>
-            <div class="flex justify-between items-center">
-                <p class="text-green-50">Full Screen</p>
-                <img src="image/icons/fullscreen.png" alt="" class=" h-5 cursor-pointer" @onclick="@FullScreen">
+                <p class="text-green-50">Full Screen (Android Users)</p>
+                <img src="image/icons/fullscreen.png" alt="Full Screen" class="h-5 cursor-pointer" @onclick="@FullScreen">
             </div>
             <div class="flex justify-between items-center">
                 <p class="text-green-50">Delete Account</p>
-                <img src="image/icons/delete.png" alt="" class=" h-5 cursor-pointer" @onclick="@DeleteAccount">
-
+                <img src="image/icons/delete.png" alt="Delete Account" class="h-5 cursor-pointer" @onclick="@ConfirmDeleteAccount">
             </div>
         </div>
     </div>
     <NavigationBar />
-</div>  
+</div>
 
 @code {
- [Inject] private HeroClient? HeroClient { get; set; }
-  private bool isMuted = false;
+    [Inject] private HeroClient? HeroClient { get; set; }
 
-private async Task FullScreen(){
+    private bool isMuted = false;
 
-  await JSRuntime.InvokeVoidAsync("toggleFullScreen");
-}
+    private async Task FullScreen()
+    {
+        await JSRuntime.InvokeVoidAsync("toggleFullScreen");
+    }
 
-private async Task MuteAudio()
-{
-    isMuted = !isMuted;
-    await JSRuntime.InvokeVoidAsync("toggleAudioMute", isMuted);
-}
+    private async Task MuteAudio()
+    {
+        isMuted = !isMuted;
+        await JSRuntime.InvokeVoidAsync("toggleAudioMute", isMuted);
+    }
 
+    private async Task ConfirmDeleteAccount()
+    {
+        // Trigger the confirmation dialog
+        var confirmed = await JSRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to delete your account? This action is irreversible.");
+
+        if (confirmed)
+        {
+            await DeleteAccount();
+        }
+    }
 
     private async Task DeleteAccount()
     {
         try
         {
             await HeroClient.DeleteAccount(HeroStateService.Hero.Id);
-             NavigationManager.NavigateTo("/");
-            
+            NavigationManager.NavigateTo("/");
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Error deleting account: {ex.Message}");
         }
     }
-
 }

@@ -11,7 +11,7 @@ builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
 //  var url = "http://localhost:5024";
- var url = "https://kreshnik-api.onrender.com";
+ var url = "https://backend.momotech.al";
 
 
 // Register HttpClient with a base address
