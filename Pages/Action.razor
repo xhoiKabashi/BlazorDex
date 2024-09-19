@@ -289,7 +289,7 @@ private async Task HeroUpgradeArmor()
     }
 
     // Animation
-    AnimationService.SetUpgradeArmor(true, true, HeroArmor);
+    AnimationService.SetUpgradeArmor(true, true, HeroArmor / 2);
     await DisplayActionMessage(HeroArmor < 0 
         ? "Reduces the negative armor value!" 
         : "Doubles the armor for one turn!");
@@ -312,7 +312,7 @@ private async Task HeroUpgradeArmor()
         /// Animation
             AnimationService.SetHeavyCrash(true, true);
             AnimationService.SetArmorReduction(true, HeroStateService.Hero.HeavyCrashDmg);
-            await DisplayActionMessage("Heavy Crash!");
+            await DisplayActionMessage("Heavy Crash on " + EnemyName);
             AnimationService.SetTurn(false);
 
             // Notify the UI of the change
@@ -326,7 +326,7 @@ private async Task HeroUpgradeArmor()
 
         /// Animation
           AnimationService.SetHealing(true, true, HeroStateService.Hero.TearHealHp);
-          await DisplayActionMessage("Hero heals!");
+          await DisplayActionMessage("Hero heals " + HeroStateService.Hero.TearHealHp +" HP");
           AnimationService.SetTurn(false);
 
           // Notify the UI of the change
@@ -339,15 +339,15 @@ private async Task HeroUpgradeArmor()
           HasPerformed = true;
        /// Ability logic
          HeroDmg  += HeroStateService.Hero.MilkRegeStats;
-             if (HeroArmor < 0)
+        if (HeroArmor < 0)
         {
             // Multiply the negative armor to reduce its absolute value
-            HeroArmor = HeroArmor - HeroStateService.Hero.MilkRegeStats; // Example: -20 becomes -10
+            HeroArmor = HeroArmor + HeroStateService.Hero.MilkRegeStats;
         }
         else
         {
             // Double the armor for positive values
-            HeroArmor += HeroStateService.Hero.MilkRegeStats; // Example: 10 becomes 20
+            HeroArmor += HeroStateService.Hero.MilkRegeStats;
         }
        /// Animation
             AnimationService.SetHeroBoosting(true,true, HeroStateService.Hero.MilkRegeStats, HeroStateService.Hero.MilkRegeStats);
@@ -470,7 +470,7 @@ private async Task HeroUpgradeArmor()
                  EnemyHp = HealthResult.enemyHp;
                /// Animation
                 AnimationService.SetHealing(false, true, HealthResult.hpAdded);
-                await DisplayActionMessage($"{EnemyName} heals!");
+                await DisplayActionMessage($"{EnemyName} heals " + HealthResult.hpAdded + "HP");
                 AnimationService.SetTurn(true);
                 await AnimationService.ResetStatus();
                 StateHasChanged(); 
@@ -495,7 +495,7 @@ private async Task HeroUpgradeArmor()
             AnimationService.SetArmorReduction(false, abilityResultNymph.armorReduction);
             AnimationService.setIsNympth(abilityResultNymph.isNympth);
             AnimationService.SetHeavyCrash(false, true);
-            await DisplayActionMessage($"{EnemyName} use ability!");
+            await DisplayActionMessage($"{EnemyName} attacks / reduce armor by " + abilityResultNymph.armorReduction);
        
         }
             break;
@@ -508,7 +508,7 @@ private async Task HeroUpgradeArmor()
            AnimationService.setIsNympth(abilityResultShtriga.isNympth);
            EnemyHp = abilityResultShtriga.enemyHp;
            AnimationService.SetHealing(false, true, abilityResultShtriga.hpAdded);
-           await DisplayActionMessage($"{EnemyName} use ability!");
+           await DisplayActionMessage($"{EnemyName} attacks / heals by " + abilityResultShtriga.hpAdded);
         }
             break;
 
@@ -520,7 +520,7 @@ private async Task HeroUpgradeArmor()
            AnimationService.setEnemyUsingAbility(true);
            AnimationService.setIsMonster(abilityResultKatallani.isNympth);   
            AnimationService.SetArmorReduction(false, abilityResultKatallani.armorReduction);
-           await DisplayActionMessage($"{EnemyName} use ability!");
+           await DisplayActionMessage($"{EnemyName} reduce your armor by " + abilityResultKatallani.armorReduction);
              }
 
             break;
@@ -535,7 +535,7 @@ private async Task HeroUpgradeArmor()
                 AnimationService.setIsMonster(resultKucedra.isMonster);
                 AnimationService.SetGettingDamage(true, true, resultKucedra.damageDealt);
                 AnimationService.SetReducingDamage(true, 20);
-                await DisplayActionMessage($"{EnemyName} use ability!");
+                await DisplayActionMessage($"{EnemyName} attacks / reduce dmg by " + 20);
             }
 
             break;
@@ -553,7 +553,7 @@ private async Task HeroUpgradeArmor()
                         if (chapter6ActionCounter < 2)
                         {
                             // Check if the action needs to be performed again
-                            await DisplayActionMessage($"{EnemyName} uses ability!");
+                            await DisplayActionMessage($"{EnemyName} attacks!");
                             await AnimationService.ResetStatus();
                             StateHasChanged(); 
                             await Task.Delay(2000);
@@ -562,7 +562,7 @@ private async Task HeroUpgradeArmor()
                         else
                         {
                             chapter6ActionCounter = 0; // Reset the counter after performing the action twice
-                            await DisplayActionMessage($"{EnemyName} uses ability!");
+                            await DisplayActionMessage($"{EnemyName} attacks!");
                         }
                     }
 
@@ -578,7 +578,7 @@ private async Task HeroUpgradeArmor()
                 AnimationService.SetReducingDamage(true, 30);
                 AnimationService.eSetAddingDamage(true, 30);
 
-                await DisplayActionMessage($"{EnemyName} use ability!");
+                await DisplayActionMessage($"{EnemyName} steals 30 dmg from you!");
             }
 
             break;
@@ -593,7 +593,7 @@ private async Task HeroUpgradeArmor()
                 AnimationService.SetGettingDamage(true, true, resultKucedra.damageDealt);
                 AnimationService.SetHeavyCrash(false, true);
                  AnimationService.SetArmorReduction(false, 60);
-                await DisplayActionMessage($"{EnemyName} use ability!");
+                await DisplayActionMessage($"{EnemyName} attacks / reduce armor by 60!");
             }
 
             break;
