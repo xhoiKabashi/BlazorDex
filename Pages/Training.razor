@@ -43,7 +43,7 @@
 
         @code {
             private Enemy _enemy = new Enemy(
-                hp: 110,
+                hp: 120,
                 speed: 4,
                 armor: 5,
                 dmg: 22,
@@ -63,9 +63,9 @@
             protected override async Task OnInitializedAsync()
     {
          
-        _enemy.Hp = ScaleEnemyStat(baseStat: _enemy.Hp, heroLevel: HeroStateService.Hero.Level, scalingFactor: 1.15);
+        _enemy.Hp = ScaleEnemyStat(baseStat: _enemy.Hp, heroLevel: HeroStateService.Hero.Level, scalingFactor: 1.3);
         _enemy.Armor = ScaleEnemyStat(baseStat: _enemy.Armor, heroLevel: HeroStateService.Hero.Level, scalingFactor: 1.3);
-        _enemy.Dmg = ScaleEnemyStat(baseStat: _enemy.Dmg, heroLevel: HeroStateService.Hero.Level, scalingFactor: 1.2);
+        _enemy.Dmg = ScaleEnemyStat(baseStat: _enemy.Dmg, heroLevel: HeroStateService.Hero.Level, scalingFactor: 1.3);
         _enemy.Speed = ScaleEnemyStat(baseStat: _enemy.Speed, heroLevel: HeroStateService.Hero.Level, scalingFactor: 1.2);
         armorAdded = ScaleEnemyStat(baseStat: armorAdded, heroLevel: HeroStateService.Hero.Level, scalingFactor: 1.3);
         _enemy.ExperienceProvided = ScaleEnemyStat(baseStat:  _enemy.ExperienceProvided, heroLevel: HeroStateService.Hero.Level, scalingFactor: 1.2);
