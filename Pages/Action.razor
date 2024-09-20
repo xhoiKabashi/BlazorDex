@@ -75,11 +75,12 @@
                 AttackUrl="@AttackUrl"
                 StandUrl="@StandUrl"
                 DefendUrl="@DefendUrl"
-                HealUrl="@HealUrl"
-                BoostUrl="@BoostUrl"
-                MonsterAttack="@AnimationService.IsMonster"
-                isNympth="@AnimationService.IsNympth"
-                EnemyUsingAbility="@AnimationService.EnemyUsingAbility"
+    using c_.Users.user.Desktop.Kreshnik.BlazorDex.Pages;
+
+#line default
+#line hidden
+#nullable disable
+            EnemyUsingAbility="@AnimationService.EnemyUsingAbility"
                 HeroStandingImageUrl="@HeroStandingImageUrl"
                 HeroStandingAttackUrl="@HeroStandingAttackUrl"
 
@@ -631,7 +632,7 @@ private EnemyActionType DetermineEnemyAction()
         {
             continue; // Skip "Heal" if HP is full and select another ability
         }
-        if (randomAbility == "SpecialAbility" && HeroArmor == 0) 
+        if (randomAbility == "SpecialAbility"  && HeroArmor < 10 && ChapterNumber == "Chapter4") 
         {
             continue; // Skip "Heal" if HP is full and select another ability
         }
