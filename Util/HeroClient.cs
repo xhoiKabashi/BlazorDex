@@ -73,7 +73,7 @@ public class HeroStateService
 
  public async Task DeleteAccount(int userId)
     {
-        var response = await this.Client.DeleteAsync($"http://backend.momotech.al/api/heroes/{userId}");
+        var response = await this.Client.DeleteAsync($"https://backend.momotech.al/api/heroes/{userId}");
         // var response = await this.Client.DeleteAsync($"https://kreshnik-api.onrender.com/api/users/{userId}");
 
         if (!response.IsSuccessStatusCode)
